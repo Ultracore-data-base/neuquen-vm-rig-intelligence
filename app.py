@@ -5,11 +5,15 @@ import requests
 from io import StringIO
 from datetime import datetime
 import plotly.express as px
+from pathlib import Path
 
-st.set_page_config(page_title="Vaca Muerta Rig Intelligence", layout="wide")
+st.set_page_config(page_title="Vaca Muerta Rig & Services Intelligence", layout="wide")
 
 WFS_BASE = "https://hidrocarburos.energianeuquen.gob.ar/geoserver/Hidrocarburos/wfs"
 LAYER_POZOS_VM = "Hidrocarburos:Pozos_VM"
+DATA_DIR = Path("data")
+AUTO_PIPELINE = DATA_DIR / "permits_pipeline_auto.csv"
+CHANGELOG = DATA_DIR / "changes_log.csv"
 
 @st.cache_data(ttl=24*60*60, show_spinner=True)
 def load_wfs_csv(layer, max_features=0):
@@ -44,10 +48,11 @@ def score_permit(row):
     wells = 0 if pd.isna(wells) else wells
     days = pd.to_numeric(row.get("DAYS_SINCE_PUBLICATION", 999), errors="coerce")
     days = 999 if pd.isna(days) else days
+    services = str(row.get("SERVICE_OPPORTUNITY", "")).lower()
 
-    if any(x in status for x in ["granted", "published", "license", "approved"]):
+    if any(x in status for x in ["granted", "published", "license", "approved", "licencia ambiental"]):
         score += 35
-    elif any(x in status for x in ["process", "eia", "hearing"]):
+    elif any(x in status for x in ["process", "eia", "hearing", "audiencia"]):
         score += 25
     elif "announced" in status:
         score += 15
@@ -74,12 +79,15 @@ def score_permit(row):
     elif days <= 365:
         score += 7
 
+    if any(x in services for x in ["workover", "e-frac", "venting", "lighting", "air conditioning", "power"]):
+        score += 5
+
     return min(int(score), 100)
 
 def priority(score):
-    if score >= 80: return "Tier 1 - Immediate follow-up"
-    if score >= 60: return "Tier 2 - Qualify / monitor"
-    if score >= 40: return "Tier 3 - Early signal"
+    if score >= 85: return "Tier 1 - Immediate commercial action"
+    if score >= 70: return "Tier 2 - Call operator / qualify"
+    if score >= 50: return "Tier 3 - Monitor closely"
     return "Low priority"
 
 def prepare_permits(df):
@@ -89,15 +97,28 @@ def prepare_permits(df):
         p["DAYS_SINCE_PUBLICATION"] = (pd.Timestamp.today().normalize() - p["PUBLICATION_DATE"]).dt.days
     else:
         p["DAYS_SINCE_PUBLICATION"] = 999
-    for c, v in {"RESERVOIR":"Unconventional", "FORMATION":"Vaca Muerta", "WELL_TYPE":"Horizontal / probable"}.items():
+    for c, v in {
+        "RESERVOIR":"Unconventional",
+        "FORMATION":"Vaca Muerta",
+        "WELL_TYPE":"Horizontal / probable",
+        "SERVICE_OPPORTUNITY":"10 rigs / workover / e-frac / lighting towers / venting solutions"
+    }.items():
         if c not in p.columns:
             p[c] = v
     p["RIG_OPPORTUNITY_SCORE"] = p.apply(score_permit, axis=1)
     p["COMMERCIAL_PRIORITY"] = p["RIG_OPPORTUNITY_SCORE"].apply(priority)
     return p
 
-st.title("Vaca Muerta / Neuquén Rig Intelligence Dashboard")
-st.caption("Official Neuquén GIS wells + forward drilling permit pipeline + Stamper/ARX rig opportunity scoring")
+def load_auto_pipeline():
+    if AUTO_PIPELINE.exists():
+        try:
+            return pd.read_csv(AUTO_PIPELINE)
+        except Exception:
+            return pd.DataFrame()
+    return pd.DataFrame()
+
+st.title("Vaca Muerta / Neuquén Rig & Services Intelligence")
+st.caption("10-rig deployment over 3–4 years + workover, e-frac, lighting towers, air conditioning and venting/productive emissions solutions")
 
 with st.sidebar:
     st.header("Data Sources")
@@ -108,7 +129,10 @@ with st.sidebar:
         uploaded_wells = st.file_uploader("Upload Pozos_VM CSV", type=["csv"])
     st.divider()
     st.header("Permit Pipeline")
-    permits_file = st.file_uploader("Upload permit / environmental notices CSV", type=["csv"])
+    use_auto = st.checkbox("Use automatic crawler output", value=True)
+    permits_file = st.file_uploader("Optional manual permit CSV override", type=["csv"])
+    st.divider()
+    st.caption("Automatic crawler output: data/permits_pipeline_auto.csv")
 
 try:
     if source == "Live Neuquén WFS":
@@ -136,24 +160,39 @@ if lat_col and lon_col:
     wells[lat_col] = pd.to_numeric(wells[lat_col], errors="coerce")
     wells[lon_col] = pd.to_numeric(wells[lon_col], errors="coerce")
 
-k1, k2, k3, k4 = st.columns(4)
+permits = pd.DataFrame()
+if permits_file is not None:
+    permits = prepare_permits(pd.read_csv(permits_file))
+elif use_auto:
+    auto = load_auto_pipeline()
+    if not auto.empty:
+        permits = prepare_permits(auto)
+
+k1, k2, k3, k4, k5 = st.columns(5)
 k1.metric("VM Wells Loaded", f"{len(wells):,}")
 k2.metric("Operators", wells[operator_col].nunique() if operator_col else "n/a")
 k3.metric("Areas / Fields", wells[area_col].nunique() if area_col else "n/a")
-k4.metric("Data Refresh", datetime.now().strftime("%Y-%m-%d %H:%M"))
+k4.metric("Auto Permits", f"{len(permits):,}" if not permits.empty else "0")
+k5.metric("Target Rigs", "10 / 3-4 yrs")
 
-tabs = st.tabs(["Executive Summary", "Interactive Map", "Operator / Area Ranking", "Permit Pipeline", "Rig Demand Score", "Data Export"])
+tabs = st.tabs([
+    "Executive Summary", "Interactive Map", "Operator / Area Ranking",
+    "Permit Pipeline", "Rig & Services Demand Score", "Changes / Alerts", "Data Export"
+])
 
 with tabs[0]:
     st.subheader("Executive Summary")
     if operator_col:
         op_rank = wells.groupby(operator_col).size().reset_index(name="VM_WELLS").sort_values("VM_WELLS", ascending=False)
-        st.dataframe(op_rank, use_container_width=True, height=420)
+        st.dataframe(op_rank, use_container_width=True, height=400)
         fig = px.bar(op_rank.head(15), x=operator_col, y="VM_WELLS", title="Top VM operators by well count")
         st.plotly_chart(fig, use_container_width=True)
+    if not permits.empty:
+        st.subheader("Top commercial signals from permits")
+        st.dataframe(permits.sort_values("RIG_OPPORTUNITY_SCORE", ascending=False).head(20), use_container_width=True)
 
 with tabs[1]:
-    st.subheader("Interactive Vaca Muerta Map")
+    st.subheader("Interactive Map: Existing Wells + Forward Permits")
     map_frames = []
     if lat_col and lon_col:
         m = wells.dropna(subset=[lat_col, lon_col]).copy()
@@ -166,36 +205,28 @@ with tabs[1]:
         m["MAP_SIZE"] = 5
         map_frames.append(m)
 
-    if permits_file:
-        permits = prepare_permits(pd.read_csv(permits_file))
-        if "LATITUDE" in permits.columns and "LONGITUDE" in permits.columns:
-            permits["LATITUDE"] = pd.to_numeric(permits["LATITUDE"], errors="coerce")
-            permits["LONGITUDE"] = pd.to_numeric(permits["LONGITUDE"], errors="coerce")
-            pp = permits.dropna(subset=["LATITUDE", "LONGITUDE"]).copy()
-            if not pp.empty:
-                pp["MAP_LAYER"] = "Forward Permit Pipeline"
-                pp["MAP_LAT"] = pp["LATITUDE"]
-                pp["MAP_LON"] = pp["LONGITUDE"]
-                pp["MAP_OPERATOR"] = pp["OPERATOR"] if "OPERATOR" in pp.columns else "Unknown"
-                pp["MAP_AREA"] = pp["AREA"] if "AREA" in pp.columns else "Unknown"
-                pp["MAP_STATUS"] = pp["COMMERCIAL_PRIORITY"]
-                pp["MAP_SIZE"] = 14
-                map_frames.append(pp)
+    if not permits.empty and {"LATITUDE", "LONGITUDE"}.issubset(permits.columns):
+        pp = permits.copy()
+        pp["LATITUDE"] = pd.to_numeric(pp["LATITUDE"], errors="coerce")
+        pp["LONGITUDE"] = pd.to_numeric(pp["LONGITUDE"], errors="coerce")
+        pp = pp.dropna(subset=["LATITUDE", "LONGITUDE"])
+        if not pp.empty:
+            pp["MAP_LAYER"] = "Forward Permit Pipeline"
+            pp["MAP_LAT"] = pp["LATITUDE"]
+            pp["MAP_LON"] = pp["LONGITUDE"]
+            pp["MAP_OPERATOR"] = pp["OPERATOR"] if "OPERATOR" in pp.columns else "Unknown"
+            pp["MAP_AREA"] = pp["AREA"] if "AREA" in pp.columns else "Unknown"
+            pp["MAP_STATUS"] = pp["COMMERCIAL_PRIORITY"]
+            pp["MAP_SIZE"] = 14
+            map_frames.append(pp)
 
     if map_frames:
         allmap = pd.concat(map_frames, ignore_index=True, sort=False)
-        hover_cols = [c for c in ["MAP_LAYER","MAP_OPERATOR","MAP_AREA","MAP_STATUS","RIG_OPPORTUNITY_SCORE",well_col,"PAD_OR_WELLS","PERMITTED_WELLS","PERMIT_STATUS"] if c and c in allmap.columns]
+        hover_cols = [c for c in ["MAP_LAYER","MAP_OPERATOR","MAP_AREA","MAP_STATUS","RIG_OPPORTUNITY_SCORE",well_col,"PAD_OR_WELLS","PERMITTED_WELLS","PERMIT_STATUS","SERVICE_OPPORTUNITY","SOURCE_URL"] if c and c in allmap.columns]
         fig = px.scatter_mapbox(
-            allmap,
-            lat="MAP_LAT",
-            lon="MAP_LON",
-            color="MAP_OPERATOR",
-            size="MAP_SIZE",
-            hover_data=hover_cols,
-            zoom=7.5,
-            height=760,
-            mapbox_style="open-street-map",
-            title="Existing VM Wells + Forward Permit Pipeline"
+            allmap, lat="MAP_LAT", lon="MAP_LON", color="MAP_OPERATOR", size="MAP_SIZE",
+            hover_data=hover_cols, zoom=7.5, height=780, mapbox_style="open-street-map",
+            title="Neuquén / Vaca Muerta: wells and future permit signals"
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
@@ -205,37 +236,55 @@ with tabs[2]:
     st.subheader("Operator / Area Ranking")
     if operator_col and area_col:
         summary = wells.groupby([operator_col, area_col]).size().reset_index(name="VM_WELLS").sort_values("VM_WELLS", ascending=False)
-        st.dataframe(summary, use_container_width=True, height=620)
+        st.dataframe(summary, use_container_width=True, height=650)
 
 with tabs[3]:
     st.subheader("Forward-Looking Permit Pipeline")
-    if permits_file:
-        permits = prepare_permits(pd.read_csv(permits_file))
-        st.dataframe(permits.sort_values("RIG_OPPORTUNITY_SCORE", ascending=False), use_container_width=True, height=600)
-        fig = px.bar(
-            permits.groupby("OPERATOR")["RIG_OPPORTUNITY_SCORE"].max().reset_index().sort_values("RIG_OPPORTUNITY_SCORE", ascending=False),
-            x="OPERATOR",
-            y="RIG_OPPORTUNITY_SCORE",
-            title="Highest rig opportunity score by operator"
-        )
-        st.plotly_chart(fig, use_container_width=True)
+    if not permits.empty:
+        st.dataframe(permits.sort_values("RIG_OPPORTUNITY_SCORE", ascending=False), use_container_width=True, height=650)
     else:
-        st.info("Upload the permit/environmental CSV. Use permits_template.csv included in the repository.")
+        st.info("No automatic permit records found yet. The GitHub Action crawler will create data/permits_pipeline_auto.csv after its first run.")
 
 with tabs[4]:
-    st.subheader("Rig Demand Score")
+    st.subheader("Rig & Services Demand Score")
     st.markdown("""
+    **Commercial scope**
+    - 10 drilling rigs over 3–4 years
+    - Workover
+    - E-frac / electric frac ecosystem
+    - Lighting towers
+    - Air conditioning / camp & rig support
+    - Venting/productive emissions solutions
+
     **Score logic**
     - Permit / environmental license status: up to 35 points
     - Number of permitted wells: up to 25 points
     - Horizontal / PAD signal: up to 15 points
     - Unconventional / Vaca Muerta signal: up to 10 points
     - Publication recency: up to 15 points
+    - Adjacent services opportunity: up to 5 points
     """)
+    if not permits.empty:
+        st.dataframe(
+            permits.groupby("OPERATOR").agg(
+                MAX_SCORE=("RIG_OPPORTUNITY_SCORE", "max"),
+                AVG_SCORE=("RIG_OPPORTUNITY_SCORE", "mean"),
+                PERMIT_SIGNALS=("OPERATOR", "size"),
+                PERMITTED_WELLS=("PERMITTED_WELLS", "sum")
+            ).reset_index().sort_values("MAX_SCORE", ascending=False),
+            use_container_width=True
+        )
 
 with tabs[5]:
+    st.subheader("Changes / Alerts")
+    if CHANGELOG.exists():
+        changes = pd.read_csv(CHANGELOG)
+        st.dataframe(changes.sort_values("DETECTED_AT", ascending=False), use_container_width=True, height=600)
+    else:
+        st.info("No changes log yet. It will appear after the daily crawler runs.")
+
+with tabs[6]:
     st.subheader("Data Export")
     st.download_button("Download VM wells CSV", wells.to_csv(index=False).encode("utf-8"), "vm_wells_neuquen.csv", "text/csv")
-    if permits_file:
-        permits = prepare_permits(pd.read_csv(permits_file))
-        st.download_button("Download scored permit pipeline CSV", permits.to_csv(index=False).encode("utf-8"), "scored_permit_pipeline.csv", "text/csv")
+    if not permits.empty:
+        st.download_button("Download scored permit pipeline CSV", permits.to_csv(index=False).encode("utf-8"), "permits_pipeline_scored.csv", "text/csv")
