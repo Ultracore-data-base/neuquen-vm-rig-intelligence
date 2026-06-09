@@ -2,9 +2,9 @@
 name: Daily Neuquen Permit Crawler
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "30 11 * * *"  # 08:30 Argentina time approx.
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,6 +12,8 @@ permissions:
 jobs:
   crawl:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,12 +22,10 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run crawler
-        run: |
-          python crawler.py
+        run: python crawler.py
 
       - name: Commit updated data
         run: |
