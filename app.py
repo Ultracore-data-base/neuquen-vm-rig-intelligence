@@ -259,7 +259,23 @@ def multi_service_tags(score, basin):
     if "golfo" in b or "cuyana" in b:
         tags.append("Pulling / mature-field services")
     return tags or ["Monitoring"]
+def contractor_context_for_operator(operator):
+    if contractor_intelligence.empty:
+        return None
 
+    if "operator" not in contractor_intelligence.columns:
+        return None
+
+    op = str(operator).strip().upper()
+
+    matches = contractor_intelligence[
+        contractor_intelligence["operator"].astype(str).str.strip().str.upper() == op
+    ]
+
+    if matches.empty:
+        return None
+
+    return matches.iloc[0].to_dict()
 
 def build_scored_points(area_master, area_forecast, op_forecast):
     if not area_forecast.empty and {"lat", "lon"}.issubset(area_forecast.columns):
@@ -666,6 +682,22 @@ with tabs[1]:
             official_layers_html += f'<div class="layer-row"><div class="{box_class}">{mark}</div>{label}</div>'
 
         services_html = "".join([f'<span class="detail-pill">{tag}</span>' for tag in multi_service_tags(selected_score, selected_basin)])
+        contractor_info = contractor_context_for_operator(selected_operator)
+
+if contractor_info:
+    contractor_html = f"""
+      <div class="detail-row"><span>Current Contractor</span><span>{contractor_info.get("current_contractor", "-")}</span></div>
+      <div class="detail-row"><span>Contract Type</span><span>{contractor_info.get("contract_type", "-")}</span></div>
+      <div class="detail-row"><span>Rig Type</span><span>{contractor_info.get("rig_type", "-")}</span></div>
+      <div class="detail-row"><span>Rig Count</span><span>{contractor_info.get("rig_count", "-")}</span></div>
+    """
+else:
+    contractor_html = """
+      <div class="detail-row"><span>Current Contractor</span><span>To verify</span></div>
+      <div class="detail-row"><span>Contract Type</span><span>Unknown</span></div>
+      <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
+      <div class="detail-row"><span>Rig Count</span><span>-</span></div>
+    """
 
         st.html(f"""
         <div class="right-panel">
@@ -680,11 +712,13 @@ with tabs[1]:
             <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
             <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
-            <div class="detail-row"><span>Drill Score</span><span>{int(round(selected_score)) if selected_score else "-"}</span></div>
-            <div class="detail-row"><span>Priority</span><span>{priority(selected_score) if selected_score else "-"}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
+
+            <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
+{contractor_html}
+
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
-          </div>
+            
 
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
