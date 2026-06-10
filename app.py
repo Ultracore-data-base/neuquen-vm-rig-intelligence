@@ -28,12 +28,12 @@ DATA_DIR = Path("data")
 
 
 def load_csv(name):
-    p = DATA_DIR / name
-    if p.exists():
-        return pd.read_csv(p)
-    p2 = Path(name)
-    if p2.exists():
-        return pd.read_csv(p2)
+    path = DATA_DIR / name
+    if path.exists():
+        return pd.read_csv(path)
+    fallback = Path(name)
+    if fallback.exists():
+        return pd.read_csv(fallback)
     return pd.DataFrame()
 
 
@@ -224,6 +224,7 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
   overflow-y:auto;
   padding:13px 12px;
   border:1px solid rgba(255,255,255,.08);
+  box-sizing:border-box;
 }
 .right-panel{
   background:linear-gradient(180deg,#f8fafc,#eef3f7);
@@ -232,6 +233,7 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
   overflow-y:auto;
   padding:13px 12px;
   border:1px solid rgba(0,0,0,.10);
+  box-sizing:border-box;
 }
 .panel-title{font-size:14px;font-weight:900;letter-spacing:.5px;margin-bottom:8px;}
 .panel-subtitle{font-size:12.5px;color:#b6c6d6;margin-bottom:8px;}
@@ -326,13 +328,13 @@ with tabs[1]:
         else:
             op_rows = "<div style='color:#b6c6d6;font-size:13px;'>No scored areas yet.</div>"
 
-        st.markdown(f"""
+        st.html(f"""
         <div class="panel-shell">
           <div class="panel-title">OPERATOR LEGEND ⓘ</div>
           <div class="panel-subtitle">Show / Hide all operators</div>
           {op_rows}
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     with map_col:
         selected_label = "Argentina › Neuquén Basin › Vaca Muerta"
@@ -441,7 +443,7 @@ with tabs[1]:
                 width=None,
                 height=760,
                 returned_objects=["last_object_clicked_tooltip"],
-                key="ueip_main_map_stable_tabs",
+                key="ueip_main_map_panel_rendered",
             )
             if map_state and map_state.get("last_object_clicked_tooltip"):
                 selected_label = map_state["last_object_clicked_tooltip"]
@@ -449,7 +451,7 @@ with tabs[1]:
         st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
 
     with right_col:
-        st.markdown("""
+        st.html("""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
           <div class="layer-group-title">ZONE FILTER</div>
@@ -474,7 +476,7 @@ with tabs[1]:
           <div class="layer-row"><div class="layer-box off"></div>Rig coverage</div>
           <div class="layer-row"><div class="layer-box off"></div>Multi-service opportunity</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
 
 with tabs[2]:
@@ -553,9 +555,4 @@ with tabs[8]:
                 file_name=filename,
                 mime="text/csv",
             )
-
-
-
-            
-
 
