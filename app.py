@@ -57,6 +57,8 @@ def color_for_operator(operator):
         "CHEVRON": "#2E63B8",
         "TOTAL": "#7A7A7A",
         "GEOPARK": "#21A64A",
+        "DLS": "#455A64",
+        "HP": "#263238",
     }
     text = str(operator).upper()
     for key, value in palette.items():
@@ -105,6 +107,160 @@ def score_icon(score, color):
     """
 
 
+def normalize_text(value):
+    return str(value or "").strip()
+
+
+def detect_basin_from_row(row):
+    text = " ".join([
+        normalize_text(row.get("basin", "")),
+        normalize_text(row.get("province", "")),
+        normalize_text(row.get("area", "")),
+    ]).upper()
+
+    if any(k in text for k in ["NEUQU", "VACA MUERTA", "LOMA CAMPANA", "AÑELO", "FORTIN DE PIEDRA", "BAJADA DEL PALO"]):
+        return "Neuquén Basin"
+    if any(k in text for k in ["GOLFO SAN JORGE", "CHUBUT", "SANTA CRUZ", "MANANTIALES BEHR", "CERRO DRAGON"]):
+        return "Golfo San Jorge"
+    if any(k in text for k in ["AUSTRAL", "TIERRA DEL FUEGO", "CUENCA AUSTRAL"]):
+        return "Austral Basin"
+    if any(k in text for k in ["CUYANA", "MENDOZA", "LLANCANELO", "CACHEUTA"]):
+        return "Cuyana Basin"
+    if any(k in text for k in ["NOROESTE", "NOA", "SALTA", "JUJUY", "FORMOSA"]):
+        return "Northwest Basin"
+    if any(k in text for k in ["OFFSHORE", "MAR ARGENTINO", "CAN_", "MLO_", "AUS_"]):
+        return "Argentina Offshore"
+    return normalize_text(row.get("basin", "")) or "Argentina"
+
+
+def layer_context_for_basin(basin):
+    b = str(basin).lower()
+    if "neuqu" in b:
+        return {
+            "zone": "Neuquén / Cuenca Neuquina",
+            "official": [
+                ("Areas / concessions", True),
+                ("Vaca Muerta wells", True),
+                ("Wells", False),
+                ("Ducts", False),
+                ("Facilities", False),
+                ("Locations", False),
+            ],
+            "focus": "Vaca Muerta / unconventional + conventional activity",
+        }
+    if "golfo" in b or "jorge" in b:
+        return {
+            "zone": "Chubut / Santa Cruz / Golfo San Jorge",
+            "official": [
+                ("Chubut areas / concessions", True),
+                ("Santa Cruz areas / concessions", True),
+                ("Wells", True),
+                ("Batteries / facilities", False),
+                ("Pipelines / evacuation", False),
+                ("Service bases", False),
+            ],
+            "focus": "Mature fields, workover, pulling, secondary recovery and drilling campaigns",
+        }
+    if "austral" in b:
+        return {
+            "zone": "Santa Cruz / Tierra del Fuego / Austral",
+            "official": [
+                ("Austral concessions", True),
+                ("Gas fields", True),
+                ("Wells", False),
+                ("Pipelines", False),
+                ("Compression / facilities", False),
+                ("Offshore support", False),
+            ],
+            "focus": "Gas, offshore/onshore logistics and field redevelopment",
+        }
+    if "cuyana" in b:
+        return {
+            "zone": "Mendoza / Cuenca Cuyana",
+            "official": [
+                ("Mendoza areas / concessions", True),
+                ("Wells", True),
+                ("Ducts", False),
+                ("Facilities", False),
+                ("Access roads", False),
+                ("Service bases", False),
+            ],
+            "focus": "Conventional oil, mature-field drilling and workover",
+        }
+    if "northwest" in b or "noroeste" in b:
+        return {
+            "zone": "NOA / Northwest Basin",
+            "official": [
+                ("NOA concessions", True),
+                ("Gas fields", True),
+                ("Wells", False),
+                ("Pipelines", False),
+                ("Facilities", False),
+                ("Access routes", False),
+            ],
+            "focus": "Gas and conventional exploration / redevelopment",
+        }
+    if "offshore" in b:
+        return {
+            "zone": "Argentina Offshore",
+            "official": [
+                ("Offshore blocks", True),
+                ("Seismic 2D / 3D", True),
+                ("Exploration wells", False),
+                ("Ports / logistics", False),
+                ("Marine support", False),
+                ("Environmental studies", False),
+            ],
+            "focus": "Exploration, seismic, offshore logistics and long-term services",
+        }
+    return {
+        "zone": "Argentina / Upstream",
+        "official": [
+            ("Areas / concessions", True),
+            ("Wells", True),
+            ("Ducts", False),
+            ("Facilities", False),
+            ("Basins", True),
+            ("Service bases", False),
+        ],
+        "focus": "National upstream opportunity screening",
+    }
+
+
+def forecast_rigs(score):
+    try:
+        score = float(score)
+    except Exception:
+        score = 50
+    if score >= 90:
+        return "2–4 rigs"
+    if score >= 80:
+        return "1–3 rigs"
+    if score >= 70:
+        return "1–2 rigs"
+    if score >= 55:
+        return "watchlist / 0–1 rig"
+    return "low probability"
+
+
+def multi_service_tags(score, basin):
+    try:
+        score = float(score)
+    except Exception:
+        score = 50
+    tags = []
+    b = str(basin).lower()
+    if score >= 55:
+        tags.extend(["Workover", "Lighting Towers"])
+    if score >= 70:
+        tags.extend(["HVAC", "Venting"])
+    if score >= 82 and ("neuqu" in b or "vaca" in b):
+        tags.append("E-Frac")
+    if "golfo" in b or "cuyana" in b:
+        tags.append("Pulling / mature-field services")
+    return tags or ["Monitoring"]
+
+
 def build_scored_points(area_master, area_forecast, op_forecast):
     if not area_forecast.empty and {"lat", "lon"}.issubset(area_forecast.columns):
         df = area_forecast.copy()
@@ -119,6 +275,7 @@ def build_scored_points(area_master, area_forecast, op_forecast):
             df["area"] = ""
         df = df.dropna(subset=["lat", "lon"])
         if len(df) >= 4:
+            df["detected_basin"] = df.apply(detect_basin_from_row, axis=1)
             return df
 
     if area_master.empty or not {"lat", "lon"}.issubset(area_master.columns):
@@ -149,6 +306,8 @@ def build_scored_points(area_master, area_forecast, op_forecast):
     for i in range(len(df)):
         df.loc[i, "lat"] = df.loc[i, "lat"] + ((i % 5) - 2) * 0.012
         df.loc[i, "lon"] = df.loc[i, "lon"] + ((i % 7) - 3) * 0.012
+
+    df["detected_basin"] = df.apply(detect_basin_from_row, axis=1)
     return df
 
 
@@ -252,6 +411,19 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
 .layer-group-title{margin-top:12px;margin-bottom:4px;font-size:11px;font-weight:900;color:#526173;letter-spacing:.7px;}
 .layer-select{background:white;border:1px solid #c9d3dc;border-radius:6px;padding:7px 8px;margin:6px 0;font-size:12px;color:#122033;}
 
+.detail-card{
+  margin-top:10px;
+  background:#071321;
+  color:#fff;
+  border-radius:10px;
+  padding:11px;
+  font-size:12px;
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.detail-card b{font-size:13px;}
+.detail-row{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.10);padding:5px 0;}
+.detail-pill{display:inline-block;background:#168BFF;color:white;border-radius:999px;padding:3px 7px;margin:3px 3px 0 0;font-size:11px;font-weight:800;}
+
 iframe {display:block !important;}
 .uc-footer{
   height:32px;line-height:32px;background:#061321;color:#fff;
@@ -338,6 +510,7 @@ with tabs[1]:
 
     with map_col:
         selected_label = "Argentina › Neuquén Basin › Vaca Muerta"
+        selected_row = None
 
         if folium is None or st_folium is None:
             st.error("folium / streamlit-folium missing")
@@ -397,7 +570,7 @@ with tabs[1]:
                     pass
 
             fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True, control=False)
-            for _, row in scored.iterrows():
+            for idx, row in scored.iterrows():
                 try:
                     lat = float(row["lat"])
                     lon = float(row["lon"])
@@ -407,7 +580,7 @@ with tabs[1]:
 
                 op = str(row.get("operator", "Unknown"))
                 area = str(row.get("area", ""))
-                basin = str(row.get("basin", ""))
+                basin = str(row.get("detected_basin", row.get("basin", "")))
                 province = str(row.get("province", ""))
                 color = color_for_operator(op)
                 r = score_radius(score)
@@ -443,20 +616,73 @@ with tabs[1]:
                 width=None,
                 height=760,
                 returned_objects=["last_object_clicked_tooltip"],
-                key="ueip_main_map_panel_rendered",
+                key="ueip_main_map_contextual",
             )
+
             if map_state and map_state.get("last_object_clicked_tooltip"):
                 selected_label = map_state["last_object_clicked_tooltip"]
+                parts = [p.strip() for p in selected_label.split("|")]
+                if len(parts) >= 2 and not scored.empty:
+                    area_match, op_match = parts[0], parts[1]
+                    matches = scored[
+                        (scored["area"].astype(str) == area_match)
+                        & (scored["operator"].astype(str) == op_match)
+                    ]
+                    if not matches.empty:
+                        selected_row = matches.iloc[0].to_dict()
+                        st.session_state["selected_map_row"] = selected_row
+            elif "selected_map_row" in st.session_state:
+                selected_row = st.session_state["selected_map_row"]
+
+        if selected_row:
+            selected_label = (
+                f"Argentina › {selected_row.get('detected_basin', selected_row.get('basin',''))} › "
+                f"{selected_row.get('area','')} › {selected_row.get('operator','')} › Score {int(round(float(selected_row.get('rig_demand_score',50))))}"
+            )
 
         st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
 
     with right_col:
-        st.html("""
+        if selected_row:
+            selected_basin = selected_row.get("detected_basin", selected_row.get("basin", "Argentina"))
+            selected_area = selected_row.get("area", "")
+            selected_operator = selected_row.get("operator", "")
+            selected_score = float(selected_row.get("rig_demand_score", 50))
+            selected_province = selected_row.get("province", "")
+        else:
+            selected_basin = "Neuquén Basin"
+            selected_area = "Vaca Muerta"
+            selected_operator = "Select an area"
+            selected_score = 0
+            selected_province = "Neuquén"
+
+        context = layer_context_for_basin(selected_basin)
+        official_layers_html = ""
+        for label, active in context["official"]:
+            box_class = "layer-box" if active else "layer-box off"
+            mark = "✓" if active else ""
+            official_layers_html += f'<div class="layer-row"><div class="{box_class}">{mark}</div>{label}</div>'
+
+        services_html = "".join([f'<span class="detail-pill">{tag}</span>' for tag in multi_service_tags(selected_score, selected_basin)])
+
+        st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
-          <div class="layer-group-title">ZONE FILTER</div>
+
+          <div class="layer-group-title">CURRENT CONTEXT</div>
           <div class="layer-select">Argentina</div>
-          <div class="layer-select">Neuquén / Cuenca Neuquina</div>
+          <div class="layer-select">{context["zone"]}</div>
+
+          <div class="detail-card">
+            <b>{selected_area}</b>
+            <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
+            <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
+            <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
+            <div class="detail-row"><span>Drill Score</span><span>{int(round(selected_score)) if selected_score else "-"}</span></div>
+            <div class="detail-row"><span>Priority</span><span>{priority(selected_score) if selected_score else "-"}</span></div>
+            <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
+            <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
+          </div>
 
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
@@ -464,17 +690,13 @@ with tabs[1]:
           <div class="layer-row"><div class="layer-box off"></div>Topographic / Esri</div>
 
           <div class="layer-group-title">OFFICIAL GIS LAYERS</div>
-          <div class="layer-row"><div class="layer-box">✓</div>Areas / concessions</div>
-          <div class="layer-row"><div class="layer-box">✓</div>Vaca Muerta wells</div>
-          <div class="layer-row"><div class="layer-box off"></div>Wells</div>
-          <div class="layer-row"><div class="layer-box off"></div>Ducts</div>
-          <div class="layer-row"><div class="layer-box off"></div>Facilities</div>
-          <div class="layer-row"><div class="layer-box off"></div>Locations</div>
+          {official_layers_html}
 
           <div class="layer-group-title">ULTRACORE LAYERS</div>
           <div class="layer-row"><div class="layer-box">✓</div>Scored areas by operator</div>
           <div class="layer-row"><div class="layer-box off"></div>Rig coverage</div>
           <div class="layer-row"><div class="layer-box off"></div>Multi-service opportunity</div>
+          <div class="layer-row"><div class="layer-box off"></div>Logistics / access routes</div>
         </div>
         """)
 
@@ -555,4 +777,5 @@ with tabs[8]:
                 file_name=filename,
                 mime="text/csv",
             )
+
 
