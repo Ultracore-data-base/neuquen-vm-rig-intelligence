@@ -5,9 +5,3 @@ VISTA,Vista Energy,Bajada del Palo Oeste / Aguila Mora / others,Nabors / others 
 TECPETROL,Tecpetrol,Fortin de Piedra / Los Toldos II Este,Nabors / DLS Archer / others to verify,Third-party contractor model,,,,35,Market intelligence seed,Needs contract evidence and expiry mapping.
 PAE,Pan American Energy,Golfo San Jorge / Neuquina,San Antonio / others to verify,Mixed contractor ecosystem,,,,35,Market intelligence seed,Needs systematic contract evidence.
 CGC,CGC,Golfo San Jorge / Austral / Palermo Aike,To verify,Unknown / open intelligence required,,,,20,Seed,High value for national expansion.
-operator,current_contractor,contract_type,rig_type,rig_count
-YPF,HP,Integrated,1500HP Walking,8
-Vista,Nabors,Rig Only,1500HP Walking,4
-Tecpetrol,DLS,Integrated,1500HP Walking,6
-PAE,San Antonio,Rig Only,1000HP,5
-Shell,Ensign,Integrated,1500HP Walking,3
