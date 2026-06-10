@@ -1,4 +1,4 @@
-name: Daily Neuquen Permit Crawler
+name: Daily Neuquen Permit Intelligence + Investor
 
 on:
   workflow_dispatch:
