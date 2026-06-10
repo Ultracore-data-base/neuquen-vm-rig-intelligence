@@ -1,1 +1,13 @@
-provider,rig_owner,rig_name,hp,walking,top_drive,shale_ready,status
+provider_id,provider,country_origin,service_category,keywords
+HP,Helmerich & Payne,USA,Drilling,HP; Helmerich; H&P; FlexRig
+NABORS,Nabors,USA,Drilling,Nabors
+DLS_ARCHER,DLS Archer,Argentina / International,Drilling / Workover,DLS; Archer; DLS Archer
+SAN_ANTONIO,San Antonio Internacional,Argentina / LATAM,Drilling / Workover,San Antonio; San Antonio Internacional
+QUINTANA,Quintana WellPro,Argentina / International,Drilling / Workover,Quintana; Quintana WellPro
+ENSIGN,Ensign,Canada,Drilling,Ensign
+PRECISION,Precision Drilling,Canada,Drilling,Precision
+PATTERSON,Patterson-UTI,USA,Drilling / Frac,Patterson; Patterson-UTI
+SLB,SLB,International,Frac / Completion / Wireline,SLB; Schlumberger
+HALLIBURTON,Halliburton,International,Frac / Completion,Halliburton
+CALFRAC,Calfrac,Canada / International,Frac,Calfrac
+TENARIS,Tenaris,Argentina / International,OCTG / Services,Tenaris
