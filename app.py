@@ -660,7 +660,7 @@ with tabs[1]:
 
         st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
 
-    with right_col:
+       with right_col:
         if selected_row:
             selected_basin = selected_row.get("detected_basin", selected_row.get("basin", "Argentina"))
             selected_area = selected_row.get("area", "")
@@ -676,63 +676,55 @@ with tabs[1]:
 
         context = layer_context_for_basin(selected_basin)
         official_layers_html = ""
+
         for label, active in context["official"]:
             box_class = "layer-box" if active else "layer-box off"
             mark = "✓" if active else ""
             official_layers_html += f'<div class="layer-row"><div class="{box_class}">{mark}</div>{label}</div>'
 
-        services_html = "".join([f'<span class="detail-pill">{tag}</span>' for tag in multi_service_tags(selected_score, selected_basin)])
+        services_html = "".join([
+            f'<span class="detail-pill">{tag}</span>'
+            for tag in multi_service_tags(selected_score, selected_basin)
+        ])
+
         contractor_info = contractor_context_for_operator(selected_operator)
 
-if contractor_info:
-    contractor_html = f"""
-      <div class="detail-row"><span>Current Contractor</span><span>{contractor_info.get("current_contractor", "-")}</span></div>
-      <div class="detail-row"><span>Contract Type</span><span>{contractor_info.get("contract_type", "-")}</span></div>
-      <div class="detail-row"><span>Rig Type</span><span>{contractor_info.get("rig_type", "-")}</span></div>
-      <div class="detail-row"><span>Rig Count</span><span>{contractor_info.get("rig_count", "-")}</span></div>
-    """
-else:
-    contractor_html = """
-      <div class="detail-row"><span>Current Contractor</span><span>To verify</span></div>
-      <div class="detail-row"><span>Contract Type</span><span>Unknown</span></div>
-      <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
-      <div class="detail-row"><span>Rig Count</span><span>-</span></div>
-    """
+        if contractor_info:
+            contractor_html = f"""
+              <div class="detail-row"><span>Current Contractor</span><span>{contractor_info.get("current_contractor", "-")}</span></div>
+              <div class="detail-row"><span>Contract Type</span><span>{contractor_info.get("contract_type", "-")}</span></div>
+              <div class="detail-row"><span>Rig Type</span><span>{contractor_info.get("rig_type", "-")}</span></div>
+              <div class="detail-row"><span>Rig Count</span><span>{contractor_info.get("rig_count", "-")}</span></div>
+            """
+        else:
+            contractor_html = """
+              <div class="detail-row"><span>Current Contractor</span><span>To verify</span></div>
+              <div class="detail-row"><span>Contract Type</span><span>Unknown</span></div>
+              <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
+              <div class="detail-row"><span>Rig Count</span><span>-</span></div>
+            """
 
-st.html(f"""
-<div class="right-panel">
-  <div class="panel-title">MAP LAYERS</div>
+        st.html(f"""
+        <div class="right-panel">
+          <div class="panel-title">MAP LAYERS</div>
 
-  <div class="layer-group-title">CURRENT CONTEXT</div>
-  <div class="layer-select">Argentina</div>
-  <div class="layer-select">{context["zone"]}</div>
+          <div class="layer-group-title">CURRENT CONTEXT</div>
+          <div class="layer-select">Argentina</div>
+          <div class="layer-select">{context["zone"]}</div>
 
-  <div class="detail-card">
-    <b>{selected_area}</b>
-
-    <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
-    <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
-    <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
-
-    <div class="detail-row">
-      <span>Rig forecast</span>
-      <span>{forecast_rigs(selected_score) if selected_score else "-"}</span>
-    </div>
-
-    <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
-
-    {contractor_html}
+          <div class="detail-card">
             <b>{selected_area}</b>
+
             <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
             <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
             <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
-{contractor_html}
+            {contractor_html}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
-            
+          </div>
 
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
