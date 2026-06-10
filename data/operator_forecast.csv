@@ -1,0 +1,6 @@
+operator,signals,max_score,avg_score,rig_demand_score,priority
+TECPETROL,2,95,85.0,85,High
+TOTALENERGIES,1,60,60.0,55,Medium
+YPF,2,45,45.0,42,Low
+VISTA,1,45,45.0,41,Low
+PAE,1,25,25.0,23,Low
