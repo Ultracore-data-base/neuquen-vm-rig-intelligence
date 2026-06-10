@@ -1,6 +1,18 @@
-operator,signals,max_score,avg_score,rig_demand_score,priority
-TECPETROL,2,95,85.0,85,High
-TOTALENERGIES,1,60,60.0,55,Medium
-YPF,2,45,45.0,42,Low
-VISTA,1,45,45.0,41,Low
-PAE,1,25,25.0,23,Low
+operator,signals,permit_signals,max_score,avg_score,investor_signals,rig_demand_score,priority,score_definition
+GEOPARK,7,3,100,59.285714285714285,4,91,Strategic,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+YPF,7,4,85,66.42857142857143,3,91,Strategic,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+TOTALENERGIES,4,2,75,67.5,2,65,Medium,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+TECPETROL,3,0,95,71.66666666666667,3,53,Medium,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+EXXONMOBIL,3,0,60,43.333333333333336,3,41,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+VISTA,2,0,60,47.5,2,38,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+CHEVRON,1,1,75,75.0,0,37,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+PHOENIX,1,0,95,95.0,1,32,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+MEDANITO,1,0,85,85.0,1,30,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+PAMPA,1,0,45,45.0,1,27,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+EQUINOR,1,0,60,60.0,1,25,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+PAE,1,0,25,25.0,1,23,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+CAPEX,1,0,40,40.0,1,21,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+PETRONAS,1,0,40,40.0,1,21,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+ACONCAGUA,1,0,35,35.0,1,20,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+OILSTONE,1,0,30,30.0,1,19,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
+HARBOUR,1,0,30,30.0,1,19,Low,40% permits/EIA + 30% investor/CAPEX signals + 20% activity intensity + 10% operator tier/core relevance
