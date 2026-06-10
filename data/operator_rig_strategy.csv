@@ -1,0 +1,7 @@
+operator_id,operator,area,provider,coverage_type,rig_count_estimate,start_year,end_year,confidence,source_type,note
+GEOPARK,GeoPark,Puesto Silva Oeste / Loma Jarillosa / Confluencia Norte,Helmerich & Payne,Reported drilling agreement / to verify source details,,2027,2030,70,LinkedIn / market signal,Load source URL and confirm exact contract terms.
+YPF,YPF,Neuquina core areas,Multiple: HP / DLS Archer / San Antonio / others,Mixed contractor ecosystem,,,,40,Market intelligence seed,Needs systematic contract evidence.
+VISTA,Vista Energy,Bajada del Palo Oeste / Aguila Mora / others,Nabors / others to verify,Third-party operated rigs,,,,35,Market intelligence seed,"Needs verification from LinkedIn, news and procurement."
+TECPETROL,Tecpetrol,Fortin de Piedra / Los Toldos II Este,Nabors / DLS Archer / others to verify,Third-party contractor model,,,,35,Market intelligence seed,Needs contract evidence and expiry mapping.
+PAE,Pan American Energy,Golfo San Jorge / Neuquina,San Antonio / others to verify,Mixed contractor ecosystem,,,,35,Market intelligence seed,Needs systematic contract evidence.
+CGC,CGC,Golfo San Jorge / Austral / Palermo Aike,To verify,Unknown / open intelligence required,,,,20,Seed,High value for national expansion.

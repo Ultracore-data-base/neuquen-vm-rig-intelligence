@@ -1,0 +1,12 @@
+country_id,province,basins,priority
+AR,Neuquen,Neuquina,Core
+AR,Rio Negro,Neuquina,Core
+AR,Mendoza,Neuquina / Cuyana,Core
+AR,La Pampa,Neuquina,Secondary
+AR,Chubut,Golfo San Jorge,Core
+AR,Santa Cruz,Golfo San Jorge / Austral,Core
+AR,Tierra del Fuego,Austral / Offshore,Core
+AR,Salta,Noroeste,Secondary
+AR,Jujuy,Noroeste,Secondary
+AR,San Juan,Cuyana,Secondary
+AR,Buenos Aires Offshore,Offshore Argentina,Strategic

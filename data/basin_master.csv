@@ -1,0 +1,7 @@
+country_id,country,basin_id,basin,basin_type,priority
+AR,Argentina,AR_NEU,Neuquina,Onshore / Unconventional + Conventional,Core
+AR,Argentina,AR_GSJ,Golfo San Jorge,Onshore / Mature conventional,Core
+AR,Argentina,AR_AUS,Austral,Onshore + Offshore gas/oil,Core
+AR,Argentina,AR_CUY,Cuyana,Onshore / Mature conventional,Secondary
+AR,Argentina,AR_NOA,Noroeste,Onshore gas/oil,Secondary
+AR,Argentina,AR_OFF,Offshore Argentina,Offshore exploration/development,Strategic

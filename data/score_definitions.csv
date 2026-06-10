@@ -1,0 +1,10 @@
+score_id,score_name,weight_component,weight_pct,definition
+RIG_DEMAND_SCORE,Rig Demand Score,Regulatory / permits / EIA,40,"Permit, environmental approval, PAD, public hearing or drilling EIA signal."
+RIG_DEMAND_SCORE,Rig Demand Score,CAPEX / investor guidance,30,"Investor presentations, CAPEX plans, drilling guidance, corporate announcements."
+RIG_DEMAND_SCORE,Rig Demand Score,Current activity / historical drilling,20,"Current well footprint, recent drilling velocity, production trend and operational density."
+RIG_DEMAND_SCORE,Rig Demand Score,Operator relevance / strategic priority,10,"Operator tier, basin strategic value, scale and ability to contract capacity."
+RIG_COVERAGE_SCORE,Rig Coverage Score,Known contracted rigs,40,Known rigs already contracted or operated by incumbent providers.
+RIG_COVERAGE_SCORE,Rig Coverage Score,Owned/leased capacity,25,Operator-owned or leased rig capability where verified.
+RIG_COVERAGE_SCORE,Rig Coverage Score,Contract term and expiry,20,Longer or recently announced contracts increase coverage; expiring contracts decrease it.
+RIG_COVERAGE_SCORE,Rig Coverage Score,Confidence of evidence,15,"Official source, company announcement, LinkedIn post, press article or market rumor."
+OPEN_OPPORTUNITY_SCORE,Open Rig Opportunity Score,Formula,100,Rig Demand Score - Rig Coverage Score + contract expiry bonus + multi-service opportunity bonus.

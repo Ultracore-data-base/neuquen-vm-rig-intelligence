@@ -1,0 +1,14 @@
+service_id,service,category,ultracore_relevance,keywords
+DRILLING,Drilling rigs,Drilling,Core,rig; drilling; perforacion; perforación; walking rig; 1500 HP; top drive
+WORKOVER,Workover rigs,Well Services,Core,workover; pulling; intervencion; reparación; reparación de pozos
+FRAC,Frac fleets,Completion,Core,frac; fractura; completacion; completion; hydraulic stimulation
+EFRAC,E-Frac / electric frac,Completion,Strategic,e-frac; electric frac; electrified frac; emissions reduction
+WIRELINE,Wireline,Completion,Opportunity,wireline; logging; punzado; perforating
+COILED_TUBING,Coiled tubing,Well Services,Opportunity,coiled tubing; CTU; tubing
+VENTING,Venting / gas recovery solutions,Emissions / Production,Strategic,venteo; venteos; emisiones; gas recovery; flare; flaring; captura
+HVAC,Air conditioning / HVAC,Support Services,Core,HVAC; aire acondicionado; climatizacion; campamento; oficinas moviles
+LIGHTING,Lighting towers,Support Services,Core,lighting tower; torres de iluminacion; torres de iluminación; iluminación
+POWER,Power generation,Support Services,Opportunity,generadores; power generation; gas generators; diesel generators
+WATER,Water management,Infrastructure / Completion,Opportunity,agua; water; water management; tratamiento; flowback
+FACILITIES,Facilities / EPC / surface infrastructure,Infrastructure,Opportunity,facility; planta; bateria; batería; pipeline; ducto; compresion; compression
+MIDSTREAM,Midstream / pipelines / compression,Midstream,Opportunity,gasoducto; oleoducto; compresion; compression; midstream; ducto

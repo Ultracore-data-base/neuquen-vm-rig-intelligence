@@ -1,0 +1,8 @@
+service_id,signal,score_weight,opportunity_logic
+DRILLING,"perforacion, drilling, rig, pad, horizontal well, 1500 HP",100,Primary target for 10-rig program
+WORKOVER,"workover, pulling, mature field, intervention, abandonment, secondary recovery",70,"High in mature basins: Golfo San Jorge, Cuyana, Austral, Noroeste"
+FRAC,"frac, fracture, completion, stimulation, Vaca Muerta, unconventional",80,High in Neuquina and future unconventional plays
+EFRAC,"emissions, electrification, gas-powered frac, low-carbon completion",75,Strategic differentiated product for high-growth unconventional areas
+VENTING,"venting, flaring, emissions, gas capture, methane, sustainability",65,Cross-basin opportunity in production and facilities
+HVAC,"camp, location, offices, rig support, facility, crew",50,Support package for drilling and workover campaigns
+LIGHTING,"night operations, field operations, temporary power, rig support",50,Support package for field operations and drilling campaigns

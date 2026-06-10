@@ -1,0 +1,10 @@
+source_id,name,type,url,use_case
+AR_ENERGIA_DATOS,Datos Argentina - Energia datasets,Official national data,https://datos.gob.ar/dataset?organization=energia,"Concessions, wells, drilling, production, upstream investments"
+AR_SIG_ENERGIA,Secretaria de Energia SIG visor,Official GIS,https://sig.energia.gob.ar/visor/visorsig.php,"National concessions, basins, wells, ducts, infrastructure"
+AR_SESCO,Informacion Estadistica de Hidrocarburos / SESCO,Official statistics,https://www.energia.gob.ar/contenidos/verpagina.php?idpagina=3268,"Production, wells, investments and dynamic tables"
+NEUQUEN_GEOSERVER,Neuquen Hydrocarbons GeoServer,Official provincial GIS,https://hidrocarburos.energianeuquen.gob.ar/geoserver/Hidrocarburos/wfs,"Neuquen wells, VM wells, areas, concessions, locaciones"
+NEUQUEN_BO,Boletin Oficial Neuquen,Official provincial bulletin,https://boficial.neuquen.gov.ar/,"Permits, environmental licenses, official resolutions"
+NEUQUEN_AMBIENTE,Ambiente Neuquen,Official environmental authority,https://ambiente.neuquen.gov.ar/,"EIA, public hearings, environmental approvals"
+CEPH,CEPH,Industry chamber,https://www.ceph.com.ar/,"Macro activity, investment, production and export outlook"
+NEWS_ECONOJOURNAL,EconoJournal,Specialized media,https://econojournal.com.ar/,"Operator plans, contracts, CAPEX, sector news"
+LINKEDIN,LinkedIn corporate/executive posts,Social/business intelligence,https://www.linkedin.com/,"Rig contract announcements, mobilizations, hiring signals, project updates"

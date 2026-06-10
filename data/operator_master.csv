@@ -1,0 +1,26 @@
+operator_id,operator,country_id,tier,operator_type
+YPF,YPF,AR,Core,NOC / Integrated
+VISTA,Vista Energy,AR,Core,Independent public
+TECPETROL,Tecpetrol,AR,Core,Private / Techint
+PAE,Pan American Energy,AR,Core,Private integrated
+PLUSPETROL,Pluspetrol,AR,Core,Private
+SHELL,Shell Argentina,AR,Core,IOC
+CHEVRON,Chevron Argentina,AR,Core,IOC
+TOTALENERGIES,TotalEnergies / Total Austral,AR,Core,IOC
+EXXONMOBIL,ExxonMobil / Mobil Argentina,AR,Core,IOC
+GEOPARK,GeoPark,AR,Core,Independent public
+CGC,Compania General de Combustibles,AR,Core,Private / Corporacion America
+PAMPA,Pampa Energia,AR,Core,Public integrated
+CAPEX,CAPEX / CAPSA,AR,Core,Private / integrated energy
+PHOENIX,Phoenix Global Resources,AR,Core,Independent
+ACONCAGUA,Aconcagua Energia,AR,Secondary,Independent
+PCR,PCR,AR,Secondary,Independent
+CROWNPOINT,Crown Point Energy,AR,Secondary,Independent public
+OILSTONE,Oilstone Energia,AR,Secondary,Independent
+TANGO,Tango Energy Argentina,AR,Secondary,Independent
+MADALENA,Madalena Energy,AR,Watchlist,Independent
+KILWER,Kilwer,AR,Watchlist,Independent
+MEDANITO,Medanito,AR,Secondary,Independent
+HARBOUR,Harbour Energy / Wintershall Dea Legacy,AR,Core,IOC / international
+EQUINOR,Equinor,AR,Strategic,IOC offshore
+PETRONAS,Petronas,AR,Strategic,NOC / international

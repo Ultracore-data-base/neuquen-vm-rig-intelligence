@@ -1,0 +1,24 @@
+country_id,province,basin_id,basin,area,operator_id,operator,hydrocarbon,development_status,lat,lon,confidence,source_note
+AR,Neuquen,AR_NEU,Neuquina,Loma Campana,YPF,YPF,Oil/Gas,Development,-38.22,-68.68,85,Seed from Neuquen GIS/industry knowledge; enrich with official concessions dataset
+AR,Neuquen,AR_NEU,Neuquina,La Amarga Chica,YPF,YPF / Petronas,Oil,Development,-38.42,-68.7,80,Seed; verify latest operator/partners
+AR,Neuquen,AR_NEU,Neuquina,Bandurria Sur,YPF,YPF / partners,Oil,Development,-38.38,-68.6,75,Seed; verify latest operator/partners
+AR,Neuquen,AR_NEU,Neuquina,Fortin de Piedra,TECPETROL,Tecpetrol,Gas,Development,-38.57,-68.73,85,Seed; verify with official concessions
+AR,Neuquen,AR_NEU,Neuquina,Bajada del Palo Oeste,VISTA,Vista Energy,Oil,Development,-38.13,-68.6,90,Seed from Neuquen GIS/permits
+AR,Neuquen,AR_NEU,Neuquina,La Calera,PLUSPETROL,Pluspetrol / YPF,Oil/Gas,Development,-38.45,-68.78,90,Seed from Neuquen GIS captures
+AR,Neuquen,AR_NEU,Neuquina,Aguada Pichana Este,TOTALENERGIES,TotalEnergies / partners,Gas,Development,-38.38,-69.0,75,Seed; verify with official concessions
+AR,Neuquen,AR_NEU,Neuquina,Rincon de Aranda,PAMPA,Pampa Energia,Oil,Development,-38.28,-68.93,75,Seed; verify latest operator/permit data
+AR,Neuquen,AR_NEU,Neuquina,Puesto Silva Oeste,GEOPARK,GeoPark / GyP,Oil/Gas,Early development,-38.38,-68.55,70,Seed; verify latest concession and drilling contract coverage
+AR,Neuquen,AR_NEU,Neuquina,Los Toldos II Este,TECPETROL,Tecpetrol / GyP,Oil/Gas,RIGI / future development,-38.46,-68.75,70,Seed; verify project status
+AR,Chubut,AR_GSJ,Golfo San Jorge,Cerro Dragon,PAE,Pan American Energy,Oil/Gas,Mature development,-45.8,-68.2,75,Seed; verify field boundaries
+AR,Chubut,AR_GSJ,Golfo San Jorge,Manantiales Behr,YPF,YPF,Oil/Gas,Mature development,-45.7,-67.9,70,Seed; verify field boundaries
+AR,Santa Cruz,AR_GSJ,Golfo San Jorge,Canadon Seco,YPF,YPF / others,Oil,Mature development,-46.55,-68.95,65,Seed; verify operator
+AR,Santa Cruz,AR_GSJ,Golfo San Jorge,Pico Truncado / Koluel Kaike,CGC,CGC,Oil/Gas,Mature / redevelopment,-46.8,-68.0,65,Seed; verify assets
+AR,Santa Cruz,AR_AUS,Austral,Campo Indio / Campo Boleadoras,CGC,CGC,Gas/Oil,Development / mature,-50.1,-69.2,60,Seed; verify assets
+AR,Tierra del Fuego,AR_AUS,Austral,CMA-1 / Cuenca Marina Austral,TOTALENERGIES,TotalEnergies / partners,Gas,Offshore/onshore gas,-53.0,-68.0,65,Seed; verify operator/partners
+AR,Santa Cruz,AR_AUS,Austral,Palermo Aike trend,CGC,CGC / partners,Unconventional oil/gas,Exploration / early appraisal,-50.2,-69.7,60,Seed; strategic watchlist
+AR,Mendoza,AR_CUY,Cuyana,Barrancas / La Ventana,YPF,YPF / others,Oil,Mature / redevelopment,-33.0,-68.9,55,Seed; verify official concessions
+AR,Mendoza,AR_CUY,Cuyana,Atuel Norte / Cuyana mature areas,ACONCAGUA,Aconcagua Energia / others,Oil/Gas,Mature / secondary recovery,-34.7,-68.7,50,Seed; verify official concessions
+AR,Salta,AR_NOA,Noroeste,Acambuco / Ramos trend,PLUSPETROL,Pluspetrol / others,Gas,Mature / exploration,-22.2,-63.9,50,Seed; verify operator and contract status
+AR,Salta,AR_NOA,Noroeste,Palmar Largo / Noroeste mature areas,PAMPA,Pampa / others,Gas/Oil,Mature,-23.3,-64.1,50,Seed; verify assets
+AR,Offshore Argentina,AR_OFF,Offshore Argentina,CAN offshore blocks,EQUINOR,Equinor / YPF / Shell / others,Oil/Gas,Exploration / strategic,-38.5,-55.0,50,Seed; verify block-specific operators
+AR,Offshore Argentina,AR_OFF,Offshore Argentina,AUS offshore blocks,TOTALENERGIES,TotalEnergies / partners,Gas/Oil,Exploration / development,-52.0,-64.0,50,Seed; verify block-specific operators

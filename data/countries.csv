@@ -1,0 +1,8 @@
+country_id,country,region,priority,status
+AR,Argentina,LATAM,Phase 1,Active
+CO,Colombia,LATAM,Phase 2,Future
+EC,Ecuador,LATAM,Phase 2,Future
+PE,Peru,LATAM,Phase 2,Future
+BR,Brazil,LATAM,Phase 3,Future
+GY,Guyana,LATAM,Phase 3,Future
+MX,Mexico,LATAM,Phase 3,Future
