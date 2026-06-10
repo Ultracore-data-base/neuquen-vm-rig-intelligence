@@ -1,0 +1,7 @@
+provider,rig_owner,rig_name,hp,walking,top_drive,shale_ready,status
+Helmerich & Payne,HP,FlexRig 1,1500,YES,YES,YES,ACTIVE
+Helmerich & Payne,HP,FlexRig 2,1500,YES,YES,YES,ACTIVE
+Nabors,Nabors,NBR 101,1500,YES,YES,YES,ACTIVE
+DLS Archer,DLS,DLS 301,1500,YES,YES,YES,ACTIVE
+San Antonio,SAI,SAI 201,1500,YES,YES,YES,ACTIVE
+Ensign,Ensign,ENS 115,1500,YES,YES,YES,ACTIVE
