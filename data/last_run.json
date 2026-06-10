@@ -1,12 +1,12 @@
 {
-  "run_at": "2026-06-09T06:30:57.856026+00:00",
-  "records_total": 0,
-  "records_new": 0,
+  "run_at": "2026-06-10T00:12:06.650881+00:00",
+  "records_total": 14,
+  "records_new": 14,
   "sources_scanned": [
     "Neuquen Official Bulletin",
     "Neuquen Environment - EIA con plazo cumplido",
     "Neuquen Environment - search drilling",
-    "Neuquen Environment - search PAD",
-    "Neuquen Hydrocarbons GIS"
-  ]
+    "Neuquen Environment - search PAD"
+  ],
+  "status": "ok"
 }
