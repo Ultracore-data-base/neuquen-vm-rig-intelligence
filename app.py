@@ -16,16 +16,9 @@ try:
 except Exception:
     px = None
 
-
-st.set_page_config(
-    page_title="Ultracore Energy Intelligence Platform",
-    page_icon="🛢️",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
+st.set_page_config(page_title="Ultracore Energy Intelligence Platform", page_icon="🛢️", layout="wide", initial_sidebar_state="collapsed")
 
 DATA_DIR = Path("data")
-
 
 def load_csv(name):
     p = DATA_DIR / name
@@ -36,45 +29,33 @@ def load_csv(name):
         return pd.read_csv(p2)
     return pd.DataFrame()
 
-
 def clean_table(df):
     if df.empty:
         return df
     return df.drop(columns=[c for c in ["score_definition"] if c in df.columns])
 
-
 def color_for_operator(operator):
     palette = {
-        "YPF": "#1769E8",
-        "VISTA": "#21A64A",
-        "PAN AMERICAN": "#FF7A00",
-        "PAE": "#FF7A00",
-        "PAMPA": "#9C27D3",
-        "PLUSPETROL": "#FFC400",
-        "TECPETROL": "#00A9B8",
-        "SHELL": "#E53935",
-        "CGC": "#EC2F8C",
-        "CHEVRON": "#2E63B8",
-        "TOTAL": "#7A7A7A",
-        "GEOPARK": "#21A64A",
+        "YPF": "#1769E8", "VISTA": "#21A64A", "PAN AMERICAN": "#FF7A00",
+        "PAE": "#FF7A00", "PAMPA": "#9C27D3", "PLUSPETROL": "#FFC400",
+        "TECPETROL": "#00A9B8", "SHELL": "#E53935", "CGC": "#EC2F8C",
+        "CHEVRON": "#2E63B8", "TOTAL": "#7A7A7A", "GEOPARK": "#21A64A",
     }
     text = str(operator).upper()
-    for k, v in palette.items():
-        if k in text:
-            return v
+    for key, value in palette.items():
+        if key in text:
+            return value
     fallback = ["#1769E8", "#21A64A", "#FF7A00", "#9C27D3", "#FFC400", "#00A9B8", "#E53935", "#EC2F8C", "#2E63B8"]
-    idx = int(hashlib.md5(text.encode()).hexdigest(), 16) % len(fallback)
-    return fallback[idx]
-
+    return fallback[int(hashlib.md5(text.encode()).hexdigest(), 16) % len(fallback)]
 
 def score_radius(score):
+    """Reduced 40-50%; still proportional to score."""
     try:
         score = float(score)
     except Exception:
         score = 45
     score = max(15, min(score, 100))
-    return int(16 + score * 0.32)
-
+    return int(10 + score * 0.18)
 
 def priority(score):
     try:
@@ -89,25 +70,22 @@ def priority(score):
         return "Medium"
     return "Low"
 
-
 def score_icon(score, color):
     r = score_radius(score)
     d = r * 2
-    fs = max(14, int(r * 0.72))
+    fs = max(11, int(r * 0.68))
     return f"""
     <div style="
         width:{d}px;height:{d}px;border-radius:50%;
-        background:{color};border:3px solid #fff;
-        box-shadow:0 7px 18px rgba(0,0,0,.45),0 0 0 2px rgba(0,0,0,.18);
+        background:{color};border:2px solid #fff;
+        box-shadow:0 5px 12px rgba(0,0,0,.36),0 0 0 1px rgba(0,0,0,.16);
         display:flex;align-items:center;justify-content:center;
         color:white;font-weight:900;font-size:{fs}px;
-        font-family:Arial, sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.55);
+        font-family:Arial, sans-serif;text-shadow:0 2px 4px rgba(0,0,0,.45);
     ">{int(round(float(score)))}</div>
     """
 
-
 def build_scored_points(area_master, area_forecast, op_forecast):
-    # Use area forecast first if it has usable coordinates
     if not area_forecast.empty and {"lat", "lon"}.issubset(area_forecast.columns):
         df = area_forecast.copy()
         df["lat"] = pd.to_numeric(df["lat"], errors="coerce")
@@ -123,7 +101,6 @@ def build_scored_points(area_master, area_forecast, op_forecast):
         if len(df) >= 4:
             return df
 
-    # Fallback: area master + operator forecast
     if area_master.empty or not {"lat", "lon"}.issubset(area_master.columns):
         return pd.DataFrame()
 
@@ -142,16 +119,12 @@ def build_scored_points(area_master, area_forecast, op_forecast):
     else:
         df["rig_demand_score"] = df["rig_demand_score"].fillna(pd.to_numeric(df.get("confidence", 50), errors="coerce").fillna(50))
 
-    # Small offsets to avoid exact overlapping points in seed data
     df = df.reset_index(drop=True)
     for i in range(len(df)):
-        df.loc[i, "lat"] = df.loc[i, "lat"] + ((i % 5) - 2) * 0.035
-        df.loc[i, "lon"] = df.loc[i, "lon"] + ((i % 7) - 3) * 0.035
-
+        df.loc[i, "lat"] = df.loc[i, "lat"] + ((i % 5) - 2) * 0.012
+        df.loc[i, "lon"] = df.loc[i, "lon"] + ((i % 7) - 3) * 0.012
     return df
 
-
-# Data
 operator_forecast = load_csv("operator_forecast.csv")
 operator_signals = load_csv("operator_signals.csv")
 operator_area_forecast = load_csv("operator_area_forecast.csv")
@@ -159,18 +132,15 @@ permits_pipeline = load_csv("permits_pipeline_auto.csv")
 changes_log = load_csv("changes_log.csv")
 countries = load_csv("countries.csv")
 basins = load_csv("basin_master.csv")
-provinces = load_csv("province_master.csv")
 operators = load_csv("operator_master.csv")
 areas = load_csv("area_master.csv")
 services = load_csv("service_master.csv")
 providers = load_csv("rig_provider_master.csv")
 rig_strategy = load_csv("operator_rig_strategy.csv")
 service_rules = load_csv("service_opportunity_rules.csv")
-sources = load_csv("source_registry.csv")
 gis_layers = load_csv("gis_layer_registry.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
-
 
 st.markdown("""
 <style>
@@ -178,46 +148,30 @@ html, body, [data-testid="stAppViewContainer"] {background:#06111d;}
 .block-container {padding:0 !important; max-width:100% !important;}
 header[data-testid="stHeader"] {background:rgba(5,15,26,.96);}
 [data-testid="stToolbar"] {display:none;}
-
-.uc-top {
-  height:76px;background:#061321;color:white;display:flex;align-items:center;
-  padding:0 22px;border-bottom:1px solid rgba(255,255,255,.1);
-}
-.uc-logo {
-  width:48px;height:48px;border-radius:12px;background:white;color:#061321;
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;margin-right:12px;
-}
-.uc-brand-main {font-size:27px;font-weight:900;letter-spacing:.5px;line-height:1;}
-.uc-brand-sub {font-size:12px;color:#9fb4c8;font-weight:800;letter-spacing:1.9px;}
-div[data-testid="stTabs"] {background:#061321;}
-div[data-testid="stTabs"] button {color:#dbe7f2;font-weight:800;}
-div[data-testid="stTabs"] button[aria-selected="true"] {color:white;border-bottom:3px solid #168BFF;}
-
-.uc-map-grid {
-  display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - 145px);min-height:760px;
-}
-.uc-left {
-  background:linear-gradient(180deg,#092034,#061321);color:white;padding:18px 16px;
-  border-right:1px solid rgba(255,255,255,.08);overflow-y:auto;
-}
-.uc-left h3 {font-size:15px;margin:0 0 12px 0;letter-spacing:.5px;}
-.op-row {display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding:9px 0;}
-.op-left {display:flex;align-items:center;gap:10px;}
-.op-check {width:18px;height:18px;border-radius:4px;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;}
-.op-name {font-weight:800;font-size:14px;}
-.op-sub {font-size:11px;color:#9fb4c8;}
-.op-score {width:34px;height:34px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(255,255,255,.75);}
-.legend-box {margin-top:18px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:10px;padding:13px;}
-.dots {display:flex;justify-content:space-between;align-items:end;margin-top:12px;}
-.dot {border-radius:50%;background:#cfd8e3;border:2px solid white;}
-.uc-map {height:100%;position:relative;}
-.uc-note {position:absolute;right:24px;bottom:25px;background:rgba(255,255,255,.92);color:#122033;padding:13px 16px;border-radius:12px;z-index:999;font-size:13px;font-weight:650;box-shadow:0 6px 20px rgba(0,0,0,.25);}
-.uc-coord {position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#071321;color:white;padding:9px 14px;border-radius:8px;z-index:999;font-size:13px;}
-.uc-score-card {background:white;color:#172638;border-radius:14px;padding:18px 20px;margin:14px 18px;box-shadow:0 8px 22px rgba(0,0,0,.18);}
-.uc-score-card table {width:100%;border-collapse:collapse;}
-.uc-score-card th,.uc-score-card td {padding:9px;border-bottom:1px solid #e6ebf0;}
+.uc-top{height:70px;background:#061321;color:white;display:flex;align-items:center;padding:0 22px;border-bottom:1px solid rgba(255,255,255,.1);}
+.uc-logo{width:44px;height:44px;border-radius:12px;background:white;color:#061321;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;margin-right:12px;}
+.uc-brand-main{font-size:25px;font-weight:900;letter-spacing:.5px;line-height:1;}
+.uc-brand-sub{font-size:11px;color:#9fb4c8;font-weight:800;letter-spacing:1.9px;}
+div[data-testid="stTabs"]{background:#061321;}
+div[data-testid="stTabs"] button{color:#dbe7f2;font-weight:800;}
+div[data-testid="stTabs"] button[aria-selected="true"]{color:white;border-bottom:3px solid #168BFF;}
+.uc-left-panel{background:linear-gradient(180deg,#092034,#061321);color:white;height:820px;overflow-y:auto;padding:16px 14px;border-right:1px solid rgba(255,255,255,.08);}
+.uc-left-panel h3{font-size:15px;margin:0 0 12px 0;letter-spacing:.5px;}
+.op-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding:8px 0;}
+.op-left{display:flex;align-items:center;gap:10px;}
+.op-check{width:18px;height:18px;border-radius:4px;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0;}
+.op-name{font-weight:800;font-size:13px;color:#edf5ff;}
+.op-sub{font-size:11px;color:#9fb4c8;}
+.op-score{width:32px;height:32px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;border:2px solid rgba(255,255,255,.75);flex-shrink:0;}
+.uc-map-frame{height:820px;position:relative;overflow:hidden;border-left:1px solid rgba(255,255,255,.08);}
+.uc-note{position:absolute;right:24px;bottom:24px;background:rgba(255,255,255,.92);color:#122033;padding:13px 16px;border-radius:12px;z-index:999;font-size:13px;font-weight:650;box-shadow:0 6px 20px rgba(0,0,0,.25);}
+.uc-coord{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);background:#071321;color:white;padding:9px 14px;border-radius:8px;z-index:999;font-size:13px;}
+.uc-score-card{background:white;color:#172638;border-radius:14px;padding:18px 20px;margin:14px 18px;box-shadow:0 8px 22px rgba(0,0,0,.18);}
+.uc-score-card table{width:100%;border-collapse:collapse;}
+.uc-score-card th,.uc-score-card td{padding:9px;border-bottom:1px solid #e6ebf0;}
 .uc-score-card td:last-child,.uc-score-card th:last-child{text-align:right;font-weight:900;}
-section.main > div {padding-bottom:0;}
+div[data-testid="column"]{padding:0 !important;}
+iframe{display:block;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -231,17 +185,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-tabs = st.tabs([
-    "Executive Summary",
-    "Immersive GIS Map",
-    "Operator Intelligence",
-    "Area Intelligence",
-    "Permit Pipeline",
-    "Rig Coverage",
-    "Multi-Service",
-    "Score",
-    "Data Export",
-])
+tabs = st.tabs(["Executive Summary","Immersive GIS Map","Operator Intelligence","Area Intelligence","Permit Pipeline","Rig Coverage","Multi-Service","Score","Data Export"])
 
 with tabs[0]:
     st.markdown('<div style="padding:22px;color:white;">', unsafe_allow_html=True)
@@ -257,126 +201,96 @@ with tabs[0]:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with tabs[1]:
-    st.markdown('<div class="uc-map-grid">', unsafe_allow_html=True)
-
-    # Left panel
-    st.markdown('<div class="uc-left"><h3>OPERATOR LEGEND ⓘ</h3><div style="font-size:13px;color:#b6c6d6;margin-bottom:10px;">Show / Hide all operators</div>', unsafe_allow_html=True)
-    if not scored.empty:
-        op_scores = scored.groupby("operator", dropna=False)["rig_demand_score"].max().reset_index().sort_values("rig_demand_score", ascending=False)
-        for _, r in op_scores.head(16).iterrows():
-            op = str(r["operator"])
-            sc = float(r["rig_demand_score"])
-            col = color_for_operator(op)
-            st.markdown(f"""
-            <div class="op-row">
-              <div class="op-left">
-                <div class="op-check" style="background:{col};">✓</div>
-                <div><div class="op-name">{op}</div><div class="op-sub">Score</div></div>
-              </div>
-              <div class="op-score" style="background:{col};">{int(round(sc))}</div>
-            </div>
-            """, unsafe_allow_html=True)
-    st.markdown("""
-      <div class="legend-box">
-        <b>SCORE VISUALIZATION</b><br>
-        <span style="font-size:12px;color:#9fb4c8;">Circle size is proportional to Drill Score</span>
-        <div class="dots">
-          <div><div class="dot" style="width:12px;height:12px;"></div><small>20</small></div>
-          <div><div class="dot" style="width:18px;height:18px;"></div><small>40</small></div>
-          <div><div class="dot" style="width:25px;height:25px;"></div><small>60</small></div>
-          <div><div class="dot" style="width:34px;height:34px;"></div><small>80</small></div>
-          <div><div class="dot" style="width:46px;height:46px;"></div><small>100</small></div>
-        </div>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # Map column
-    st.markdown('<div class="uc-map">', unsafe_allow_html=True)
-    if folium is None or st_folium is None:
-        st.error("folium / streamlit-folium missing")
-    else:
-        center = [-38.6, -68.75]
-        zoom = 8
+    left_col, map_col = st.columns([1.05, 5.6], gap="small")
+    with left_col:
+        st.markdown('<div class="uc-left-panel">', unsafe_allow_html=True)
+        st.markdown("### OPERATOR LEGEND ⓘ")
+        st.markdown('<div style="font-size:13px;color:#b6c6d6;margin-bottom:10px;">Show / Hide all operators</div>', unsafe_allow_html=True)
         if not scored.empty:
-            neuq = scored[scored.get("province", "").astype(str).str.contains("Neuquen|Neuquén", case=False, na=False)] if "province" in scored.columns else scored
-            use = neuq if not neuq.empty else scored
-            center = [float(pd.to_numeric(use["lat"], errors="coerce").median()), float(pd.to_numeric(use["lon"], errors="coerce").median())]
+            op_scores = scored.groupby("operator", dropna=False)["rig_demand_score"].max().reset_index().sort_values("rig_demand_score", ascending=False)
+            for _, r in op_scores.head(18).iterrows():
+                op = str(r["operator"]); sc = float(r["rig_demand_score"]); col = color_for_operator(op)
+                st.markdown(f"""
+                <div class="op-row">
+                  <div class="op-left"><div class="op-check" style="background:{col};">✓</div>
+                    <div><div class="op-name">{op}</div><div class="op-sub">Score</div></div>
+                  </div>
+                  <div class="op-score" style="background:{col};">{int(round(sc))}</div>
+                </div>""", unsafe_allow_html=True)
+        else:
+            st.info("No scored areas yet.")
+        st.markdown("</div>", unsafe_allow_html=True)
 
-        m = folium.Map(location=center, zoom_start=zoom, tiles=None, control_scale=True, prefer_canvas=True)
+    with map_col:
+        st.markdown('<div class="uc-map-frame">', unsafe_allow_html=True)
+        if folium is None or st_folium is None:
+            st.error("folium / streamlit-folium missing")
+        else:
+            center = [-38.55, -68.75]; zoom = 8
+            if not scored.empty and {"lat","lon"}.issubset(scored.columns):
+                use = scored
+                if "province" in scored.columns:
+                    neuq = scored[scored["province"].astype(str).str.contains("Neuquen|Neuquén", case=False, na=False)]
+                    if not neuq.empty:
+                        use = neuq
+                lat = pd.to_numeric(use["lat"], errors="coerce").dropna()
+                lon = pd.to_numeric(use["lon"], errors="coerce").dropna()
+                if not lat.empty and not lon.empty:
+                    center = [float(lat.median()), float(lon.median())]
 
-        folium.TileLayer("OpenStreetMap", name="OpenStreetMap / roads", show=True).add_to(m)
-        folium.TileLayer(
-            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-            attr="Esri", name="Satellite / Esri World Imagery", show=False
-        ).add_to(m)
-        folium.TileLayer(
-            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-            attr="Esri", name="Topographic / Esri", show=False
-        ).add_to(m)
+            m = folium.Map(location=center, zoom_start=zoom, tiles=None, control_scale=True, prefer_canvas=True)
+            folium.TileLayer("OpenStreetMap", name="OpenStreetMap / roads", show=True).add_to(m)
+            folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", attr="Esri", name="Satellite / Esri World Imagery", show=False).add_to(m)
+            folium.TileLayer(tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}", attr="Esri", name="Topographic / Esri", show=False).add_to(m)
 
-        neuquen_wms = "https://hidrocarburos.energianeuquen.gob.ar/geoserver/wms"
-        for layer, name, show in [
-            ("Hidrocarburos:Areas", "Neuquen - Areas / concessions", True),
-            ("Hidrocarburos:Pozos_VM", "Neuquen - Vaca Muerta wells", True),
-            ("Hidrocarburos:Pozos", "Neuquen - Wells", False),
-            ("Hidrocarburos:Ductos", "Neuquen - Ducts", False),
-            ("Hidrocarburos:Instalaciones", "Neuquen - Facilities", False),
-            ("Hidrocarburos:Locaciones", "Neuquen - Locations", False),
-        ]:
-            try:
-                folium.raster_layers.WmsTileLayer(
-                    url=neuquen_wms, layers=layer, name=name, fmt="image/png",
-                    transparent=True, version="1.1.1", overlay=True, control=True, show=show
-                ).add_to(m)
-            except Exception:
-                pass
+            if not gis_layers.empty and {"url","layer_id","layer_name"}.issubset(gis_layers.columns):
+                for _, lyr in gis_layers.iterrows():
+                    try:
+                        folium.raster_layers.WmsTileLayer(
+                            url=str(lyr["url"]), layers=str(lyr["layer_id"]),
+                            name=f"{lyr.get('province','')} - {lyr.get('layer_name',lyr['layer_id'])}",
+                            fmt="image/png", transparent=True, version=str(lyr.get("version","1.1.1")),
+                            overlay=True, control=True, show=False).add_to(m)
+                    except Exception:
+                        pass
+            else:
+                neuquen_wms = "https://hidrocarburos.energianeuquen.gob.ar/geoserver/wms"
+                for layer, name, show in [
+                    ("Hidrocarburos:Areas","Neuquen - Areas / concessions",True),
+                    ("Hidrocarburos:Pozos_VM","Neuquen - Vaca Muerta wells",True),
+                    ("Hidrocarburos:Pozos","Neuquen - Wells",False),
+                    ("Hidrocarburos:Ductos","Neuquen - Ducts",False),
+                    ("Hidrocarburos:Instalaciones","Neuquen - Facilities",False),
+                    ("Hidrocarburos:Locaciones","Neuquen - Locations",False)]:
+                    try:
+                        folium.raster_layers.WmsTileLayer(
+                            url=neuquen_wms, layers=layer, name=name, fmt="image/png",
+                            transparent=True, version="1.1.1", overlay=True, control=True, show=show).add_to(m)
+                    except Exception:
+                        pass
 
-        fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True)
-        for _, row in scored.iterrows():
-            try:
-                lat = float(row["lat"]); lon = float(row["lon"])
-                sc = float(row.get("rig_demand_score", 50))
-            except Exception:
-                continue
-            op = str(row.get("operator", "Unknown"))
-            area = str(row.get("area", ""))
-            col = color_for_operator(op)
-            r = score_radius(sc)
-            popup = f"""
-            <b>{area}</b><br>
-            Operator: {op}<br>
-            Drill Score: {int(round(sc))}<br>
-            Priority: {priority(sc)}<br>
-            Basin: {row.get('basin','')}<br>
-            Province: {row.get('province','')}<br>
-            """
-            folium.Marker(
-                [lat, lon],
-                tooltip=f"{op} · {area} · {int(round(sc))}",
-                popup=folium.Popup(popup, max_width=380),
-                icon=folium.DivIcon(
-                    html=score_icon(sc, col),
-                    icon_size=(r*2, r*2),
-                    icon_anchor=(r, r),
-                ),
-            ).add_to(fg)
-        fg.add_to(m)
+            fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True)
+            for _, row in scored.iterrows():
+                try:
+                    lat = float(row["lat"]); lon = float(row["lon"]); sc = float(row.get("rig_demand_score", 50))
+                except Exception:
+                    continue
+                op = str(row.get("operator","Unknown")); area = str(row.get("area","")); col = color_for_operator(op); r = score_radius(sc)
+                popup = f"<b>{area}</b><br>Operator: {op}<br>Drill Score: {int(round(sc))}<br>Priority: {priority(sc)}<br>Basin: {row.get('basin','')}<br>Province: {row.get('province','')}<br>"
+                folium.Marker(
+                    [lat,lon], tooltip=f"{op} · {area} · {int(round(sc))}",
+                    popup=folium.Popup(popup, max_width=380),
+                    icon=folium.DivIcon(html=score_icon(sc, col), icon_size=(r*2,r*2), icon_anchor=(r,r))).add_to(fg)
+            fg.add_to(m)
+            Fullscreen(position="topright").add_to(m)
+            MiniMap(toggle_display=True, position="bottomleft").add_to(m)
+            MeasureControl(position="topleft").add_to(m)
+            MousePosition(position="bottomright", separator=" | ", prefix="Lat/Lon:", num_digits=5).add_to(m)
+            folium.LayerControl(collapsed=False).add_to(m)
+            st_folium(m, width=None, height=820, returned_objects=[])
 
-        Fullscreen(position="topright").add_to(m)
-        MiniMap(toggle_display=True, position="bottomleft").add_to(m)
-        MeasureControl(position="topleft").add_to(m)
-        MousePosition(position="bottomright", separator=" | ", prefix="Lat/Lon:", num_digits=5).add_to(m)
-        folium.LayerControl(collapsed=False).add_to(m)
-
-        st_folium(m, width=None, height=820, returned_objects=[])
-
-    st.markdown("""
-      <div class="uc-note">ⓘ Zoom para ver áreas y detalles.<br>Click en un círculo para ver información.<br>Use las capas para analizar por temática.</div>
-      <div class="uc-coord">Argentina › Neuquén Basin › Vaca Muerta</div>
-    </div>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('<div class="uc-note">ⓘ Zoom para ver áreas y detalles.<br>Click en un círculo para ver información.<br>Use las capas para analizar por temática.</div><div class="uc-coord">Argentina › Neuquén Basin › Vaca Muerta</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
 with tabs[2]:
     st.markdown('<div class="uc-score-card"><b>Score Comp.</b><table><tr><th>Component</th><th>Weight</th></tr><tr><td>Permits / EIA</td><td>40%</td></tr><tr><td>Investor / CAPEX Signal</td><td>30%</td></tr><tr><td>Activity Intensity</td><td>20%</td></tr><tr><td>Operator Tier / Core Relevance</td><td>10%</td></tr></table></div>', unsafe_allow_html=True)
