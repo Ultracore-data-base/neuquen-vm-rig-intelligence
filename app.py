@@ -197,17 +197,22 @@ div[data-testid="stTabs"]{background:#061321;}
 div[data-testid="stTabs"] > div:first-child{
   padding-left:0.25rem;
   border-bottom:1px solid rgba(255,255,255,.08);
-  height:42px;
+  min-height:42px;
 }
-div[data-testid="stTabs"] button{color:#dbe7f2;font-weight:800;}
-div[data-testid="stTabs"] button[aria-selected="true"]{color:white;border-bottom:3px solid #168BFF;}
+div[data-testid="stTabs"] button{color:#dbe7f2 !important;font-weight:800 !important;}
+div[data-testid="stTabs"] button[aria-selected="true"]{color:white !important;border-bottom:3px solid #168BFF !important;}
 
-.uc-left-html{
+.left-shell{
   background:linear-gradient(180deg,#092034,#061321);
-  color:white;height:760px;overflow-y:auto;padding:13px 12px;
+  color:white;
+  height:760px;
+  overflow-y:auto;
+  padding:13px 12px;
   border-right:1px solid rgba(255,255,255,.08);
 }
-.uc-left-html h3{font-size:14px;margin:0 0 10px 0;letter-spacing:.5px;}
+.left-title{font-size:14px;font-weight:900;letter-spacing:.5px;color:white;margin-bottom:8px;}
+.left-subtitle{font-size:12.5px;color:#b6c6d6;margin-bottom:8px;}
+
 .op-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding:7px 0;}
 .op-left{display:flex;align-items:center;gap:9px;}
 .op-check{width:17px;height:17px;border-radius:4px;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
@@ -276,8 +281,7 @@ with tabs[1]:
     left_col, map_col = st.columns([1.05, 5.6], gap="small")
 
     with left_col:
-        # IMPORTANT: one complete HTML block. No unclosed div around Streamlit elements.
-        rows_html = ""
+        op_rows = ""
         if not scored.empty:
             op_scores = (
                 scored.groupby("operator", dropna=False)["rig_demand_score"]
@@ -289,25 +293,28 @@ with tabs[1]:
                 op = str(row["operator"])
                 score = float(row["rig_demand_score"])
                 color = color_for_operator(op)
-                rows_html += f"""
+                op_rows += f"""
                 <div class="op-row">
                   <div class="op-left">
                     <div class="op-check" style="background:{color};">✓</div>
-                    <div><div class="op-name">{op}</div><div class="op-sub">Score</div></div>
+                    <div>
+                      <div class="op-name">{op}</div>
+                      <div class="op-sub">Score</div>
+                    </div>
                   </div>
                   <div class="op-score" style="background:{color};">{int(round(score))}</div>
                 </div>
                 """
         else:
-            rows_html = "<div style='color:#b6c6d6;font-size:13px;'>No scored areas yet.</div>"
+            op_rows = "<div style='color:#b6c6d6;font-size:13px;'>No scored areas yet.</div>"
 
-        st.markdown(f"""
-        <div class="uc-left-html">
-          <h3>OPERATOR LEGEND ⓘ</h3>
-          <div style="font-size:12.5px;color:#b6c6d6;margin-bottom:8px;">Show / Hide all operators</div>
-          {rows_html}
+        st.html(f"""
+        <div class="left-shell">
+          <div class="left-title">OPERATOR LEGEND ⓘ</div>
+          <div class="left-subtitle">Show / Hide all operators</div>
+          {op_rows}
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
     with map_col:
         selected_label = "Argentina › Neuquén Basin › Vaca Muerta"
@@ -434,7 +441,7 @@ with tabs[1]:
                 width=None,
                 height=760,
                 returned_objects=["last_object_clicked_tooltip"],
-                key="ueip_main_map_no_wrapper",
+                key="ueip_main_map_fixed_left",
             )
             if map_state and map_state.get("last_object_clicked_tooltip"):
                 selected_label = map_state["last_object_clicked_tooltip"]
@@ -518,4 +525,6 @@ with tabs[8]:
                 file_name=filename,
                 mime="text/csv",
             )
+
+
 
