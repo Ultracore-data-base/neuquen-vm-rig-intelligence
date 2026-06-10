@@ -736,43 +736,21 @@ with tabs[4]:
 
 with tabs[5]:
     st.header("Rig Coverage / Operator Rig Strategy")
+
     if not rig_strategy.empty:
         st.dataframe(clean_table(rig_strategy), use_container_width=True)
-        st.subheader("Contractor Intelligence")
 
-    if {"current_contractor", "operator", "rig_count"}.issubset(rig_strategy.columns):
-        contractor_view = (
-            rig_strategy.groupby("current_contractor")
-            .agg({
-                "operator": "count",
-                "rig_count": "sum"
-            })
-            .reset_index()
-            .rename(columns={
-                "current_contractor": "Contractor",
-                "operator": "Operators Served",
-                "rig_count": "Estimated Rigs"
-            })
-        )
-
-        st.dataframe(contractor_view, use_container_width=True)
     if not providers.empty:
         st.subheader("Rig and Service Providers")
         st.dataframe(clean_table(providers), use_container_width=True)
-        if not contractor_intelligence.empty:
+
+    if not contractor_intelligence.empty:
         st.subheader("Contractor Intelligence")
-        st.dataframe(
-            contractor_intelligence,
-            use_container_width=True
-        )
+        st.dataframe(contractor_intelligence, use_container_width=True)
 
     if not rig_fleet.empty:
         st.subheader("Rig Fleet Registry")
-        st.dataframe(
-            rig_fleet,
-            use_container_width=True
-        )
-
+        st.dataframe(rig_fleet, use_container_width=True)
 
 with tabs[6]:
     st.header("Multi-Service Opportunity Layer")
