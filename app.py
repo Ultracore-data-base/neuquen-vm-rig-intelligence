@@ -28,12 +28,12 @@ DATA_DIR = Path("data")
 
 
 def load_csv(name):
-    path = DATA_DIR / name
-    if path.exists():
-        return pd.read_csv(path)
-    fallback = Path(name)
-    if fallback.exists():
-        return pd.read_csv(fallback)
+    p = DATA_DIR / name
+    if p.exists():
+        return pd.read_csv(p)
+    p2 = Path(name)
+    if p2.exists():
+        return pd.read_csv(p2)
     return pd.DataFrame()
 
 
@@ -72,7 +72,7 @@ def score_radius(score):
     except Exception:
         score = 45
     score = max(15, min(score, 100))
-    return int(10 + score * 0.18)  # reduced size, still proportional
+    return int(10 + score * 0.18)
 
 
 def priority(score):
@@ -149,7 +149,6 @@ def build_scored_points(area_master, area_forecast, op_forecast):
     for i in range(len(df)):
         df.loc[i, "lat"] = df.loc[i, "lat"] + ((i % 5) - 2) * 0.012
         df.loc[i, "lon"] = df.loc[i, "lon"] + ((i % 7) - 3) * 0.012
-
     return df
 
 
@@ -177,39 +176,38 @@ st.markdown("""
 html, body, [data-testid="stAppViewContainer"] {background:#06111d;}
 .block-container {padding:0 !important; max-width:100% !important;}
 header[data-testid="stHeader"] {background:rgba(5,15,26,.96); height:0px;}
-[data-testid="stToolbar"] {display:none;}
-[data-testid="stDecoration"] {display:none;}
-[data-testid="stStatusWidget"] {display:none;}
-
-.uc-top{
-  height:58px;background:#061321;color:white;display:flex;align-items:center;
-  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.1);
-}
-.uc-logo{
-  width:38px;height:38px;border-radius:10px;background:white;color:#061321;
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;margin-right:10px;
-}
-.uc-brand-main{font-size:22px;font-weight:900;letter-spacing:.5px;line-height:1;}
-.uc-brand-sub{font-size:10px;color:#9fb4c8;font-weight:800;letter-spacing:1.7px;}
-
-div[data-testid="stTabs"]{background:#061321;}
-div[data-testid="stTabs"] > div:first-child{
-  padding-left:0.25rem;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-div[data-testid="stTabs"] button{color:#dbe7f2;font-weight:800;}
-div[data-testid="stTabs"] button[aria-selected="true"]{color:white;border-bottom:3px solid #168BFF;}
+[data-testid="stToolbar"], [data-testid="stDecoration"], [data-testid="stStatusWidget"] {display:none;}
 
 div[data-testid="stVerticalBlock"] {gap:0 !important;}
 div[data-testid="stHorizontalBlock"] {gap:0 !important;}
 div[data-testid="column"] {padding:0 !important;}
 
-.uc-left-panel{
+.uc-top{
+  height:52px;background:#061321;color:white;display:flex;align-items:center;
+  padding:0 18px;border-bottom:1px solid rgba(255,255,255,.1);
+}
+.uc-logo{
+  width:34px;height:34px;border-radius:9px;background:white;color:#061321;
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;margin-right:10px;
+}
+.uc-brand-main{font-size:20px;font-weight:900;letter-spacing:.5px;line-height:1;}
+.uc-brand-sub{font-size:9px;color:#9fb4c8;font-weight:800;letter-spacing:1.6px;}
+
+div[data-testid="stTabs"]{background:#061321;}
+div[data-testid="stTabs"] > div:first-child{
+  padding-left:0.25rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  height:42px;
+}
+div[data-testid="stTabs"] button{color:#dbe7f2;font-weight:800;}
+div[data-testid="stTabs"] button[aria-selected="true"]{color:white;border-bottom:3px solid #168BFF;}
+
+.uc-left-html{
   background:linear-gradient(180deg,#092034,#061321);
   color:white;height:760px;overflow-y:auto;padding:13px 12px;
   border-right:1px solid rgba(255,255,255,.08);
 }
-.uc-left-panel h3{font-size:14px;margin:0 0 10px 0;letter-spacing:.5px;}
+.uc-left-html h3{font-size:14px;margin:0 0 10px 0;letter-spacing:.5px;}
 .op-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding:7px 0;}
 .op-left{display:flex;align-items:center;gap:9px;}
 .op-check{width:17px;height:17px;border-radius:4px;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex-shrink:0;}
@@ -217,12 +215,9 @@ div[data-testid="column"] {padding:0 !important;}
 .op-sub{font-size:10.5px;color:#9fb4c8;}
 .op-score{width:30px;height:30px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;border:2px solid rgba(255,255,255,.75);flex-shrink:0;}
 
-.map-holder{
-  position:relative;height:760px;overflow:hidden;background:#06111d;
-}
-.map-holder iframe{display:block !important;}
+iframe {display:block !important;}
 .uc-footer{
-  height:34px;line-height:34px;background:#061321;color:#fff;
+  height:32px;line-height:32px;background:#061321;color:#fff;
   padding:0 14px;font-size:13px;font-weight:750;border-top:1px solid rgba(255,255,255,.08);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
@@ -281,10 +276,8 @@ with tabs[1]:
     left_col, map_col = st.columns([1.05, 5.6], gap="small")
 
     with left_col:
-        st.markdown('<div class="uc-left-panel">', unsafe_allow_html=True)
-        st.markdown("### OPERATOR LEGEND ⓘ")
-        st.markdown('<div style="font-size:12.5px;color:#b6c6d6;margin-bottom:8px;">Show / Hide all operators</div>', unsafe_allow_html=True)
-
+        # IMPORTANT: one complete HTML block. No unclosed div around Streamlit elements.
+        rows_html = ""
         if not scored.empty:
             op_scores = (
                 scored.groupby("operator", dropna=False)["rig_demand_score"]
@@ -296,7 +289,7 @@ with tabs[1]:
                 op = str(row["operator"])
                 score = float(row["rig_demand_score"])
                 color = color_for_operator(op)
-                st.markdown(f"""
+                rows_html += f"""
                 <div class="op-row">
                   <div class="op-left">
                     <div class="op-check" style="background:{color};">✓</div>
@@ -304,16 +297,20 @@ with tabs[1]:
                   </div>
                   <div class="op-score" style="background:{color};">{int(round(score))}</div>
                 </div>
-                """, unsafe_allow_html=True)
+                """
         else:
-            st.info("No scored areas yet.")
+            rows_html = "<div style='color:#b6c6d6;font-size:13px;'>No scored areas yet.</div>"
 
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="uc-left-html">
+          <h3>OPERATOR LEGEND ⓘ</h3>
+          <div style="font-size:12.5px;color:#b6c6d6;margin-bottom:8px;">Show / Hide all operators</div>
+          {rows_html}
+        </div>
+        """, unsafe_allow_html=True)
 
     with map_col:
         selected_label = "Argentina › Neuquén Basin › Vaca Muerta"
-
-        st.markdown('<div class="map-holder">', unsafe_allow_html=True)
 
         if folium is None or st_folium is None:
             st.error("folium / streamlit-folium missing")
@@ -327,10 +324,10 @@ with tabs[1]:
                     neuq = scored[scored["province"].astype(str).str.contains("Neuquen|Neuquén", case=False, na=False)]
                     if not neuq.empty:
                         use = neuq
-                lat = pd.to_numeric(use["lat"], errors="coerce").dropna()
-                lon = pd.to_numeric(use["lon"], errors="coerce").dropna()
-                if not lat.empty and not lon.empty:
-                    center = [float(lat.median()), float(lon.median())]
+                lat_series = pd.to_numeric(use["lat"], errors="coerce").dropna()
+                lon_series = pd.to_numeric(use["lon"], errors="coerce").dropna()
+                if not lat_series.empty and not lon_series.empty:
+                    center = [float(lat_series.median()), float(lon_series.median())]
 
             m = folium.Map(location=center, zoom_start=zoom, tiles=None, control_scale=True, prefer_canvas=True)
 
@@ -436,14 +433,12 @@ with tabs[1]:
                 m,
                 width=None,
                 height=760,
-                returned_objects=["last_object_clicked_tooltip", "last_object_clicked_popup"],
-                key="ueip_main_map",
+                returned_objects=["last_object_clicked_tooltip"],
+                key="ueip_main_map_no_wrapper",
             )
-
             if map_state and map_state.get("last_object_clicked_tooltip"):
                 selected_label = map_state["last_object_clicked_tooltip"]
 
-        st.markdown("</div>", unsafe_allow_html=True)
         st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
 
 
