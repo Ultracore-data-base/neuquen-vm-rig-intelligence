@@ -325,6 +325,8 @@ providers = load_csv("rig_provider_master.csv")
 rig_strategy = load_csv("operator_rig_strategy.csv")
 service_rules = load_csv("service_opportunity_rules.csv")
 gis_layers = load_csv("gis_layer_registry.csv")
+contractor_intelligence = load_csv("contractor_intelligence.csv")
+rig_fleet = load_csv("rig_fleet_master.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
