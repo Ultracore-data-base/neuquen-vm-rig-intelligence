@@ -759,6 +759,19 @@ with tabs[5]:
     if not providers.empty:
         st.subheader("Rig and Service Providers")
         st.dataframe(clean_table(providers), use_container_width=True)
+        if not contractor_intelligence.empty:
+        st.subheader("Contractor Intelligence")
+        st.dataframe(
+            contractor_intelligence,
+            use_container_width=True
+        )
+
+    if not rig_fleet.empty:
+        st.subheader("Rig Fleet Registry")
+        st.dataframe(
+            rig_fleet,
+            use_container_width=True
+        )
 
 
 with tabs[6]:
