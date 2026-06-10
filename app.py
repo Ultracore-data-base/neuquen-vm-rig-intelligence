@@ -699,15 +699,29 @@ else:
       <div class="detail-row"><span>Rig Count</span><span>-</span></div>
     """
 
-        st.html(f"""
-        <div class="right-panel">
-          <div class="panel-title">MAP LAYERS</div>
+st.html(f"""
+<div class="right-panel">
+  <div class="panel-title">MAP LAYERS</div>
 
-          <div class="layer-group-title">CURRENT CONTEXT</div>
-          <div class="layer-select">Argentina</div>
-          <div class="layer-select">{context["zone"]}</div>
+  <div class="layer-group-title">CURRENT CONTEXT</div>
+  <div class="layer-select">Argentina</div>
+  <div class="layer-select">{context["zone"]}</div>
 
-          <div class="detail-card">
+  <div class="detail-card">
+    <b>{selected_area}</b>
+
+    <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
+    <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
+    <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
+
+    <div class="detail-row">
+      <span>Rig forecast</span>
+      <span>{forecast_rigs(selected_score) if selected_score else "-"}</span>
+    </div>
+
+    <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
+
+    {contractor_html}
             <b>{selected_area}</b>
             <div class="detail-row"><span>Operator</span><span>{selected_operator}</span></div>
             <div class="detail-row"><span>Province</span><span>{selected_province}</span></div>
