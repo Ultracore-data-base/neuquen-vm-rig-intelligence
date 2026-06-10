@@ -4,6 +4,14 @@ import pandas as pd
 import streamlit as st
 
 try:
+    import folium
+    from folium.plugins import Fullscreen, MiniMap, MeasureControl
+    from streamlit_folium import st_folium
+except Exception:
+    folium = None
+    st_folium = None
+
+try:
     import plotly.express as px
 except Exception:
     px = None
@@ -18,7 +26,7 @@ st.set_page_config(
 DATA_DIR = Path("data")
 
 
-def load_csv(filename: str) -> pd.DataFrame:
+def load_csv(filename):
     path = DATA_DIR / filename
     if path.exists():
         return pd.read_csv(path)
@@ -28,51 +36,26 @@ def load_csv(filename: str) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def clean_table(df: pd.DataFrame) -> pd.DataFrame:
+def clean_table(df):
     if df.empty:
         return df
-    cols_to_drop = [
-        "score_definition",
-        "source_note",
-    ]
-    return df.drop(columns=[c for c in cols_to_drop if c in df.columns], errors="ignore")
+    hidden_cols = ["score_definition"]
+    return df.drop(columns=[c for c in hidden_cols if c in df.columns])
 
 
-def numeric_col(df: pd.DataFrame, col: str, default: float = 0) -> pd.Series:
+def to_num(df, col, default=0):
     if col in df.columns:
         return pd.to_numeric(df[col], errors="coerce").fillna(default)
     return pd.Series([default] * len(df))
 
 
-def show_score_composition():
-    st.markdown("### Score Composition")
-    st.markdown("""
-| Component | Weight |
-|---|---:|
-| Permits / EIA | 40% |
-| Investor / CAPEX Signal | 30% |
-| Activity Intensity | 20% |
-| Operator Tier / Core Relevance | 10% |
-""")
-
-
-def show_map_notice():
-    st.info(
-        "Current map uses seeded centroids. For true immersive block-level analysis, "
-        "the next step is loading official concession polygons as GeoJSON: "
-        "data/area_blocks.geojson. Then the map will display adjudicated area boundaries, "
-        "operators, roads, towns and logistics references."
-    )
-
-
-# Load generated intelligence
+# Load data
 operator_forecast = load_csv("operator_forecast.csv")
 operator_signals = load_csv("operator_signals.csv")
 operator_area_forecast = load_csv("operator_area_forecast.csv")
 permits_pipeline = load_csv("permits_pipeline_auto.csv")
 changes_log = load_csv("changes_log.csv")
 
-# Load master data
 countries = load_csv("countries.csv")
 basins = load_csv("basin_master.csv")
 provinces = load_csv("province_master.csv")
@@ -88,19 +71,19 @@ sources = load_csv("source_registry.csv")
 
 st.title("Ultracore Energy Intelligence Platform")
 st.caption(
-    "Argentina-first, LATAM-ready upstream intelligence platform for rigs, workover, "
-    "frac, e-frac, venting, HVAC, lighting towers and oilfield services."
+    "Argentina-first, LATAM-ready upstream intelligence platform for rigs, workover, frac, e-frac, venting, HVAC, lighting towers and oilfield services."
 )
 
 tabs = st.tabs([
     "Executive Summary",
-    "Immersive Map",
+    "Immersive GIS Map",
     "Operator Intelligence",
     "Area Intelligence",
     "Permit Pipeline",
     "Rig Coverage",
     "Multi-Service",
     "Master Data",
+    "Score",
     "Data Export",
 ])
 
@@ -115,29 +98,22 @@ with tabs[0]:
     c4.metric("Operators", len(operators))
 
     st.markdown("""
-**Platform objective:** identify future commercial opportunities for Ultracore by crossing regulatory signals,
-EIA permits, investor plans, media/LinkedIn intelligence, rig contracts, provider coverage and service demand.
+    **Platform objective:** identify future commercial opportunities for Ultracore by crossing regulatory signals,
+    EIA permits, investor plans, media/LinkedIn intelligence, rig contracts, provider coverage and multi-service demand.
 
-**Core questions:**
-- Which operator will need capacity?
-- In which basin and area?
-- Which service will be required?
-- Who is the incumbent provider?
-- Is the demand already covered or open?
-""")
-
-    show_score_composition()
+    **Core question:** what operator, in what basin and area, will need which service, when, and who is the incumbent provider?
+    """)
 
     if not operator_forecast.empty:
+        df = clean_table(operator_forecast)
         st.subheader("Top Operator Rig Demand Ranking")
-        clean_forecast = clean_table(operator_forecast)
-        st.dataframe(clean_forecast, use_container_width=True)
+        st.dataframe(df, use_container_width=True)
 
-        if px is not None and "rig_demand_score" in operator_forecast.columns and "operator" in operator_forecast.columns:
-            df = clean_forecast.copy()
-            df["rig_demand_score"] = numeric_col(df, "rig_demand_score")
+        if px is not None and {"operator", "rig_demand_score"}.issubset(df.columns):
+            chart_df = df.copy()
+            chart_df["rig_demand_score"] = to_num(chart_df, "rig_demand_score")
             fig = px.bar(
-                df.sort_values("rig_demand_score", ascending=True),
+                chart_df.sort_values("rig_demand_score", ascending=True),
                 x="rig_demand_score",
                 y="operator",
                 orientation="h",
@@ -149,88 +125,119 @@ EIA permits, investor plans, media/LinkedIn intelligence, rig contracts, provide
 
 
 with tabs[1]:
-    st.header("Immersive Argentina Opportunity Map")
-    show_map_notice()
+    st.header("Immersive GIS Map")
 
     st.markdown("""
-**Target map behavior:**
-- National Argentina view.
-- Zoom into basin.
-- Zoom into province.
-- Select adjudicated area / concession.
-- Show operator, permits, EIA, rig demand, provider coverage and logistics references.
-- Future upgrade: official concession polygons instead of centroid points.
-""")
+    This map is designed as the operational/geographic layer of UEIP. It supports zoom, pan, base-map switching,
+    satellite view, measurement tools and official WMS layers where available.
+    """)
 
-    if not areas.empty and {"lat", "lon"}.issubset(areas.columns):
-        df_map = areas.copy()
-        df_map["lat"] = pd.to_numeric(df_map["lat"], errors="coerce")
-        df_map["lon"] = pd.to_numeric(df_map["lon"], errors="coerce")
-        df_map["confidence"] = numeric_col(df_map, "confidence", 40)
-        df_map = df_map.dropna(subset=["lat", "lon"])
-
-        if px is not None and not df_map.empty:
-            hover_cols = [
-                c for c in [
-                    "area",
-                    "operator",
-                    "province",
-                    "basin",
-                    "hydrocarbon",
-                    "development_status",
-                ] if c in df_map.columns
-            ]
-
-            fig = px.scatter_mapbox(
-                df_map,
-                lat="lat",
-                lon="lon",
-                color="basin" if "basin" in df_map.columns else None,
-                size="confidence",
-                hover_data=hover_cols,
-                zoom=3.5,
-                height=820,
-                mapbox_style="open-street-map",
-                title="Argentina upstream opportunity map - centroid layer",
-            )
-            fig.update_layout(
-                margin={"r": 0, "t": 45, "l": 0, "b": 0},
-                legend_title_text="Basin",
-            )
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.warning("Plotly is not available or area_master.csv has no valid coordinates.")
+    if folium is None or st_folium is None:
+        st.error("folium or streamlit-folium is not installed. Check requirements.txt.")
     else:
-        st.warning("area_master.csv must include lat and lon fields.")
+        m = folium.Map(
+            location=[-38.5, -68.8],
+            zoom_start=5,
+            tiles=None,
+            control_scale=True,
+        )
 
-    st.subheader("Area Master Reference")
-    st.dataframe(clean_table(areas), use_container_width=True)
+        folium.TileLayer(
+            "OpenStreetMap",
+            name="OpenStreetMap / roads",
+            control=True,
+        ).add_to(m)
+
+        folium.TileLayer(
+            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attr="Esri",
+            name="Satellite / Esri World Imagery",
+            control=True,
+        ).add_to(m)
+
+        folium.TileLayer(
+            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+            attr="Esri",
+            name="Topographic / Esri",
+            control=True,
+        ).add_to(m)
+
+        # Neuquen official WMS base endpoint.
+        # Layer names may need adjustment if the GeoServer published names differ.
+        neuquen_wms = "https://hidrocarburos.energianeuquen.gob.ar/geoserver/wms"
+
+        wms_layers = [
+            ("Hidrocarburos:Areas", "Neuquen - Areas / concessions"),
+            ("Hidrocarburos:Pozos_VM", "Neuquen - Vaca Muerta wells"),
+            ("Hidrocarburos:Pozos", "Neuquen - Wells"),
+            ("Hidrocarburos:Ductos", "Neuquen - Ducts"),
+            ("Hidrocarburos:Instalaciones", "Neuquen - Facilities"),
+            ("Hidrocarburos:Locaciones", "Neuquen - Locations"),
+        ]
+
+        for layer_name, display_name in wms_layers:
+            try:
+                folium.raster_layers.WmsTileLayer(
+                    url=neuquen_wms,
+                    layers=layer_name,
+                    name=display_name,
+                    fmt="image/png",
+                    transparent=True,
+                    version="1.1.1",
+                    overlay=True,
+                    control=True,
+                    show=False,
+                ).add_to(m)
+            except Exception:
+                pass
+
+        if not areas.empty and {"lat", "lon"}.issubset(areas.columns):
+            df_map = areas.copy()
+            df_map["lat"] = pd.to_numeric(df_map["lat"], errors="coerce")
+            df_map["lon"] = pd.to_numeric(df_map["lon"], errors="coerce")
+            df_map = df_map.dropna(subset=["lat", "lon"])
+
+            fg = folium.FeatureGroup(name="UEIP seeded areas / centroids", show=True)
+
+            for _, row in df_map.iterrows():
+                popup_html = f"""
+                <b>Area:</b> {row.get('area', '')}<br>
+                <b>Operator:</b> {row.get('operator', '')}<br>
+                <b>Basin:</b> {row.get('basin', '')}<br>
+                <b>Province:</b> {row.get('province', '')}<br>
+                <b>Hydrocarbon:</b> {row.get('hydrocarbon', '')}<br>
+                <b>Status:</b> {row.get('development_status', '')}<br>
+                <b>Source note:</b> {row.get('source_note', '')}
+                """
+                folium.CircleMarker(
+                    location=[row["lat"], row["lon"]],
+                    radius=7,
+                    popup=folium.Popup(popup_html, max_width=400),
+                    tooltip=f"{row.get('area', '')} - {row.get('operator', '')}",
+                    fill=True,
+                    fill_opacity=0.75,
+                ).add_to(fg)
+
+            fg.add_to(m)
+
+        Fullscreen(position="topright").add_to(m)
+        MiniMap(toggle_display=True).add_to(m)
+        MeasureControl(position="topleft").add_to(m)
+        folium.LayerControl(collapsed=False).add_to(m)
+
+        st_folium(m, width=None, height=820)
 
 
 with tabs[2]:
     st.header("Operator Intelligence")
-    show_score_composition()
 
     if not operator_forecast.empty:
-        clean_forecast = clean_table(operator_forecast)
-        st.dataframe(clean_forecast, use_container_width=True)
-
-        if px is not None and "rig_demand_score" in clean_forecast.columns and "operator" in clean_forecast.columns:
-            df = clean_forecast.copy()
-            df["rig_demand_score"] = numeric_col(df, "rig_demand_score")
-            fig = px.bar(
-                df.sort_values("rig_demand_score", ascending=True),
-                x="rig_demand_score",
-                y="operator",
-                orientation="h",
-                title="Operator Rig Demand Score",
-            )
-            st.plotly_chart(fig, use_container_width=True)
+        st.dataframe(clean_table(operator_forecast), use_container_width=True)
     else:
-        st.info("No operator_forecast.csv found yet.")
+        st.info("operator_forecast.csv not found yet.")
 
     if not operator_signals.empty:
-        st.subheader("Underlying Operator Signals")
+        st.subheader("Underlying Signals")
         st.dataframe(clean_table(operator_signals), use_container_width=True)
 
 
@@ -238,34 +245,7 @@ with tabs[3]:
     st.header("Area Intelligence")
 
     if not operator_area_forecast.empty:
-        clean_area = clean_table(operator_area_forecast)
-        st.dataframe(clean_area, use_container_width=True)
-
-        if px is not None and {"lat", "lon"}.issubset(clean_area.columns):
-            df = clean_area.copy()
-            df["lat"] = pd.to_numeric(df["lat"], errors="coerce")
-            df["lon"] = pd.to_numeric(df["lon"], errors="coerce")
-
-            if "rig_demand_score" in df.columns:
-                df["rig_demand_score"] = numeric_col(df, "rig_demand_score")
-
-            df = df.dropna(subset=["lat", "lon"])
-
-            if not df.empty:
-                fig = px.scatter_mapbox(
-                    df,
-                    lat="lat",
-                    lon="lon",
-                    color="operator" if "operator" in df.columns else None,
-                    size="rig_demand_score" if "rig_demand_score" in df.columns else None,
-                    hover_data=[c for c in ["area", "operator", "signals", "rig_demand_score"] if c in df.columns],
-                    zoom=5.8,
-                    height=760,
-                    mapbox_style="open-street-map",
-                    title="Rig Demand Signals by Area",
-                )
-                fig.update_layout(margin={"r": 0, "t": 45, "l": 0, "b": 0})
-                st.plotly_chart(fig, use_container_width=True)
+        st.dataframe(clean_table(operator_area_forecast), use_container_width=True)
     else:
         st.info("operator_area_forecast.csv not found yet.")
 
@@ -287,14 +267,12 @@ with tabs[5]:
     st.header("Rig Coverage / Operator Rig Strategy")
 
     st.markdown("""
-This layer tracks whether demand is already covered by owned rigs, leased rigs or third-party operated contracts.
-It is critical for estimating **Open Rig Opportunity Score**.
-""")
+    This layer tracks whether demand is already covered by owned rigs, leased rigs or third-party operated contracts.
+    It is critical for estimating **Open Rig Opportunity Score**.
+    """)
 
     if not rig_strategy.empty:
         st.dataframe(clean_table(rig_strategy), use_container_width=True)
-    else:
-        st.info("operator_rig_strategy.csv not found.")
 
     if not providers.empty:
         st.subheader("Rig and Service Providers")
@@ -305,19 +283,21 @@ with tabs[6]:
     st.header("Multi-Service Opportunity Layer")
 
     st.markdown("""
-Ultracore opportunities are not limited to drilling rigs. The platform also tracks future demand for:
+    Ultracore opportunities are not limited to drilling rigs.
 
-- Workover
-- Frac
-- E-Frac
-- Venting solutions
-- HVAC
-- Lighting towers
-- Power generation
-- Water management
-- Facilities
-- Midstream
-""")
+    Services tracked:
+    - Drilling rigs
+    - Workover
+    - Frac
+    - E-Frac
+    - Venting / gas recovery
+    - HVAC
+    - Lighting towers
+    - Power generation
+    - Water management
+    - Facilities
+    - Midstream
+    """)
 
     if not services.empty:
         st.subheader("Service Master")
@@ -331,15 +311,7 @@ Ultracore opportunities are not limited to drilling rigs. The platform also trac
 with tabs[7]:
     st.header("Master Data")
 
-    mtabs = st.tabs([
-        "Countries",
-        "Basins",
-        "Provinces",
-        "Operators",
-        "Areas",
-        "Sources",
-        "Score Definitions",
-    ])
+    mtabs = st.tabs(["Countries", "Basins", "Provinces", "Operators", "Areas", "Sources"])
 
     with mtabs[0]:
         st.dataframe(clean_table(countries), use_container_width=True)
@@ -353,34 +325,61 @@ with tabs[7]:
         st.dataframe(clean_table(areas), use_container_width=True)
     with mtabs[5]:
         st.dataframe(clean_table(sources), use_container_width=True)
-    with mtabs[6]:
-        st.dataframe(clean_table(score_definitions), use_container_width=True)
 
 
 with tabs[8]:
+    st.header("Score Composition")
+
+    st.markdown("""
+    ### Rig Demand Score
+
+    | Score Component | Weight |
+    |---|---:|
+    | Permits / EIA | 40% |
+    | Investor / CAPEX Signal | 30% |
+    | Activity Intensity | 20% |
+    | Operator Tier / Core Relevance | 10% |
+
+    The score estimates the probability that an operator will require drilling rigs or associated services within the next 6–18 months.
+
+    ### Rig Coverage Score
+
+    Measures whether the operator's demand appears already covered by owned rigs, leased rigs or third-party contractors.
+
+    ### Open Rig Opportunity Score
+
+    Demand not yet covered by known rig capacity.
+
+    ### Multi-Service Score
+
+    Extends the opportunity model beyond rigs into workover, frac, e-frac, venting, HVAC, lighting, power, water and facilities.
+    """)
+
+
+with tabs[9]:
     st.header("Data Export")
 
     export_items = {
-        "operator_forecast.csv": clean_table(operator_forecast),
-        "operator_signals.csv": clean_table(operator_signals),
-        "operator_area_forecast.csv": clean_table(operator_area_forecast),
-        "permits_pipeline_auto.csv": clean_table(permits_pipeline),
-        "countries.csv": clean_table(countries),
-        "basin_master.csv": clean_table(basins),
-        "province_master.csv": clean_table(provinces),
-        "operator_master.csv": clean_table(operators),
-        "area_master.csv": clean_table(areas),
-        "service_master.csv": clean_table(services),
-        "rig_provider_master.csv": clean_table(providers),
-        "operator_rig_strategy.csv": clean_table(rig_strategy),
-        "score_definitions.csv": clean_table(score_definitions),
+        "operator_forecast.csv": operator_forecast,
+        "operator_signals.csv": operator_signals,
+        "operator_area_forecast.csv": operator_area_forecast,
+        "permits_pipeline_auto.csv": permits_pipeline,
+        "countries.csv": countries,
+        "basin_master.csv": basins,
+        "province_master.csv": provinces,
+        "operator_master.csv": operators,
+        "area_master.csv": areas,
+        "service_master.csv": services,
+        "rig_provider_master.csv": providers,
+        "operator_rig_strategy.csv": rig_strategy,
+        "score_definitions.csv": score_definitions,
     }
 
     for filename, df in export_items.items():
         if not df.empty:
             st.download_button(
                 label=f"Download {filename}",
-                data=df.to_csv(index=False).encode("utf-8"),
+                data=clean_table(df).to_csv(index=False).encode("utf-8"),
                 file_name=filename,
                 mime="text/csv",
             )
