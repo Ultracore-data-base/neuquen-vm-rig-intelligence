@@ -384,7 +384,6 @@ with tabs[8]:
             st.download_button(filename, clean_table(df).to_csv(index=False).encode('utf-8'), file_name=filename, mime='text/csv')
 
 
-            )
-
+            
 
 
