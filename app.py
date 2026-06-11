@@ -530,21 +530,7 @@ with tabs[1]:
                 score = float(row["rig_demand_score"])
                 color = color_for_operator(op)
 
-                selected_operator_name = ""
-                if "selected_map_row" in st.session_state:
-                    selected_operator_name = str(
-                        st.session_state["selected_map_row"].get("operator", "")
-                    ).strip().upper()
-
-                is_selected_operator = (
-                    selected_operator_name
-                    and selected_operator_name == op.strip().upper()
-                )
-
-                if selected_operator_name:
-                    row_class = "op-row selected-op" if is_selected_operator else "op-row muted-op"
-                else:
-                    row_class = "op-row"
+                row_class = "op-row"
                 op_rows += f"""
                 <div class="{row_class}">
                   <div class="op-left">
