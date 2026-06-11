@@ -1,0 +1,11 @@
+area,operator,basin,province,production_signal,drilling_signal,well_status_signal,trend_signal,operational_observed_score,activity_type,observed_activity_note
+Loma Campana,YPF,Neuquén Basin,Neuquen,95,92,88,90,92,Core development,High rig + workover + artificial lift signal
+Bajada del Palo Oeste,Vista Energy,Neuquén Basin,Neuquen,90,86,82,86,86,Core development,High production and drilling continuity signal
+La Calera,Pluspetrol / YPF,Neuquén Basin,Neuquen,88,84,78,82,83,Core development,Strong shale development and future rig signal
+Fortin de Piedra,Tecpetrol,Neuquén Basin,Neuquen,86,88,74,80,82,Gas development,Gas-driven activity and infrastructure opportunity
+La Amarga Chica,YPF / Petronas,Neuquén Basin,Neuquen,80,78,72,76,76,Active development,Relevant unconventional drilling continuity
+Bandurria Sur,YPF / partners,Neuquén Basin,Neuquen,76,72,68,70,71,Active development,Medium-high operational signal
+Aguada Pichana Este,TotalEnergies / partners,Neuquén Basin,Neuquen,72,70,66,68,69,Gas/liquids development,Monitoring for gas and liquids service demand
+Rincon de Aranda,Pampa Energia,Neuquén Basin,Neuquen,66,64,60,62,63,Emerging development,Monitor for acceleration
+Los Toldos II Este,Tecpetrol / GyP,Neuquén Basin,Neuquen,55,52,48,50,51,Watchlist,"Lower current activity, watch for permits"
+Pico Truncado / Koluel Kaike,CGC,Golfo San Jorge,Santa Cruz,58,42,55,45,50,Conventional/workover,Workover and reactivation potential
