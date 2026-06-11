@@ -620,13 +620,13 @@ with tabs[1]:
                         transparent=True,
                         version="1.1.1",
                         overlay=True,
-                        control=False,
+                        control=True,
                         show=show,
                     ).add_to(m)
                 except Exception:
                     pass
 
-            fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True, control=False)
+            fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True, control=True)
             for idx, row in scored.iterrows():
                 try:
                     lat = float(row["lat"])
@@ -663,6 +663,7 @@ with tabs[1]:
                 ).add_to(fg)
 
             fg.add_to(m)
+            folium.LayerControl(collapsed=False, position="topright").add_to(m)
             Fullscreen(position="topright").add_to(m)
             MiniMap(toggle_display=True, position="bottomleft").add_to(m)
             MeasureControl(position="topleft").add_to(m)
