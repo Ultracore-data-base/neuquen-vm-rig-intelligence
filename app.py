@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from contractor_fleet_intelligence import contractor_fleet_html
 from rig_gap_intelligence import rig_gap_html
-from opportunity_ranking_v2 import build_opportunity_ranking_v2
+from opportunity_ranking import build_opportunity_ranking
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -370,15 +370,13 @@ service_rules = load_csv("service_opportunity_rules.csv")
 gis_layers = load_csv("gis_layer_registry.csv")
 contractor_intelligence = load_csv("contractor_intelligence.csv")
 rig_fleet = load_csv("rig_fleet_master.csv")
-operator_aliases_v2 = load_csv("operator_aliases_v2.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
-opportunity_ranking = build_opportunity_ranking_v2(
+opportunity_ranking = build_opportunity_ranking(
     scored,
     contractor_intelligence,
-    forecast_rigs,
-    operator_aliases_v2
+    forecast_rigs
 )
 
 
