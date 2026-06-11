@@ -766,6 +766,7 @@ st.html(f"""
 {rig_gap_block}
 
 <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
+</div>
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
           <div class="layer-row"><div class="layer-box off"></div>Satellite / Esri</div>
