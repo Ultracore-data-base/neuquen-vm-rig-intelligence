@@ -27,6 +27,10 @@ from tender_probability_engine import (
     build_tender_probability,
     tender_probability_html
 )
+from forecast_intelligence_engine import (
+    build_forecast_intelligence,
+    forecast_intelligence_html
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -419,6 +423,11 @@ tender_probability = build_tender_probability(
     contractor_intelligence,
     forecast_rigs
 )
+forecast_intelligence = build_forecast_intelligence(
+    scored,
+    observed_activity,
+    tender_probability
+)
 
 
 st.markdown("""
@@ -796,6 +805,11 @@ with tabs[1]:
         selected_operator,
         tender_probability
 )
+        forecast_intelligence_block = forecast_intelligence_html(
+        selected_area,
+        selected_operator,
+        forecast_intelligence
+)
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
@@ -824,6 +838,8 @@ with tabs[1]:
             {observed_activity_block}
             <div style="margin-top:9px;"><b>Tender Intelligence</b></div>
             {tender_probability_block}
+            <div style="margin-top:9px;"><b>Forecast Intelligence</b></div>
+            {forecast_intelligence_block}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
@@ -871,6 +887,12 @@ with tabs[3]:
 
         st.dataframe(
         tender_probability,
+        use_container_width=True
+)
+        st.subheader("Forecast Intelligence Ranking")
+
+        st.dataframe(
+        forecast_intelligence,
         use_container_width=True
 )
 with tabs[4]:
