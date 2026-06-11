@@ -23,6 +23,10 @@ from observed_activity_engine import (
     observed_activity_by_area
 )
 from observed_activity_panel import observed_activity_html
+from tender_probability_engine import (
+    build_tender_probability,
+    tender_probability_html
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -409,6 +413,12 @@ opportunity_ranking = build_opportunity_ranking(
     contractor_intelligence,
     forecast_rigs
 )
+tender_probability = build_tender_probability(
+    scored,
+    observed_activity,
+    contractor_intelligence,
+    forecast_rigs
+)
 
 
 st.markdown("""
@@ -781,6 +791,11 @@ with tabs[1]:
         selected_operator,
         observed_activity
 )
+        tender_probability_block = tender_probability_html(
+        selected_area,
+        selected_operator,
+        tender_probability
+)
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
@@ -807,6 +822,8 @@ with tabs[1]:
             {rig_gap_block}
             <div style="margin-top:9px;"><b>Operational Activity</b></div>
             {observed_activity_block}
+            <div style="margin-top:9px;"><b>Tender Intelligence</b></div>
+            {tender_probability_block}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
@@ -850,6 +867,12 @@ with tabs[3]:
     else:
 
         st.info("No opportunity ranking available.")
+        st.subheader("Tender Probability Ranking")
+
+        st.dataframe(
+        tender_probability,
+        use_container_width=True
+)
 with tabs[4]:
 
     st.header("Area Intelligence")
