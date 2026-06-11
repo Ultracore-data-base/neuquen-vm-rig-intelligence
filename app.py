@@ -2,6 +2,7 @@ from pathlib import Path
 import hashlib
 import pandas as pd
 import streamlit as st
+from contractor_fleet_intelligence import contractor_fleet_html
 
 try:
     import folium
@@ -703,6 +704,7 @@ with tabs[1]:
               <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
               <div class="detail-row"><span>Rig Count</span><span>-</span></div>
             """
+            fleet_html = contractor_fleet_html(contractor_info, rig_fleet)
 
         st.html(f"""
         <div class="right-panel">
@@ -720,11 +722,13 @@ with tabs[1]:
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
-            <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
-            {contractor_html}
+<div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
+{contractor_html}
 
-            <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
-          </div>
+<div style="margin-top:9px;"><b>Contractor Fleet</b></div>
+{fleet_html}
+
+<div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
 
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
