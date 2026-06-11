@@ -52,38 +52,7 @@ st.markdown("""
 .selected-op .op-score {
     transform: scale(1.12);
 }
-.leaflet-control-layers {
-    background: #eef3f8 !important;
-    color: #152233 !important;
-    border-radius: 14px !important;
-    border: 1px solid rgba(15, 32, 52, 0.18) !important;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
-    padding: 12px 14px !important;
-    font-family: Inter, Arial, sans-serif !important;
-    font-weight: 700 !important;
-    max-height: 620px !important;
-    overflow-y: auto !important;
-}
 
-.leaflet-control-layers label {
-    font-size: 14px !important;
-    line-height: 1.8 !important;
-    color: #142033 !important;
-    border-bottom: 1px solid rgba(20,32,51,0.12);
-    padding: 5px 0 !important;
-}
-
-.leaflet-control-layers-selector {
-    transform: scale(1.25);
-    margin-right: 8px !important;
-}
-
-.leaflet-control-layers-base,
-.leaflet-control-layers-overlays {
-    margin-top: 8px !important;
-}
-
-.leaflet-control-layers-separator {
     border-top: 1px solid rgba(20,32,51,0.22) !important;
 }
 3. Para que “Scored areas” arranque visible
@@ -897,19 +866,9 @@ with tabs[1]:
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
 
-          <div class="layer-group-title">BASE MAP</div>
-          <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
-          <div class="layer-row"><div class="layer-box off"></div>Satellite / Esri</div>
-          <div class="layer-row"><div class="layer-box off"></div>Topographic / Esri</div>
-
-          <div class="layer-group-title">OFFICIAL GIS LAYERS</div>
-          {official_layers_html}
-
-          <div class="layer-group-title">ULTRACORE LAYERS</div>
-          <div class="layer-row"><div class="layer-box">✓</div>Scored areas by operator</div>
-          <div class="layer-row"><div class="layer-box off"></div>Rig coverage</div>
-          <div class="layer-row"><div class="layer-box off"></div>Multi-service opportunity</div>
-          <div class="layer-row"><div class="layer-box off"></div>Logistics / access routes</div>
+          <div class="layer-group-title">MAP CONTROLS</div>
+          <div class="layer-row">
+          Use the real layer control inside the map to toggle official GIS layers.
         </div>
         """)
 
