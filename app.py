@@ -31,6 +31,10 @@ from forecast_intelligence_engine import (
     build_forecast_intelligence,
     forecast_intelligence_html
 )
+from rig_expansion_engine import (
+    build_rig_expansion_score,
+    rig_expansion_html
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -428,6 +432,11 @@ forecast_intelligence = build_forecast_intelligence(
     observed_activity,
     tender_probability
 )
+rig_expansion = build_rig_expansion_score(
+    scored,
+    observed_activity,
+    tender_probability
+)
 
 
 st.markdown("""
@@ -810,6 +819,11 @@ with tabs[1]:
         selected_operator,
         forecast_intelligence
 )
+        rig_expansion_block = rig_expansion_html(
+        selected_area,
+        selected_operator,
+        rig_expansion
+)
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
@@ -840,6 +854,8 @@ with tabs[1]:
             {tender_probability_block}
             <div style="margin-top:9px;"><b>Forecast Intelligence</b></div>
             {forecast_intelligence_block}
+            <div style="margin-top:9px;"><b>Rig Expansion Intelligence</b></div>
+            {rig_expansion_block}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
