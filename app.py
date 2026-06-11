@@ -609,26 +609,21 @@ with tabs[1]:
                 show=False,
             ).add_to(m)
 
-            neuquen_wms = "https://hidrocarburos.energianeuquen.gob.ar/geoserver/wms"
-            for layer, name, show in [
-                ("Hidrocarburos:Areas", "Neuquen - Areas / concessions", True),
-                ("Hidrocarburos:Pozos_VM", "Neuquen - Vaca Muerta wells", True),
-                ("Hidrocarburos:Pozos", "Neuquen - Wells", False),
-                ("Hidrocarburos:Ductos", "Neuquen - Ducts", False),
-                ("Hidrocarburos:Instalaciones", "Neuquen - Facilities", False),
-                ("Hidrocarburos:Locaciones", "Neuquen - Locations", False),
-            ]:
+            for layer_cfg in active_wms_layers_for_province(
+                official_gis_layers,
+                "Neuquen"
+            ):
                 try:
                     folium.raster_layers.WmsTileLayer(
-                        url=neuquen_wms,
-                        layers=layer,
-                        name=name,
+                        url=layer_cfg["url"],
+                        layers=layer_cfg["technical_layer"],
+                        name=f"Neuquen - {layer_cfg['name']}",
                         fmt="image/png",
                         transparent=True,
                         version="1.1.1",
                         overlay=True,
                         control=True,
-                        show=show,
+                        show=layer_cfg["show"],
                     ).add_to(m)
                 except Exception:
                     pass
