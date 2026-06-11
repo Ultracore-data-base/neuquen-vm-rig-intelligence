@@ -658,7 +658,7 @@ with tabs[1]:
                 f"{selected_row.get('area','')} › {selected_row.get('operator','')} › Score {int(round(float(selected_row.get('rig_demand_score',50))))}"
             )
 
-        st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
+       st.markdown(f'<div class="uc-footer">{selected_label}</div>', unsafe_allow_html=True)
 
        with right_col:
         if selected_row:
