@@ -26,7 +26,32 @@ st.set_page_config(
 )
 
 DATA_DIR = Path("data")
+st.markdown("""
+<style>
+.selected-op {
+    border: 2px solid #36A3FF !important;
+    border-radius: 12px;
+    padding: 9px 8px !important;
+    background: rgba(54,163,255,0.18);
+    box-shadow: 0 0 14px rgba(54,163,255,0.35);
+}
 
+.muted-op {
+    opacity: 0.55;
+    transform: scale(0.94);
+    transform-origin: left center;
+}
+
+.selected-op .op-name {
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+}
+
+.selected-op .op-score {
+    transform: scale(1.12);
+}
+</style>
+""", unsafe_allow_html=True)
 
 def load_csv(name):
     path = DATA_DIR / name
@@ -499,21 +524,26 @@ with tabs[1]:
                 .max()
                 .reset_index()
                 .sort_values("rig_demand_score", ascending=False)
-            )
+            )           
             for _, row in op_scores.head(18).iterrows():
                 op = str(row["operator"])
                 score = float(row["rig_demand_score"])
                 color = color_for_operator(op)
-                op_rows += f"""
+
                 selected_operator_name = ""
-if "selected_map_row" in st.session_state:
-    selected_operator_name = str(
-        st.session_state["selected_map_row"].get("operator", "")
-    ).strip().upper()
+                if "selected_map_row" in st.session_state:
+                    selected_operator_name = str(
+                        st.session_state["selected_map_row"].get("operator", "")
+                    ).strip().upper()
 
-is_selected_operator = selected_operator_name and selected_operator_name == op.strip().upper()
+                is_selected_operator = (
+                    selected_operator_name
+                    and selected_operator_name == op.strip().upper()
+                )
 
-row_class = "op-row selected-op" if is_selected_operator else "op-row muted-op"
+                row_class = "op-row selected-op" if is_selected_operator else "op-row muted-op"
+
+                op_rows += f"""
                 <div class="{row_class}">
                   <div class="op-left">
                     <div class="op-check" style="background:{color};">✓</div>
