@@ -17,6 +17,11 @@ from operational_activity_engine import (
     activity_summary_by_basin,
     top_operational_activity
 )
+from observed_activity_engine import (
+    calculate_observed_activity,
+    observed_activity_by_operator,
+    observed_activity_by_area
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -394,6 +399,7 @@ energy_datasets = load_csv(
     "energy_intelligence_dataset_registry.csv"
 )
 activity_scores = load_csv("activity_score_master.csv")
+observed_activity = load_csv("observed_activity_master.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
@@ -909,7 +915,28 @@ with tabs[8]:
     st.dataframe(
         activity_summary_by_basin(activity_scores),
         use_container_width=True
-    )    
+    )
+    st.divider()
+
+    st.subheader("Observed Activity Intelligence")
+
+    st.caption(
+    "Observed activity combines production, drilling and well-status signals."
+)
+
+    st.subheader("Top Areas by Observed Activity")
+
+    st.dataframe(
+    observed_activity_by_area(observed_activity),
+    use_container_width=True
+)
+
+    st.subheader("Observed Activity by Operator")
+
+    st.dataframe(
+    observed_activity_by_operator(observed_activity),
+    use_container_width=True
+)
 
 
 with tabs[9]:
