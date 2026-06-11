@@ -53,60 +53,6 @@ st.markdown("""
     transform: scale(1.12);
 }
 
-    border-top: 1px solid rgba(20,32,51,0.22) !important;
-}
-3. Para que “Scored areas” arranque visible
-
-Confirmá que esta línea quedó así:
-
-fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True, control=True)
-
-y que después esté:
-
-fg.add_to(m)
-4. Después, en el panel derecho falso
-
-Lo dejamos como panel de datos reales arriba, y abajo sacamos los checkboxes falsos o los convertimos en texto:
-
-<div class="layer-group-title">MAP CONTROLS</div>
-<div class="layer-row">Use the real layer control inside the map to toggle official GIS layers.</div>
-
-Primero probá marcar UEIP scored areas by operator en el control blanco del mapa. Ahí deberían reaparecer los círculos.
-
-ahi ?
-
-Sí, exactamente ahí. 👍
-
-Pero no lo pegues dentro de .selected-op.
-
-Pegalo antes del </style> de la línea 55, así:
-
-.selected-op .op-score {
-    transform: scale(1.12);
-}
-
-
-</style>
-
-Después hacé Commit changes y esperá que Streamlit redeploye.
-
-Cuando vuelva a levantar:
-
-Abrí el mapa.
-Verificá si el panel blanco de Folium se ve más parecido al panel lateral.
-
-Marcá:
-
-UEIP scored areas by operator
-
-y decime si vuelven a aparecer los círculos de score.
-
-Si no aparecen, el próximo paso será revisar las líneas alrededor de:
-
-fg = folium.FeatureGroup(
-    name="UEIP scored areas by operator",
-
-porque ahí seguramente quedó algo desactivado durante los cambios que hicimos hoy.
 </style>
 """, unsafe_allow_html=True)
 
