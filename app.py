@@ -18,6 +18,11 @@ try:
     import plotly.express as px
 except Exception:
     px = None
+from official_gis_registry import (
+gis_source_status,
+active_wms_layers_for_province,
+pending_gis_sources
+)
 
 
 st.set_page_config(
@@ -373,6 +378,7 @@ gis_layers = load_csv("gis_layer_registry.csv")
 contractor_intelligence = load_csv("contractor_intelligence.csv")
 rig_fleet = load_csv("rig_fleet_master.csv")
 official_sources = load_csv("official_energy_data_sources.csv")
+official_gis_layers = load_csv("official_gis_layer_registry.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
@@ -877,6 +883,19 @@ with tabs[8]:
 with tabs[9]:
 
     st.header("Official Energy Data Registry")
+    st.subheader("Official GIS Layer Status")
+
+st.dataframe(
+    gis_source_status(official_gis_layers),
+    use_container_width=True
+)
+
+st.subheader("Pending GIS Sources")
+
+st.dataframe(
+    pending_gis_sources(official_gis_layers),
+    use_container_width=True
+)
 
     st.caption(
         "Official datasets connected to the ULTRACORE intelligence platform."
