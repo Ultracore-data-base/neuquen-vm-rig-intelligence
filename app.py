@@ -882,7 +882,7 @@ with tabs[7]:
         st.subheader("Service Opportunity Rules")
         st.dataframe(clean_table(service_rules), use_container_width=True)
     
-    with tabs[8]:
+with tabs[8]:
 
     st.header("Operational Activity Intelligence")
 
