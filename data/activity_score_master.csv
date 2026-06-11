@@ -1,0 +1,11 @@
+area,operator,basin,province,drilling_score,frac_score,production_score,seismic_score,well_status_score,operational_activity_score,activity_bucket,activity_note
+Loma Campana,YPF,Neuquén Basin,Neuquen,92,88,94,80,85,90,Very High,High drilling + frac + production intensity
+La Calera,Pluspetrol / YPF,Neuquén Basin,Neuquen,84,80,82,78,70,79,High,Strong Vaca Muerta development area
+Bajada del Palo Oeste,Vista Energy,Neuquén Basin,Neuquen,86,82,88,72,75,82,High,Vista core shale activity
+Fortin de Piedra,Tecpetrol,Neuquén Basin,Neuquen,88,76,90,70,80,82,High,Gas-driven shale development
+La Amarga Chica,YPF / Petronas,Neuquén Basin,Neuquen,78,76,80,65,70,74,High,Active unconventional development
+Bandurria Sur,YPF / partners,Neuquén Basin,Neuquen,72,68,75,60,65,69,Medium-High,Relevant activity but lower than core blocks
+Aguada Pichana Este,TotalEnergies / partners,Neuquén Basin,Neuquen,70,66,74,58,62,67,Medium-High,Gas and liquids development signal
+Rincon de Aranda,Pampa Energia,Neuquén Basin,Neuquen,68,60,72,55,60,64,Medium,"Emerging activity, needs monitoring"
+Los Toldos II Este,Tecpetrol / GyP,Neuquén Basin,Neuquen,58,52,55,45,50,53,Medium,Watchlist area
+Pico Truncado / Koluel Kaike,CGC,Golfo San Jorge,Santa Cruz,46,35,50,30,58,44,Monitor,Conventional / workover potential
