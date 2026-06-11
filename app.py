@@ -52,6 +52,124 @@ st.markdown("""
 .selected-op .op-score {
     transform: scale(1.12);
 }
+.leaflet-control-layers {
+    background: #eef3f8 !important;
+    color: #152233 !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(15, 32, 52, 0.18) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+    padding: 12px 14px !important;
+    font-family: Inter, Arial, sans-serif !important;
+    font-weight: 700 !important;
+    max-height: 620px !important;
+    overflow-y: auto !important;
+}
+
+.leaflet-control-layers label {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    color: #142033 !important;
+    border-bottom: 1px solid rgba(20,32,51,0.12);
+    padding: 5px 0 !important;
+}
+
+.leaflet-control-layers-selector {
+    transform: scale(1.25);
+    margin-right: 8px !important;
+}
+
+.leaflet-control-layers-base,
+.leaflet-control-layers-overlays {
+    margin-top: 8px !important;
+}
+
+.leaflet-control-layers-separator {
+    border-top: 1px solid rgba(20,32,51,0.22) !important;
+}
+3. Para que “Scored areas” arranque visible
+
+Confirmá que esta línea quedó así:
+
+fg = folium.FeatureGroup(name="UEIP scored areas by operator", show=True, control=True)
+
+y que después esté:
+
+fg.add_to(m)
+4. Después, en el panel derecho falso
+
+Lo dejamos como panel de datos reales arriba, y abajo sacamos los checkboxes falsos o los convertimos en texto:
+
+<div class="layer-group-title">MAP CONTROLS</div>
+<div class="layer-row">Use the real layer control inside the map to toggle official GIS layers.</div>
+
+Primero probá marcar UEIP scored areas by operator en el control blanco del mapa. Ahí deberían reaparecer los círculos.
+
+ahi ?
+
+Sí, exactamente ahí. 👍
+
+Pero no lo pegues dentro de .selected-op.
+
+Pegalo antes del </style> de la línea 55, así:
+
+.selected-op .op-score {
+    transform: scale(1.12);
+}
+
+/* NUEVO BLOQUE */
+
+.leaflet-control-layers {
+    background: #eef3f8 !important;
+    color: #152233 !important;
+    border-radius: 14px !important;
+    border: 1px solid rgba(15, 32, 52, 0.18) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+    padding: 12px 14px !important;
+    max-height: 620px !important;
+    overflow-y: auto !important;
+}
+
+.leaflet-control-layers label {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    color: #142033 !important;
+    border-bottom: 1px solid rgba(20,32,51,0.12);
+    padding: 5px 0 !important;
+}
+
+.leaflet-control-layers-selector {
+    transform: scale(1.25);
+    margin-right: 8px !important;
+}
+
+.leaflet-control-layers-base,
+.leaflet-control-layers-overlays {
+    margin-top: 8px !important;
+}
+
+/* FIN NUEVO BLOQUE */
+
+</style>
+
+Después hacé Commit changes y esperá que Streamlit redeploye.
+
+Cuando vuelva a levantar:
+
+Abrí el mapa.
+Verificá si el panel blanco de Folium se ve más parecido al panel lateral.
+
+Marcá:
+
+UEIP scored areas by operator
+
+y decime si vuelven a aparecer los círculos de score.
+
+Si no aparecen, el próximo paso será revisar las líneas alrededor de:
+
+fg = folium.FeatureGroup(
+    name="UEIP scored areas by operator",
+
+porque ahí seguramente quedó algo desactivado durante los cambios que hicimos hoy.
 </style>
 """, unsafe_allow_html=True)
 
