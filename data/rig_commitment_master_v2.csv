@@ -1,0 +1,7 @@
+area,operator,province,known_contractor,active_rigs,owned_rigs_committed,incoming_rigs,commitment_status,contract_expiry,months_to_expiry,expiry_opportunity_score,new_rig_penalty,third_party_rig_service_score,commitment_note
+Loma Campana,YPF,Neuquen,HP,8,0,0,active_contract,2027-12-31,18,65,90,35,High existing coverage; low new-rig entry; strong O&M/support potential
+Fortin de Piedra,Tecpetrol,Neuquen,DLS,6,0,0,active_contract,2027-06-30,12,55,80,40,Existing coverage; monitor contract expiry; potential rig support/O&M
+Bajada del Palo Oeste,Vista Energy,Neuquen,To verify,0,0,0,unknown,,0,20,20,75,Verify contractor coverage; potential new rigs and services
+La Calera,Pluspetrol / YPF,Neuquen,To verify,0,0,0,unknown,,0,20,20,75,Verify coverage; high expansion/service potential
+Bandurria Sur,YPF / partners,Neuquen,To verify,0,0,0,unknown,,0,20,20,70,Check if future drilling plan already contracted
+Aguada Pichana Este,TotalEnergies / partners,Neuquen,To verify,0,0,0,unknown,,0,20,20,70,Check future rig contracting and service opportunity
