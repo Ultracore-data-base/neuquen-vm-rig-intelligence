@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 from contractor_fleet_intelligence import contractor_fleet_html
 from rig_gap_intelligence import rig_gap_html
-
+from opportunity_ranking import build_opportunity_ranking
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -373,6 +373,12 @@ rig_fleet = load_csv("rig_fleet_master.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
+opportunity_ranking = build_opportunity_ranking(
+    scored,
+    contractor_intelligence,
+    forecast_rigs
+)
+
 
 st.markdown("""
 <style>
@@ -491,6 +497,7 @@ tabs = st.tabs([
     "Executive Summary",
     "Immersive GIS Map",
     "Operator Intelligence",
+    "Rig Opportunities"
     "Area Intelligence",
     "Permit Pipeline",
     "Rig Coverage",
@@ -799,14 +806,24 @@ with tabs[2]:
 
 
 with tabs[3]:
-    st.header("Area Intelligence")
-    if not operator_area_forecast.empty:
-        st.dataframe(clean_table(operator_area_forecast), use_container_width=True)
-    if not areas.empty:
-        st.subheader("National Area Master")
-        st.dataframe(clean_table(areas), use_container_width=True)
 
+    st.header("Rig Opportunity Ranking")
 
+    st.caption(
+        "Areas ranked by estimated rig demand, contractor coverage and commercial opportunity."
+    )
+
+    if not opportunity_ranking.empty:
+
+        st.dataframe(
+            opportunity_ranking,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    else:
+
+        st.info("No opportunity ranking available.")
 with tabs[4]:
     st.header("Permit Pipeline")
     if not permits_pipeline.empty:
