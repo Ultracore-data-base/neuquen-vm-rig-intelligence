@@ -892,16 +892,17 @@ st.dataframe(
 
 st.subheader("Pending GIS Sources")
 
-st.dataframe(
-    pending_gis_sources(official_gis_layers),
+    st.dataframe(
+        pending_gis_sources(official_gis_layers),
+        use_container_width=True
+    )
+
     st.subheader("Full Official GIS Layer Registry")
 
     st.dataframe(
         official_gis_layers,
         use_container_width=True
     )
-    use_container_width=True
-)
 
     st.caption(
         "Official datasets connected to the ULTRACORE intelligence platform."
