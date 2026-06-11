@@ -732,14 +732,14 @@ with tabs[1]:
               <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
               <div class="detail-row"><span>Rig Count</span><span>-</span></div>
             """
+
         fleet_html = contractor_fleet_html(contractor_info, rig_fleet)
         rig_forecast_text = forecast_rigs(selected_score) if selected_score else "-"
 
-rig_gap_block = rig_gap_html(
-    rig_forecast_text,
-    contractor_info
-)
-
+        rig_gap_block = rig_gap_html(
+            rig_forecast_text,
+            contractor_info
+        )
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
