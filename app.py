@@ -3,6 +3,7 @@ import hashlib
 import pandas as pd
 import streamlit as st
 from contractor_fleet_intelligence import contractor_fleet_html
+from rig_gap_intelligence import rig_gap_html
 
 try:
     import folium
