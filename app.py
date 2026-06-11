@@ -541,8 +541,10 @@ with tabs[1]:
                     and selected_operator_name == op.strip().upper()
                 )
 
-                row_class = "op-row selected-op" if is_selected_operator else "op-row muted-op"
-
+                if selected_operator_name:
+                    row_class = "op-row selected-op" if is_selected_operator else "op-row muted-op"
+                else:
+                    row_class = "op-row"
                 op_rows += f"""
                 <div class="{row_class}">
                   <div class="op-left">
