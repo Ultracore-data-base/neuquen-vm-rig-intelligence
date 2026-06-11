@@ -5,6 +5,7 @@ import streamlit as st
 from contractor_fleet_intelligence import contractor_fleet_html
 from rig_gap_intelligence import rig_gap_html
 from opportunity_ranking import build_opportunity_ranking
+from official_source_registry import source_summary_by_module
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -370,6 +371,7 @@ service_rules = load_csv("service_opportunity_rules.csv")
 gis_layers = load_csv("gis_layer_registry.csv")
 contractor_intelligence = load_csv("contractor_intelligence.csv")
 rig_fleet = load_csv("rig_fleet_master.csv")
+official_sources = load_csv("official_energy_data_sources.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
@@ -503,6 +505,7 @@ tabs = st.tabs([
     "Rig Coverage",
     "Multi-Service",
     "Score",
+    "Official Data",
     "Data Export",
 ])
 
@@ -887,5 +890,26 @@ with tabs[8]:
                 file_name=filename,
                 mime="text/csv",
             )
+with tabs[9]:
+
+    st.header("Official Energy Data Registry")
+
+    st.caption(
+        "Official datasets connected to the ULTRACORE intelligence platform."
+    )
+
+    st.subheader("Source Summary")
+
+    st.dataframe(
+        source_summary_by_module(official_sources),
+        use_container_width=True
+    )
+
+    st.subheader("Registered Sources")
+
+    st.dataframe(
+        official_sources,
+        use_container_width=True
+    )
 
 
