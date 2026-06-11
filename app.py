@@ -6,6 +6,11 @@ from contractor_fleet_intelligence import contractor_fleet_html
 from rig_gap_intelligence import rig_gap_html
 from opportunity_ranking import build_opportunity_ranking
 from official_source_registry import source_summary_by_module
+from energy_dataset_registry import (
+    dataset_status_summary,
+    rig_score_weight_table,
+    critical_dataset_backlog
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -379,6 +384,9 @@ contractor_intelligence = load_csv("contractor_intelligence.csv")
 rig_fleet = load_csv("rig_fleet_master.csv")
 official_sources = load_csv("official_energy_data_sources.csv")
 official_gis_layers = load_csv("official_gis_layer_registry.csv")
+energy_datasets = load_csv(
+    "energy_intelligence_dataset_registry.csv"
+)
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
@@ -903,7 +911,26 @@ with tabs[9]:
     st.caption(
         "Official datasets connected to the ULTRACORE intelligence platform."
     )
+    st.subheader("Energy Dataset Status")
 
+    st.dataframe(
+    dataset_status_summary(energy_datasets),
+    use_container_width=True
+)
+
+    st.subheader("Rig Demand Score v2 Inputs")
+
+    st.dataframe(
+    rig_score_weight_table(energy_datasets),
+    use_container_width=True
+)
+
+    st.subheader("Critical Dataset Backlog")
+
+    st.dataframe(
+    critical_dataset_backlog(energy_datasets),
+    use_container_width=True
+)
     st.subheader("Source Summary")
 
     st.dataframe(
