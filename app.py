@@ -704,7 +704,7 @@ with tabs[1]:
               <div class="detail-row"><span>Rig Type</span><span>Unknown</span></div>
               <div class="detail-row"><span>Rig Count</span><span>-</span></div>
             """
-            fleet_html = contractor_fleet_html(contractor_info, rig_fleet)
+        fleet_html = contractor_fleet_html(contractor_info, rig_fleet)
 
         st.html(f"""
         <div class="right-panel">
