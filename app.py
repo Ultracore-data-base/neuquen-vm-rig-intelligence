@@ -740,7 +740,7 @@ rig_gap_block = rig_gap_html(
     contractor_info
 )
 
-        st.html(f"""
+st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
 
