@@ -740,7 +740,7 @@ rig_gap_block = rig_gap_html(
     contractor_info
 )
 
-st.html(f"""
+        st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
 
@@ -756,17 +756,18 @@ st.html(f"""
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
-<div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
-{contractor_html}
+            <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
+            {contractor_html}
 
-<div style="margin-top:9px;"><b>Contractor Fleet</b></div>
-{fleet_html}
+            <div style="margin-top:9px;"><b>Contractor Fleet</b></div>
+            {fleet_html}
 
-<div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
-{rig_gap_block}
+            <div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
+            {rig_gap_block}
 
-<div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
-</div>
+            <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
+          </div>
+
           <div class="layer-group-title">BASE MAP</div>
           <div class="layer-row"><div class="layer-box">✓</div>OpenStreetMap / roads</div>
           <div class="layer-row"><div class="layer-box off"></div>Satellite / Esri</div>
