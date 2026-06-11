@@ -1,0 +1,25 @@
+operator,current_contractor,contract_type,rig_type,rig_count,note
+YPF,HP,Integrated,1500HP Walking,8,High confidence seed
+YPF / Petronas,HP,Integrated,1500HP Walking,3,To verify by area
+YPF / partners,HP / DLS,Mixed,1500HP Walking,4,To verify partner allocation
+YPF / others,To verify,Unknown,Unknown,,Requires contract validation
+Vista Energy,Nabors,Rig Only,1500HP Walking,4,Market intelligence seed
+Vista,Nabors,Rig Only,1500HP Walking,4,Alias
+Tecpetrol,DLS,Integrated,1500HP Walking,6,Market intelligence seed
+Tecpetrol / GyP,DLS,Integrated,1500HP Walking,2,To verify GyP allocation
+Pluspetrol / YPF,To verify,Unknown,Unknown,,High priority verification
+Pluspetrol,To verify,Unknown,Unknown,,High priority verification
+Pampa Energia,To verify,Unknown,Unknown,,Requires contract validation
+Pampa Energía,To verify,Unknown,Unknown,,Requires contract validation
+Pan American Energy,San Antonio,Rig Only,1000HP / 1500HP,5,Seed for PAE
+PAE,San Antonio,Rig Only,1000HP / 1500HP,5,Alias
+TotalEnergies / partners,To verify,Unknown,Unknown,,High priority verification
+TotalEnergies,To verify,Unknown,Unknown,,High priority verification
+GeoPark / GyP,To verify,Unknown,Unknown,,National expansion seed
+GeoPark,To verify,Unknown,Unknown,,National expansion seed
+CGC,To verify,Unknown,Unknown,2,Golfo/Austral expansion seed
+Shell,Ensign,Integrated,1500HP Walking,3,Market intelligence seed
+Shell Argentina,Ensign,Integrated,1500HP Walking,3,Alias
+Chevron,To verify,Unknown,Unknown,,Requires contract validation
+ExxonMobil,To verify,Unknown,Unknown,,Requires contract validation
+Phoenix,To verify,Unknown,Unknown,,Requires contract validation
