@@ -883,14 +883,15 @@ with tabs[8]:
 with tabs[9]:
 
     st.header("Official Energy Data Registry")
+
     st.subheader("Official GIS Layer Status")
 
-st.dataframe(
-    gis_source_status(official_gis_layers),
-    use_container_width=True
-)
+    st.dataframe(
+        gis_source_status(official_gis_layers),
+        use_container_width=True
+    )
 
-st.subheader("Pending GIS Sources")
+    st.subheader("Pending GIS Sources")
 
     st.dataframe(
         pending_gis_sources(official_gis_layers),
