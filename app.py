@@ -22,6 +22,7 @@ from observed_activity_engine import (
     observed_activity_by_operator,
     observed_activity_by_area
 )
+from observed_activity_panel import observed_activity_html
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -775,6 +776,11 @@ with tabs[1]:
             rig_forecast_text,
             contractor_info
         )
+        observed_activity_block = observed_activity_html(
+        selected_area,
+        selected_operator,
+        observed_activity
+)
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
@@ -799,6 +805,8 @@ with tabs[1]:
 
             <div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
             {rig_gap_block}
+            <div style="margin-top:9px;"><b>Operational Activity</b></div>
+            {observed_activity_block}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
