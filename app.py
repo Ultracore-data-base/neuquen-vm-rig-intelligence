@@ -11,6 +11,12 @@ from energy_dataset_registry import (
     rig_score_weight_table,
     critical_dataset_backlog
 )
+from operational_activity_engine import (
+    calculate_operational_activity_score,
+    activity_summary_by_operator,
+    activity_summary_by_basin,
+    top_operational_activity
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -387,6 +393,7 @@ official_gis_layers = load_csv("official_gis_layer_registry.csv")
 energy_datasets = load_csv(
     "energy_intelligence_dataset_registry.csv"
 )
+activity_scores = load_csv("activity_score_master.csv")
 
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
@@ -519,6 +526,7 @@ tabs = st.tabs([
     "Permit Pipeline",
     "Rig Coverage",
     "Multi-Service",
+    "Operational Activity",
     "Score",
     "Official Data",
     "Data Export",
@@ -873,9 +881,38 @@ with tabs[7]:
     if not service_rules.empty:
         st.subheader("Service Opportunity Rules")
         st.dataframe(clean_table(service_rules), use_container_width=True)
+    
+    with tabs[8]:
+
+    st.header("Operational Activity Intelligence")
+
+    st.caption(
+        "Operational Activity Score combines drilling, frac, production, seismic and well-status signals."
+    )
+
+    st.subheader("Top Operational Activity Areas")
+
+    st.dataframe(
+        top_operational_activity(activity_scores),
+        use_container_width=True
+    )
+
+    st.subheader("Activity Summary by Operator")
+
+    st.dataframe(
+        activity_summary_by_operator(activity_scores),
+        use_container_width=True
+    )
+
+    st.subheader("Activity Summary by Basin")
+
+    st.dataframe(
+        activity_summary_by_basin(activity_scores),
+        use_container_width=True
+    )    
 
 
-with tabs[8]:
+with tabs[9]:
     st.header("Score")
     st.markdown(
         '<div class="uc-score-card"><h3>Rig Demand Score</h3><table><tr><th>Score Component</th><th>Weight</th></tr><tr><td>Permits / EIA</td><td>40%</td></tr><tr><td>Investor / CAPEX Signal</td><td>30%</td></tr><tr><td>Activity Intensity</td><td>20%</td></tr><tr><td>Operator Tier / Core Relevance</td><td>10%</td></tr></table><p>The score estimates the probability that an operator will require drilling rigs or associated services within the next 6–18 months.</p></div>',
@@ -883,7 +920,7 @@ with tabs[8]:
     )
 
 
-with tabs[9]:
+with tabs[10]:
 
     st.header("Official Energy Data Registry")
 
@@ -944,7 +981,7 @@ with tabs[9]:
         official_sources,
         use_container_width=True
     )
-with tabs[10]:
+with tabs[11]:
 
     st.header("Data Export")
 
