@@ -43,6 +43,10 @@ from contract_intelligence_engine import (
     build_contract_intelligence,
     contract_intelligence_html
 )
+from capital_program_engine import (
+    build_capital_program,
+    capital_program_html
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -425,6 +429,7 @@ observed_activity = load_csv("observed_activity_master.csv")
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 contracts = load_csv("contract_master.csv")
+capital_programs = load_csv("capital_program_master.csv")
 
 opportunity_ranking = build_opportunity_ranking(
     scored,
@@ -460,7 +465,11 @@ contract_intelligence = build_contract_intelligence(
     forecast_intelligence,
     rig_expansion
 )
-
+capital_program_block = capital_program_html(
+    selected_area,
+    selected_operator,
+    capital_program
+)
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"] {background:#06111d;}
@@ -906,6 +915,12 @@ with tabs[1]:
             <div style="margin-top:9px;">
             <b>Rig Commitment Intelligence</b>
             </div>
+            st.subheader("Capital Program Ranking")
+
+            st.dataframe(
+            capital_program,
+            use_container_width=True
+)
 
             {rig_commitment_block}
 
