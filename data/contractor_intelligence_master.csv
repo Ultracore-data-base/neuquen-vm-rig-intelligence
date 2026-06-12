@@ -1,0 +1,11 @@
+operator,current_contractor,contract_type,rig_type,rig_count,contract_start,contract_end,renewal_option,confidence,source_type,commercial_status,note
+YPF,HP,Integrated,1500HP Walking,8,,,To verify,70,Market intelligence,Active,"High priority. Needs contract expiry validation by area."
+Vista Energy,Nabors,Rig Only,1500HP Walking,4,,,To verify,55,Market intelligence,Active,"Validate Bajada del Palo Oeste / Aguila Mora contractor terms."
+Tecpetrol,DLS,Integrated,1500HP Walking,6,,,To verify,55,Market intelligence,Active,"Validate Fortin de Piedra and Los Toldos II Este contract term."
+Pan American Energy,San Antonio,Rig Only,1000HP / 1500HP,5,,,To verify,50,Market intelligence,Active,"Validate Golfo San Jorge and Neuquina split."
+Shell,Ensign,Integrated,1500HP Walking,3,,,To verify,45,Market intelligence,Active,"Confirm Argentina rig deployment and contract duration."
+CGC,To verify,Unknown,Unknown,2,,,To verify,35,Seed,Open intelligence required,"High relevance for Golfo San Jorge / Austral."
+Pluspetrol,To verify,Unknown,Unknown,2,,,To verify,40,Seed,Open intelligence required,"Priority verification for Neuquina activity."
+TotalEnergies,To verify,Unknown,Unknown,, , ,To verify,40,Seed,Open intelligence required,"Validate operated/partner areas."
+Chevron,To verify,Unknown,Unknown,, , ,To verify,35,Seed,Open intelligence required,"Requires contract validation."
+GeoPark,To verify,Unknown,Unknown,,2027-01-01,2030-12-31,To verify,70,Market signal,To verify,"Reported H&P signal. Confirm exact contract terms."
