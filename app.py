@@ -55,8 +55,7 @@ from commercial_action_engine import commercial_action_html
 
 from commercial_action_engine_v2 import (
     commercial_action_html,
-    opportunity_signal_html,
-    build_opportunity_table
+    opportunity_signal_html
 )
 try:
     import folium
