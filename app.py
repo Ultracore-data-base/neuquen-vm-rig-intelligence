@@ -882,6 +882,11 @@ with tabs[1]:
             <div style="margin-top:9px;">
             <b>Contract Intelligence</b>
             </div>
+            <div style="margin-top:9px;">
+            <b>Contract Intelligence</b>
+            </div>
+
+            {contract_intelligence_block}
 
             {contract_intelligence_block}
 
