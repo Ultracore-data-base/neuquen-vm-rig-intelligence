@@ -833,7 +833,7 @@ with tabs[1]:
         selected_operator,
         rig_expansion
 )
-       rig_commitment_block = rig_commitment_html(
+        rig_commitment_block = rig_commitment_html(
         selected_area,
         selected_operator,
         rig_commitments
