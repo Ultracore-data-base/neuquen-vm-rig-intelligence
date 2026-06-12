@@ -621,20 +621,21 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
 .layer-select{background:white;border:1px solid #c9d3dc;border-radius:6px;padding:7px 8px;margin:6px 0;font-size:12px;color:#122033;}
 
 .detail-card{
-  margin-top:10px;
-  background:#071321;
-  color:#fff;
-  border-radius:10px;
-  padding:11px;
-  font-size:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,.18);
+    margin-top:10px;
+    padding:10px;
+    background:rgba(22,139,255,0.12);
+    border:1px solid rgba(54,163,255,0.35);
+    border-radius:10px;
+    color:#d8e6ff;
+    font-size:11px;
+    line-height:1.5;
 }
-.detail-card b{font-size:13px;}
-.detail-row{
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid rgba(255,255,255,.10);
-    padding:5px 0;
+
+.detail-card b{
+    color:#36a3ff;
+    font-size:12px;
+    display:block;
+    margin-bottom:6px;
 }
 .detail-row span:last-child{
     color:#36a3ff;
