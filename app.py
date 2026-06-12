@@ -595,17 +595,17 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
   box-sizing:border-box;
 }
 .right-panel{
-  background:linear-gradient(180deg,#f8fafc,#eef3f7);
-  color:#122033;
-  height:760px;
-  overflow-y:auto;
-  padding:13px 12px;
-  border:1px solid rgba(0,0,0,.10);
-  box-sizing:border-box;
+    background:linear-gradient(180deg,#092034,#061321);
+    color:#ffffff;
+    height:760px;
+    overflow-y:auto;
+    padding:13px 12px;
+    border:1px solid rgba(255,255,255,.08);
+    box-sizing:border-box;
 }
 .panel-title{font-size:14px;font-weight:900;letter-spacing:.5px;margin-bottom:8px;}
 .panel-subtitle{font-size:12.5px;color:#b6c6d6;margin-bottom:8px;}
-.right-panel .panel-subtitle{color:#526173;}
+.right-panel .panel-subtitle{color:#9fb4c8;}
 
 .op-row{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.09);padding:7px 0;}
 .op-left{display:flex;align-items:center;gap:9px;}
