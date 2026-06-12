@@ -39,6 +39,10 @@ from rig_commitment_engine_v2 import (
     rig_commitment_html,
     apply_rig_commitment_penalty
 )
+from contract_intelligence_engine import (
+    build_contract_intelligence,
+    contract_intelligence_html
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -420,6 +424,7 @@ observed_activity = load_csv("observed_activity_master.csv")
 
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
+contracts = load_csv("contract_master.csv")
 
 opportunity_ranking = build_opportunity_ranking(
     scored,
@@ -447,6 +452,13 @@ rig_expansion = build_rig_expansion_score(
 rig_expansion = apply_rig_commitment_penalty(
     rig_expansion,
     rig_commitments
+)
+contract_intelligence = build_contract_intelligence(
+    contracts,
+    observed_activity,
+    tender_probability,
+    forecast_intelligence,
+    rig_expansion
 )
 st.markdown("""
 <style>
@@ -828,6 +840,11 @@ with tabs[1]:
         selected_operator,
         forecast_intelligence
 )
+        contract_intelligence_block = contract_intelligence_html(
+        selected_area,
+        selected_operator,
+        contract_intelligence
+)
         rig_expansion_block = rig_expansion_html(
         selected_area,
         selected_operator,
@@ -856,6 +873,11 @@ with tabs[1]:
 
             <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
             {contractor_html}
+            <div style="margin-top:9px;">
+            <b>Contract Intelligence</b>
+            </div>
+
+            {contract_intelligence_block}
 
             <div style="margin-top:9px;"><b>Contractor Fleet</b></div>
             {fleet_html}
@@ -928,6 +950,12 @@ with tabs[3]:
 
         st.dataframe(
         forecast_intelligence,
+        use_container_width=True
+)
+        st.subheader("Contract Intelligence Ranking")
+
+        st.dataframe(
+        contract_intelligence,
         use_container_width=True
 )
 with tabs[4]:
