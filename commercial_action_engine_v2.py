@@ -50,11 +50,13 @@ def build_commercial_action(
         tmp = rig_commitments.copy()
         tmp["_area_key"] = tmp["area"].apply(_norm)
         match = tmp[tmp["_area_key"] == _norm(area)]
+
         if not match.empty and "operator" in tmp.columns:
             match["_operator_key"] = match["operator"].apply(_norm)
             exact = match[match["_operator_key"] == _norm(operator)]
             if not exact.empty:
                 match = exact
+
         if not match.empty:
             commitment = match.iloc[0].to_dict()
 
@@ -69,16 +71,17 @@ def build_commercial_action(
 
     rig_expansion_score = _num(rig.get("Rig Expansion Score") if rig else 0)
     estimated_gap = _num(rig.get("Estimated Gap") if rig else 0)
+
     active_rigs = _num(commitment.get("active_rigs") if commitment else 0)
     incoming_rigs = _num(commitment.get("incoming_rigs") if commitment else 0)
     owned_rigs = _num(commitment.get("owned_rigs_committed") if commitment else 0)
     new_rig_penalty = _num(commitment.get("new_rig_penalty") if commitment else 0)
+    secured_supply = active_rigs + incoming_rigs + owned_rigs
+
     months_remaining = _num(contract.get("Months Remaining") if contract else -1)
     rebid = _num(contract.get("Rebid Opportunity") if contract else 0)
     om = _num(contract.get("O&M Opportunity") if contract else 0)
     capital_score = _num(capex.get("capital_score") if capex else 0)
-
-    secured_supply = active_rigs + incoming_rigs + owned_rigs
 
     if secured_supply >= 4 and new_rig_penalty >= 70 and rig_expansion_score <= 35:
         action = "Do not offer new rigs"
@@ -87,15 +90,40 @@ def build_commercial_action(
         months_left = int(round(months_remaining)) if months_remaining >= 0 else None
 
         if months_left is not None and months_left <= 3:
-            rationale = f"Contract renewal imminent. Estimated expiry in {months_left} months. Submit commercial proposal now and engage drilling decision makers."
+            rationale = (
+                f"Contract renewal imminent. "
+                f"Estimated expiry in {months_left} months. "
+                f"Submit commercial proposal now and engage drilling decision makers."
+            )
         elif months_left is not None and months_left <= 6:
-            rationale = f"Contract renewal window active. Estimated expiry in {months_left} months. Engage drilling team now and prepare renewal quotation."
+            rationale = (
+                f"Contract renewal window active. "
+                f"Estimated expiry in {months_left} months. "
+                f"Engage drilling team now and prepare renewal quotation."
+            )
         elif months_left is not None:
-            rationale = f"Fleet covered. Focus on O&M and support services. Estimated contract expiry in {months_left} months. Review relationship strategy and prepare quotation 3 months before renewal."
+            rationale = (
+                f"Fleet covered. "
+                f"Focus on O&M and support services. "
+                f"Estimated contract expiry in {months_left} months. "
+                f"Review relationship strategy and prepare quotation 3 months before renewal."
+            )
         else:
-            rationale = "Fleet covered. Focus on O&M and support services. Contract expiry date unknown. Maintain account monitoring."
+            rationale = (
+                "Fleet covered. "
+                "Focus on O&M and support services. "
+                "Contract expiry date unknown. Maintain account monitoring."
+            )
 
-        services = ["O&M", "Rig management", "Maintenance", "Lighting Towers", "HVAC", "Venting", "E-Frac support"]
+        services = [
+            "O&M",
+            "Rig management",
+            "Maintenance",
+            "Lighting Towers",
+            "HVAC",
+            "Venting",
+            "E-Frac support",
+        ]
 
     elif months_remaining >= 0 and months_remaining <= 12 and rebid >= 50:
         action = "Prepare rebid approach"
@@ -126,6 +154,7 @@ def build_commercial_action(
         priority = "Medium / Low"
         rationale = "No immediate new-rig gap detected. Maintain intelligence watch."
         services = ["Workover", "Lighting Towers", "HVAC", "Venting"]
+
     return {
         "Area": area,
         "Operator": operator,
@@ -163,33 +192,40 @@ def commercial_action_html(
         int(info.get("Rebid Opportunity", 0)),
         int(info.get("O&M Opportunity", 0)),
     )
-service_items = [
-    s.strip()
-    for s in str(info.get("Suggested Services", "")).split(",")
-    if s.strip()
-]
 
-services_html = ""
-for service in service_items:
-    services_html += "<span class='service-badge'>" + service + "</span>"
+    service_items = [
+        s.strip()
+        for s in str(info.get("Suggested Services", "")).split(",")
+        if s.strip()
+    ]
 
-        return f"""
-        <div class="detail-row">
+    services_html = ""
+    for service in service_items:
+        services_html += "<span class='service-badge'>" + service + "</span>"
+
+    return f"""
+    <div class="detail-row">
         <span>Recommended Action</span>
         <span>{str(info.get("Recommended Action", "-")).upper()}</span>
-        </div>
+    </div>
 
-        <div class="detail-row">
+    <div class="detail-row">
         <span>Commercial Focus</span>
         <span>{str(info.get("Priority", "-")).upper()}</span>
-        </div>
+    </div>
 
-        <div class="detail-row">
+    <div class="detail-row">
         <span>Opportunity Score</span>
         <span>{opportunity_score}</span>
-        </div>
+    </div>
 
-        <div class="service-badge-wrap">
+    <div class="detail-row">
+        <span>Commercial Note</span>
+        <span>{info.get("Rationale", "-")}</span>
+    </div>
+
+    <div class="service-badge-wrap">
         {services_html}
-        </div>
-        """
+    </div>
+    """
+
