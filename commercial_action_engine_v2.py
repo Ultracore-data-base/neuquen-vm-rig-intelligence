@@ -173,23 +173,23 @@ services_html = ""
 for service in service_items:
     services_html += "<span class='service-badge'>" + service + "</span>"
 
-    return f"""
-    <div class="detail-row">
+        return f"""
+        <div class="detail-row">
         <span>Recommended Action</span>
         <span>{str(info.get("Recommended Action", "-")).upper()}</span>
-    </div>
+        </div>
 
-    <div class="detail-row">
+        <div class="detail-row">
         <span>Commercial Focus</span>
         <span>{str(info.get("Priority", "-")).upper()}</span>
-    </div>
+        </div>
 
-    <div class="detail-row">
+        <div class="detail-row">
         <span>Opportunity Score</span>
         <span>{opportunity_score}</span>
-    </div>
+        </div>
 
-    <div class="service-badge-wrap">
+        <div class="service-badge-wrap">
         {services_html}
-    </div>
-    """
+        </div>
+        """
