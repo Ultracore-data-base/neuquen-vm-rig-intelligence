@@ -171,7 +171,7 @@ service_items = [
 
 services_html = ""
 for service in service_items:
-    services_html += f'<span class="service-badge">{service}</span>'
+    services_html += "<span class='service-badge'>" + service + "</span>"
 
     return f"""
     <div class="detail-row">
