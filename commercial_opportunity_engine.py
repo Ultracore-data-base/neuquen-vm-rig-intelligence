@@ -188,11 +188,11 @@ def enrich_opportunity_ranking(opportunity_ranking):
 
     if "Contract Expiry" in df.columns:
 
-    df["Months Remaining"] = df["Contract Expiry"].apply(
+        df["Months Remaining"] = df["Contract Expiry"].apply(
         lambda x: months_remaining(x)
     )
 
-    df["Renewal Probability (%)"] = df["Months Remaining"].apply(
+        df["Renewal Probability (%)"] = df["Months Remaining"].apply(
         lambda x: expiry_opportunity_score(x)
     )
     else:
