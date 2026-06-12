@@ -496,7 +496,37 @@ energy_datasets = load_csv(
 )
 activity_scores = load_csv("activity_score_master.csv")
 observed_activity = load_csv("observed_activity_master.csv")
+contract_lookup = contractor_intelligence.copy()
 
+if not contract_lookup.empty and "operator" in contract_lookup.columns and "Operator" in rig_strategy.columns:
+    contract_lookup["_operator_key"] = contract_lookup["operator"].astype(str).str.upper().str.strip()
+    rig_strategy["_operator_key"] = rig_strategy["Operator"].astype(str).str.upper().str.strip()
+
+    rig_strategy = rig_strategy.merge(
+        contract_lookup[
+            [
+                "_operator_key",
+                "provider",
+                "coverage_type",
+                "start_year",
+                "end_year",
+                "confidence",
+                "source_type",
+                "note",
+            ]
+        ],
+        on="_operator_key",
+        how="left",
+    )
+
+    rig_strategy["Current Contractor"] = rig_strategy["provider"]
+    rig_strategy["Contract Type"] = rig_strategy["coverage_type"]
+    rig_strategy["Contract Expiry"] = rig_strategy["end_year"].apply(
+        lambda x: f"{int(float(x))}-12-31" if str(x).replace(".0", "").isdigit() else None
+    )
+        rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
+
+    rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 contracts = load_csv("contract_master.csv")
