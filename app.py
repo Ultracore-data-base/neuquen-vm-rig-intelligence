@@ -911,18 +911,10 @@ with tabs[1]:
             {forecast_intelligence_block}
             <div style="margin-top:9px;"><b>Rig Expansion Intelligence</b></div>
             {rig_expansion_block}
-            <div style="margin-top:9px;">
-            <b>Rig Commitment Intelligence</b>
-            </div>
-            st.subheader("Capital Program Ranking")
-
-            st.dataframe(
-            capital_program,
-            use_container_width=True
-)
-
+            <div style="margin-top:9px;"><b>Capital Program Intelligence</b></div>
+            {capital_program_block}
+            <div style="margin-top:9px;"><b>Rig Commitment Intelligence</b></div>
             {rig_commitment_block}
-
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
 
@@ -1149,7 +1141,14 @@ with tabs[10]:
         official_sources,
         use_container_width=True
     )
-with tabs[11]:
+    with tabs[11]:
+    st.header("Capital Program Intelligence")
+
+    st.dataframe(
+        capital_program,
+        use_container_width=True
+    )
+with tabs[12]:
 
     st.header("Data Export")
 
