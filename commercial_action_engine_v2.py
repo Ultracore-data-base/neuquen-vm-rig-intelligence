@@ -200,7 +200,7 @@ for service in service_items:
     return f"""
     <div class="detail-row">
         <span>Recommended Action</span>
-        <span>{str(info.get("Recommended Action", "-")).upper()}</span>'
+        <span>{str(info.get("Recommended Action", "-")).upper()}</span>
     </div>
 
     <div class="detail-row">
