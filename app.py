@@ -640,6 +640,10 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
     color:#36a3ff;
     font-weight:800;
 }
+.detail-row span:first-child{
+    min-width:92px;
+    padding-right:8px;
+}
 .detail-pill{display:inline-block;background:#168BFF;color:white;border-radius:999px;padding:3px 7px;margin:3px 3px 0 0;font-size:11px;font-weight:800;}
 
 iframe {display:block !important;}
