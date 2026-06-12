@@ -165,6 +165,8 @@ def contract_phase(months):
     
     def next_action(months):
 
+def next_action(months):
+
     if months is None:
         return "Monitor"
 
