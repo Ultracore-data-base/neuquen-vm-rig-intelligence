@@ -52,6 +52,12 @@ from capital_program_engine import (
     capital_program_html
 )
 from commercial_action_engine import commercial_action_html
+
+from commercial_action_engine_v2 import (
+    commercial_action_html,
+    opportunity_signal_html,
+    build_opportunity_table
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
