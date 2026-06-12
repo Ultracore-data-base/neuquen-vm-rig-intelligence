@@ -157,15 +157,16 @@ st.markdown("""
     margin-top: 8px;
 }
 
-.service-badge {
-    display: inline-block;
-    background: #1f8cff;
-    color: white;
-    border-radius: 999px;
-    padding: 4px 8px;
-    margin: 2px 3px 2px 0;
-    font-size: 11px;
-    font-weight: 800;
+.service-badge{
+    display:inline-block;
+    background:#168BFF;
+    color:white;
+    border-radius:999px;
+    padding:4px 10px;
+    margin:3px;
+    font-size:11px;
+    font-weight:800;
+    box-shadow:0 0 8px rgba(22,139,255,.35);
 }
 
 </style>
@@ -629,7 +630,16 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
   box-shadow:0 3px 10px rgba(0,0,0,.18);
 }
 .detail-card b{font-size:13px;}
-.detail-row{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.10);padding:5px 0;}
+.detail-row{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid rgba(255,255,255,.10);
+    padding:5px 0;
+}
+.detail-row span:last-child{
+    color:#36a3ff;
+    font-weight:800;
+}
 .detail-pill{display:inline-block;background:#168BFF;color:white;border-radius:999px;padding:3px 7px;margin:3px 3px 0 0;font-size:11px;font-weight:800;}
 
 iframe {display:block !important;}
