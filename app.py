@@ -120,6 +120,58 @@ st.markdown("""
     margin-bottom: 8px;
     box-shadow: 0 0 14px rgba(54,163,255,0.25);
 }
+.opportunity-banner {
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 900;
+    font-size: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 0 14px rgba(54,163,255,0.25);
+}
+
+.opportunity-green {
+    background: rgba(39,174,96,0.22);
+    border: 1px solid rgba(39,174,96,0.75);
+    color: #ffffff;
+}
+
+.opportunity-blue {
+    background: rgba(54,163,255,0.20);
+    border: 1px solid rgba(54,163,255,0.75);
+    color: #ffffff;
+}
+
+.opportunity-yellow {
+    background: rgba(241,196,15,0.22);
+    border: 1px solid rgba(241,196,15,0.75);
+    color: #ffffff;
+}
+.opportunity-orange {
+    background: rgba(230,126,34,0.24);
+    border: 1px solid rgba(230,126,34,0.80);
+    color: #ffffff;
+}
+
+.opportunity-gray {
+    background: rgba(127,140,141,0.20);
+    border: 1px solid rgba(127,140,141,0.60);
+    color: #ffffff;
+}
+
+.service-badge-wrap {
+    margin-top: 8px;
+}
+
+.service-badge {
+    display: inline-block;
+    background: #1f8cff;
+    color: white;
+    border-radius: 999px;
+    padding: 4px 8px;
+    margin: 2px 3px 2px 0;
+    font-size: 11px;
+    font-weight: 800;
+}
 
 </style>
 """, unsafe_allow_html=True)
@@ -889,6 +941,14 @@ with tabs[1]:
         contract_intelligence,
         capital_program
 )
+        opportunity_signal_block = opportunity_signal_html(
+        selected_area,
+        selected_operator,
+        rig_expansion,
+        rig_commitments,
+        contract_intelligence,
+        capital_program
+)
         rig_expansion_block = rig_expansion_html(
         selected_area,
         selected_operator,
@@ -916,9 +976,7 @@ with tabs[1]:
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
-            <div class="alert-banner">
-             Intelligence available: Contract / CAPEX / Rig Commitment / Services
-             </div>
+            {opportunity_signal_block}
 
             <div style="margin-top:9px;"><b>Commercial Summary</b></div>
             {commercial_action_block}
