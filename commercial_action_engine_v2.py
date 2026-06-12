@@ -146,19 +146,19 @@ def commercial_action_html(
     return f"""
     <div class="detail-row">
     <span>Recommended Action</span>
-    <span>{info.get("Recommended Action", "-")}</span>
+    <span>{str(info.get("Recommended Action", "-")).upper()}</span>
     </div>
 
     <div class="detail-row">
     <span>Commercial Focus</span>
-    <span>{info.get("Priority", "-")}</span>
+    <span>{str(info.get("Priority", "-")).upper()}</span>
     </div>
 
     <div class="detail-row">
     <span>Opportunity Score</span>
     <span>{max(
         int(info.get("New Rig Opportunity",0)),
-        int(info.get("Rebid Opportunity",0)),
+        int(info.get(Rebid Opportunity",0)),
         int(info.get("O&M Opportunity",0))
     )}</span>
     </div>
