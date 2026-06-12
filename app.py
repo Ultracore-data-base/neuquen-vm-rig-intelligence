@@ -465,10 +465,8 @@ contract_intelligence = build_contract_intelligence(
     forecast_intelligence,
     rig_expansion
 )
-capital_program_block = capital_program_html(
-    selected_area,
-    selected_operator,
-    capital_program
+capital_program = build_capital_program(
+    capital_programs
 )
 st.markdown("""
 <style>
@@ -855,6 +853,11 @@ with tabs[1]:
         selected_operator,
         contract_intelligence
 )
+        capital_program_block = capital_program_html(
+        selected_area,
+        selected_operator,
+        capital_program
+)
         rig_expansion_block = rig_expansion_html(
         selected_area,
         selected_operator,
@@ -865,11 +868,7 @@ with tabs[1]:
         selected_operator,
         rig_commitments
 ) 
-        contract_intelligence_block = contract_intelligence_html(
-        selected_area,
-        selected_operator,
-        contract_intelligence
-)
+       
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
