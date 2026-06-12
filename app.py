@@ -524,7 +524,6 @@ if not contract_lookup.empty and "operator" in contract_lookup.columns and "Oper
     rig_strategy["Contract Expiry"] = rig_strategy["end_year"].apply(
         lambda x: f"{int(float(x))}-12-31" if str(x).replace(".0", "").isdigit() else None
     )
-        rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
 
     rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
