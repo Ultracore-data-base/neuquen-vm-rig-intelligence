@@ -530,7 +530,7 @@ rig_strategy = rig_strategy.drop(
     errors="ignore"
 )
 
-    rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
+rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 contracts = load_csv("contract_master.csv")
