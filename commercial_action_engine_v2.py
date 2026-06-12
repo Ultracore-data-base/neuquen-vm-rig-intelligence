@@ -143,33 +143,35 @@ def commercial_action_html(
         capital_program,
     )
 
+    opportunity_score = max(
+        int(info.get("New Rig Opportunity", 0)),
+        int(info.get("Rebid Opportunity", 0)),
+        int(info.get("O&M Opportunity", 0)),
+    )
+
+    services_html = "".join(
+        f'<span class="service-badge">{s.strip()}</span>'
+        for s in str(info.get("Suggested Services", "")).split(",")
+        if s.strip()
+    )
+
     return f"""
     <div class="detail-row">
-    <span>Recommended Action</span>
-    <span>{str(info.get("Recommended Action", "-")).upper()}</span>
+        <span>Recommended Action</span>
+        <span>{str(info.get("Recommended Action", "-")).upper()}</span>
     </div>
 
     <div class="detail-row">
-    <span>Commercial Focus</span>
-    <span>{str(info.get("Priority", "-")).upper()}</span>
+        <span>Commercial Focus</span>
+        <span>{str(info.get("Priority", "-")).upper()}</span>
     </div>
 
     <div class="detail-row">
-    <span>Opportunity Score</span>
-    <span>{max(
-        int(info.get("New Rig Opportunity",0)),
-        int(info.get(Rebid Opportunity",0)),
-        int(info.get("O&M Opportunity",0))
-    )}</span>
+        <span>Opportunity Score</span>
+        <span>{opportunity_score}</span>
     </div>
 
     <div class="service-badge-wrap">
-    {
-    "".join(
-    f'<span class="service-badge">{s.strip()}</span>'
-    for s in str(info.get("Suggested Services","")).split(",")
-    if s.strip()
-)
-    }
+        {services_html}
     </div>
     """
