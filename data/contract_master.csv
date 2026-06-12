@@ -1,0 +1,9 @@
+operator,area,contractor,rig_type,rig_count,contract_start,contract_end,renewal_option,status,contract_note
+YPF,Loma Campana,HP,1500HP Walking,8,2024-01-01,2027-12-31,Yes,Active,"Mature core asset; high service potential, low near-term new-rig entry"
+Vista Energy,Bajada del Palo Oeste,To verify,1500HP Walking,0,,,Unknown,To verify,High expansion potential; verify existing contracts
+Pluspetrol / YPF,La Calera,To verify,1500HP Walking,0,,,Unknown,To verify,High expansion potential; verify contracting status
+Tecpetrol,Fortin de Piedra,DLS,1500HP Walking,6,2024-06-01,2027-06-30,Yes,Active,Gas development; monitor expiry and O&M opportunity
+YPF / partners,Bandurria Sur,To verify,1500HP Walking,0,,,Unknown,To verify,Verify future drilling plan and existing rig commitments
+TotalEnergies / partners,Aguada Pichana Este,To verify,1500HP Walking,0,,,Unknown,To verify,Gas/liquids development; verify rig coverage
+Pampa Energia,Rincon de Aranda,To verify,1500HP Walking,0,,,Unknown,To verify,Emerging opportunity; monitor for new tenders
+CGC,Pico Truncado / Koluel Kaike,To verify,Workover / conventional,2,,,Unknown,To verify,Conventional/workover service opportunity
