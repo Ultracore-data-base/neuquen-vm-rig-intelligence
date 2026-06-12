@@ -51,12 +51,8 @@ from capital_program_engine import (
     build_capital_program,
     capital_program_html
 )
-from commercial_action_engine import commercial_action_html
 
-from commercial_action_engine_v2 import (
-    commercial_action_html,
-    opportunity_signal_html
-)
+from commercial_action_engine_v2 import commercial_action_html
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -940,19 +936,7 @@ with tabs[1]:
         contract_intelligence,
         capital_program
 )
-        opportunity_signal_block = opportunity_signal_html(
-        selected_area,
-        selected_operator,
-        rig_expansion,
-        rig_commitments,
-        contract_intelligence,
-        capital_program
-)
-        rig_expansion_block = rig_expansion_html(
-        selected_area,
-        selected_operator,
-        rig_expansion
-)
+
         rig_commitment_block = rig_commitment_html(
         selected_area,
         selected_operator,
@@ -975,7 +959,9 @@ with tabs[1]:
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
-            {opportunity_signal_block}
+            <div class="alert-banner">
+            Intelligence available: Contract / CAPEX / Rig Commitment / Services
+            </div>
 
             <div style="margin-top:9px;"><b>Commercial Summary</b></div>
             {commercial_action_block}
