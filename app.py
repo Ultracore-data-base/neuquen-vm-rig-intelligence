@@ -35,6 +35,10 @@ from rig_expansion_engine import (
     build_rig_expansion_score,
     rig_expansion_html
 )
+from rig_commitment_engine_v2 import (
+    rig_commitment_html,
+    apply_rig_commitment_penalty
+)
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -414,6 +418,7 @@ energy_datasets = load_csv(
 activity_scores = load_csv("activity_score_master.csv")
 observed_activity = load_csv("observed_activity_master.csv")
 
+rig_commitments = load_csv("rig_commitment_master_v2.csv")
 scored = build_scored_points(areas, operator_area_forecast, operator_forecast)
 
 opportunity_ranking = build_opportunity_ranking(
@@ -432,13 +437,17 @@ forecast_intelligence = build_forecast_intelligence(
     observed_activity,
     tender_probability
 )
+
 rig_expansion = build_rig_expansion_score(
     scored,
     observed_activity,
     tender_probability
 )
 
-
+rig_expansion = apply_rig_commitment_penalty(
+    rig_expansion,
+    rig_commitments
+)
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"] {background:#06111d;}
@@ -824,6 +833,11 @@ with tabs[1]:
         selected_operator,
         rig_expansion
 )
+       rig_commitment_block = rig_commitment_html(
+        selected_area,
+        selected_operator,
+        rig_commitments
+) 
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
@@ -856,6 +870,11 @@ with tabs[1]:
             {forecast_intelligence_block}
             <div style="margin-top:9px;"><b>Rig Expansion Intelligence</b></div>
             {rig_expansion_block}
+            <div style="margin-top:9px;">
+            <b>Rig Commitment Intelligence</b>
+            </div>
+
+            {rig_commitment_block}
 
             <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
           </div>
