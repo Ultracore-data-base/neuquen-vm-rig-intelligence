@@ -1,0 +1,14 @@
+operator,year,capex_usd_mm,drilling_budget_mm,completion_budget_mm,guidance,rig_growth_signal,confidence,source
+YPF,2026,5200,1800,1700,Growth,High,95,Investor Presentation
+Vista Energy,2026,1400,600,500,Growth,High,95,Investor Presentation
+Tecpetrol,2026,1100,450,420,Stable,Medium,90,Investor Presentation
+Pluspetrol / YPF,2026,900,350,300,Stable,Medium,85,Investor Presentation
+Pampa Energia,2026,700,250,220,Selective,Low,80,Investor Presentation
+TotalEnergies / partners,2026,650,220,200,Selective,Low,80,Investor Presentation
+Pan American Energy,2026,800,300,260,Stable,Medium,85,Investor Presentation
+Chevron,2026,750,280,250,Stable,Medium,85,Investor Presentation
+Shell Argentina,2026,600,220,200,Selective,Low,80,Investor Presentation
+ExxonMobil,2026,850,320,280,Growth,Medium,85,Investor Presentation
+CGC,2026,350,120,100,Selective,Low,75,Investor Presentation
+Phoenix Global Resources,2026,250,90,80,Selective,Low,75,Investor Presentation
+GeoPark,2026,200,70,60,Selective,Low,70,Investor Presentation
