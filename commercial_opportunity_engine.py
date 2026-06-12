@@ -195,6 +195,9 @@ def enrich_opportunity_ranking(opportunity_ranking):
     df["Renewal Probability (%)"] = df["Months Remaining"].apply(
         lambda x: expiry_opportunity_score(x)
     )
+    else:
+    df["Months Remaining"] = None
+    df["Renewal Probability (%)"] = 0
 
     for col in ["Drill Score", "Rig Forecast", "Current Rigs", "Current Contractor", "Rig Type", "Estimated Gap"]:
         if col not in df.columns:
@@ -242,6 +245,9 @@ def enrich_opportunity_ranking(opportunity_ranking):
     df["Contract Phase"] = df["Months Remaining"].apply(
     contract_phase
 )
+    df["Next Action"] = df["Months Remaining"].apply(
+    next_action
+)
 
     df["Opportunity Heat"] = df["Opportunity Heat Score"].apply(heat_bucket)
 
@@ -266,13 +272,17 @@ def enrich_opportunity_ranking(opportunity_ranking):
         "Contract Type",
         "Rig Type",
         "Current Rigs",
+        "Contract Expiry",
+        "Months Remaining",
+        "Contract Phase",
+        "Renewal Probability (%)",
+        "Next Action",
         "Estimated Gap",
         "Commercial Priority",
         "Tender Probability (%)",
         "Stamper Fit",
     ]
 
-    return "Monitor"
 
     cols = [c for c in preferred if c in df.columns] + [c for c in df.columns if c not in preferred]
     return df[cols].reset_index(drop=True)
