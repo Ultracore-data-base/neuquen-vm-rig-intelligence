@@ -144,12 +144,12 @@ def commercial_action_html(
     )
 
     return f"""
-    <div class="detail-row"><span>Action</span><span>{info.get("Recommended Action", "-")}</span></div>
+    <div class="detail-row"><span>Recommended Action</span><span>{info.get("Recommended Action", "-")}</span></div>
     <div class="detail-row"><span>Priority</span><span>{info.get("Priority", "-")}</span></div>
     <div class="detail-row"><span>New Rig Opp.</span><span>{info.get("New Rig Opportunity", "-")}</span></div>
     <div class="detail-row"><span>Secured Rigs</span><span>{info.get("Active / Secured Rigs", "-")}</span></div>
     <div class="detail-row"><span>Rebid Opp.</span><span>{info.get("Rebid Opportunity", "-")}</span></div>
     <div class="detail-row"><span>O&M Opp.</span><span>{info.get("O&M Opportunity", "-")}</span></div>
-    <div class="detail-row"><span>Why</span><span>{info.get("Rationale", "-")}</span></div>
+    <div class="detail-row"><span>Rationale</span><span>{info.get("Rationale", "-")}</span></div>
     <div class="detail-row"><span>Services</span><span>{info.get("Suggested Services", "-")}</span></div>
     """
