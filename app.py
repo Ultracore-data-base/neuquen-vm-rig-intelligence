@@ -936,6 +936,11 @@ with tabs[1]:
         contract_intelligence,
         capital_program
 )
+        rig_expansion_block = rig_expansion_html(
+        selected_area,
+        selected_operator,
+        rig_expansion
+)
 
         rig_commitment_block = rig_commitment_html(
         selected_area,
