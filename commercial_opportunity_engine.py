@@ -1,5 +1,10 @@
 import pandas as pd
 
+from contract_intelligence_engine import (
+    months_remaining,
+    expiry_opportunity_score
+)
+
 
 def _safe_float(value, default=0):
     try:
@@ -143,12 +148,53 @@ def heat_bucket(score):
         return "Medium"
     return "Low"
 
+def contract_phase(months):
+    if months is None:
+        return "Unknown"
+
+    if months <= 3:
+        return "Active Rebid"
+
+    if months <= 6:
+        return "Renewal Window"
+
+    if months <= 12:
+        return "Prepare"
+
+    return "Monitor"
+    
+    def next_action(months):
+
+    if months is None:
+        return "Monitor"
+
+    if months <= 3:
+        return "Submit quotation"
+
+    if months <= 6:
+        return "Prepare renewal proposal"
+
+    if months <= 12:
+        return "Engage drilling team"
+
+    return "Relationship management"
+
 
 def enrich_opportunity_ranking(opportunity_ranking):
     if opportunity_ranking is None or opportunity_ranking.empty:
         return pd.DataFrame()
 
     df = opportunity_ranking.copy()
+
+    if "Contract Expiry" in df.columns:
+
+    df["Months Remaining"] = df["Contract Expiry"].apply(
+        lambda x: months_remaining(x)
+    )
+
+    df["Renewal Probability (%)"] = df["Months Remaining"].apply(
+        lambda x: expiry_opportunity_score(x)
+    )
 
     for col in ["Drill Score", "Rig Forecast", "Current Rigs", "Current Contractor", "Rig Type", "Estimated Gap"]:
         if col not in df.columns:
@@ -182,7 +228,9 @@ def enrich_opportunity_ranking(opportunity_ranking):
         ),
         axis=1,
     )
-
+    df["Next Action"] = df["Months Remaining"].apply(
+    next_action
+)
     df["Opportunity Heat Score"] = df.apply(
         lambda row: heat_score(
             row.get("Tender Probability (%)", 0),
@@ -191,6 +239,9 @@ def enrich_opportunity_ranking(opportunity_ranking):
         ),
         axis=1,
     )
+    df["Contract Phase"] = df["Months Remaining"].apply(
+    contract_phase
+)
 
     df["Opportunity Heat"] = df["Opportunity Heat Score"].apply(heat_bucket)
 
@@ -220,6 +271,8 @@ def enrich_opportunity_ranking(opportunity_ranking):
         "Tender Probability (%)",
         "Stamper Fit",
     ]
+
+    return "Monitor"
 
     cols = [c for c in preferred if c in df.columns] + [c for c in df.columns if c not in preferred]
     return df[cols].reset_index(drop=True)
