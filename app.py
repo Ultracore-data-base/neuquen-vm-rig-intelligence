@@ -460,6 +460,7 @@ contract_intelligence = build_contract_intelligence(
     forecast_intelligence,
     rig_expansion
 )
+st.write(contract_intelligence.head())
 st.markdown("""
 <style>
 html, body, [data-testid="stAppViewContainer"] {background:#06111d;}
@@ -635,7 +636,7 @@ with tabs[1]:
                 """
         else:
             op_rows = "<div style='color:#b6c6d6;font-size:13px;'>No scored areas yet.</div>"
-
+            st.write(contract_intelligence_block)
         st.html(f"""
         <div class="panel-shell">
           <div class="panel-title">OPERATOR LEGEND ⓘ</div>
@@ -855,6 +856,11 @@ with tabs[1]:
         selected_operator,
         rig_commitments
 ) 
+        contract_intelligence_block = contract_intelligence_html(
+        selected_area,
+        selected_operator,
+        contract_intelligence
+)
         st.html(f"""
         <div class="right-panel">
           <div class="panel-title">MAP LAYERS</div>
