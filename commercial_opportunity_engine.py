@@ -162,8 +162,6 @@ def contract_phase(months):
         return "Prepare"
 
     return "Monitor"
-    
-    def next_action(months):
 
 def next_action(months):
 
