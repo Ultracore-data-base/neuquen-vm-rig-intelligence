@@ -188,11 +188,15 @@ def commercial_action_html(
         int(info.get("O&M Opportunity", 0)),
     )
 
-    services_html = "".join(
-        f'<span class="service-badge">{s.strip()}</span>'
-        for s in str(info.get("Suggested Services", "")).split(",")
-        if s.strip()
-    )
+    service_items = [
+        s.strip()
+    for s in str(info.get("Suggested Services", "")).split(",")
+    if s.strip()
+]
+
+services_html = ""
+for service in service_items:
+    services_html += f'<span class="service-badge">{service}</span>'
 
     return f"""
     <div class="detail-row">
