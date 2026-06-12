@@ -887,21 +887,13 @@ with tabs[1]:
 
             <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
             {contractor_html}
-            <div style="margin-top:9px;">
-            <b>Contract Intelligence</b>
-            </div>
-            <div style="margin-top:9px;">
-            <b>Contract Intelligence</b>
-            </div>
-
-            {contract_intelligence_block}
-
-            {contract_intelligence_block}
-
             <div style="margin-top:9px;"><b>Contractor Fleet</b></div>
             {fleet_html}
 
-            <div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
+            <div style="margin-top:9px;"><b>Contract Intelligence</b></div>
+            {contract_intelligence_block}
+
+        <div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
             {rig_gap_block}
             <div style="margin-top:9px;"><b>Operational Activity</b></div>
             {observed_activity_block}
