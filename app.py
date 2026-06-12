@@ -487,7 +487,7 @@ providers = load_csv("rig_provider_master.csv")
 rig_strategy = load_csv("operator_rig_strategy.csv")
 service_rules = load_csv("service_opportunity_rules.csv")
 gis_layers = load_csv("gis_layer_registry.csv")
-contractor_intelligence = load_csv("contractor_intelligence.csv")
+contractor_intelligence = load_csv("contractor_intelligence_master.csv")
 rig_fleet = load_csv("rig_fleet_master.csv")
 official_sources = load_csv("official_energy_data_sources.csv")
 official_gis_layers = load_csv("official_gis_layer_registry.csv")
@@ -506,10 +506,10 @@ if not contract_lookup.empty and "operator" in contract_lookup.columns and "Oper
         contract_lookup[
             [
                 "_operator_key",
-                "provider",
-                "coverage_type",
-                "start_year",
-                "end_year",
+               "current_contractor",
+               "contract_type",
+               "contract_start",
+               "contract_end",
                 "confidence",
                 "source_type",
                 "note",
@@ -519,11 +519,16 @@ if not contract_lookup.empty and "operator" in contract_lookup.columns and "Oper
         how="left",
     )
 
-    rig_strategy["Current Contractor"] = rig_strategy["provider"]
-    rig_strategy["Contract Type"] = rig_strategy["coverage_type"]
-    rig_strategy["Contract Expiry"] = rig_strategy["end_year"].apply(
-        lambda x: f"{int(float(x))}-12-31" if str(x).replace(".0", "").isdigit() else None
-    )
+rig_strategy["Current Contractor"] = rig_strategy["current_contractor"]
+
+rig_strategy["Contract Type"] = rig_strategy["contract_type"]
+
+rig_strategy["Contract Expiry"] = rig_strategy["contract_end"]
+
+rig_strategy = rig_strategy.drop(
+    columns=["_operator_key"],
+    errors="ignore"
+)
 
     rig_strategy = rig_strategy.drop(columns=["_operator_key"], errors="ignore")
 rig_commitments = load_csv("rig_commitment_master_v2.csv")
