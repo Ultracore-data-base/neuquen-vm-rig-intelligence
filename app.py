@@ -680,6 +680,7 @@ tabs = st.tabs([
     "Immersive GIS Map",
     "Operator Intelligence",
     "Rig Opportunities",
+    "Commercial Targets",
     "Area Intelligence",
     "Permit Pipeline",
     "Rig Coverage",
@@ -1065,6 +1066,15 @@ with tabs[3]:
         use_container_width=True
 )
 with tabs[4]:
+    st.header("Top Commercial Targets")
+
+    commercial_targets = enrich_opportunity_ranking(rig_strategy)
+
+    st.dataframe(
+        commercial_targets,
+        use_container_width=True
+    )
+with tabs[5]:
 
     st.header("Area Intelligence")
 
@@ -1074,7 +1084,7 @@ with tabs[4]:
             clean_table(areas),
             use_container_width=True
         )
-with tabs[5]:
+with tabs[6]:
     st.header("Permit Pipeline")
     if not permits_pipeline.empty:
         st.dataframe(clean_table(permits_pipeline), use_container_width=True)
@@ -1083,7 +1093,7 @@ with tabs[5]:
         st.dataframe(clean_table(changes_log), use_container_width=True)
 
 
-with tabs[6]:
+with tabs[7]:
     st.header("Rig Coverage / Operator Rig Strategy")
 
     if not rig_strategy.empty:
@@ -1101,7 +1111,7 @@ with tabs[6]:
         st.subheader("Rig Fleet Registry")
         st.dataframe(rig_fleet, use_container_width=True)
 
-with tabs[7]:
+with tabs[8]:
     st.header("Multi-Service Opportunity Layer")
     if not services.empty:
         st.subheader("Service Master")
@@ -1110,7 +1120,7 @@ with tabs[7]:
         st.subheader("Service Opportunity Rules")
         st.dataframe(clean_table(service_rules), use_container_width=True)
     
-with tabs[8]:
+with tabs[9]:
 
     st.header("Operational Activity Intelligence")
 
@@ -1161,7 +1171,7 @@ with tabs[8]:
 )
 
 
-with tabs[9]:
+with tabs[10]:
     st.header("Score")
     st.markdown(
         '<div class="uc-score-card"><h3>Rig Demand Score</h3><table><tr><th>Score Component</th><th>Weight</th></tr><tr><td>Permits / EIA</td><td>40%</td></tr><tr><td>Investor / CAPEX Signal</td><td>30%</td></tr><tr><td>Activity Intensity</td><td>20%</td></tr><tr><td>Operator Tier / Core Relevance</td><td>10%</td></tr></table><p>The score estimates the probability that an operator will require drilling rigs or associated services within the next 6–18 months.</p></div>',
@@ -1169,7 +1179,7 @@ with tabs[9]:
     )
 
 
-with tabs[10]:
+with tabs[11]:
 
     st.header("Official Energy Data Registry")
 
@@ -1230,14 +1240,14 @@ with tabs[10]:
         official_sources,
         use_container_width=True
     )
-with tabs[11]:
+with tabs[12]:
     st.header("Capital Program Intelligence")
 
     st.dataframe(
         capital_program,
         use_container_width=True
     )
-with tabs[12]:
+with tabs[13]:
 
     st.header("Data Export")
 
