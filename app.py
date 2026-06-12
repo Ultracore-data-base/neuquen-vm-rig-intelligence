@@ -593,6 +593,7 @@ tabs = st.tabs([
     "Operational Activity",
     "Score",
     "Official Data",
+    "Capital Program",
     "Data Export",
 ])
 
