@@ -60,6 +60,7 @@ try:
 except Exception:
     folium = None
     st_folium = None
+from commercial_opportunity_engine import enrich_opportunity_ranking
 
 try:
     import plotly.express as px
