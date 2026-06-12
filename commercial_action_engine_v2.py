@@ -219,9 +219,9 @@ def commercial_action_html(
         <span>{opportunity_score}</span>
     </div>
 
-    <div class="detail-row">
-        <span>Commercial Note</span>
-        <span>{info.get("Rationale", "-")}</span>
+    <div class="detail-card">
+        <b>Commercial Note</b><br>
+        {info.get("Rationale","-")}
     </div>
 
     <div class="service-badge-wrap">
