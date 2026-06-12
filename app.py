@@ -47,6 +47,11 @@ from capital_program_engine import (
     build_capital_program,
     capital_program_html
 )
+from capital_program_engine import (
+    build_capital_program,
+    capital_program_html
+)
+from commercial_action_engine import commercial_action_html
 try:
     import folium
     from folium.plugins import Fullscreen, MiniMap, MeasureControl, MousePosition
@@ -97,6 +102,17 @@ st.markdown("""
 
 .selected-op .op-score {
     transform: scale(1.12);
+}
+.alert-banner {
+    background: rgba(54,163,255,0.18);
+    border: 1px solid rgba(54,163,255,0.55);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 800;
+    font-size: 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 0 14px rgba(54,163,255,0.25);
 }
 
 </style>
@@ -859,6 +875,14 @@ with tabs[1]:
         selected_operator,
         capital_program
 )
+        commercial_action_block = commercial_action_html(
+        selected_area,
+        selected_operator,
+        rig_expansion,
+        rig_commitments,
+        contract_intelligence,
+        capital_program
+)
         rig_expansion_block = rig_expansion_html(
         selected_area,
         selected_operator,
@@ -886,30 +910,23 @@ with tabs[1]:
             <div class="detail-row"><span>Basin</span><span>{selected_basin}</span></div>
             <div class="detail-row"><span>Rig forecast</span><span>{forecast_rigs(selected_score) if selected_score else "-"}</span></div>
 
-            <div style="margin-top:9px;"><b>Contractor Intelligence</b></div>
-            {contractor_html}
-            <div style="margin-top:9px;"><b>Contractor Fleet</b></div>
-            {fleet_html}
+            <div class="alert-banner">
+             Intelligence available: Contract / CAPEX / Rig Commitment / Services
+             </div>
+
+            <div style="margin-top:9px;"><b>Commercial Summary</b></div>
+            {commercial_action_block}
+
+            <div style="margin-top:9px;"><b>Rig Expansion Intelligence</b></div>
+            {rig_expansion_block}
+
+            <div style="margin-top:9px;"><b>Rig Commitment Intelligence</b></div>
+            {rig_commitment_block}
 
             <div style="margin-top:9px;"><b>Contract Intelligence</b></div>
             {contract_intelligence_block}
 
-        <div style="margin-top:9px;"><b>Rig Gap Analysis</b></div>
-            {rig_gap_block}
-            <div style="margin-top:9px;"><b>Operational Activity</b></div>
-            {observed_activity_block}
-            <div style="margin-top:9px;"><b>Tender Intelligence</b></div>
-            {tender_probability_block}
-            <div style="margin-top:9px;"><b>Forecast Intelligence</b></div>
-            {forecast_intelligence_block}
-            <div style="margin-top:9px;"><b>Rig Expansion Intelligence</b></div>
-            {rig_expansion_block}
-            <div style="margin-top:9px;"><b>Capital Program Intelligence</b></div>
-            {capital_program_block}
-            <div style="margin-top:9px;"><b>Rig Commitment Intelligence</b></div>
-            {rig_commitment_block}
-            <div style="margin-top:7px;"><b>Multi-Service</b><br>{services_html}</div>
-          </div>
+            <div style="margin-top:7px;"><b>Available Services</b><br>{services_html}</div>
 
           <div class="layer-group-title">MAP CONTROLS</div>
           <div class="layer-row">
