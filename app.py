@@ -644,6 +644,16 @@ div[data-testid="stTabs"] button[aria-selected="true"] {
     min-width:92px;
     padding-right:8px;
 }
+.detail-card{
+    margin-top:8px;
+    padding:8px;
+    background:rgba(22,139,255,.12);
+    border:1px solid rgba(22,139,255,.35);
+    border-radius:8px;
+    font-size:11px;
+    line-height:1.5;
+    color:#d8e6ff;
+}
 .detail-pill{display:inline-block;background:#168BFF;color:white;border-radius:999px;padding:3px 7px;margin:3px 3px 0 0;font-size:11px;font-weight:800;}
 
 iframe {display:block !important;}
