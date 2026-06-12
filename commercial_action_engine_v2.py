@@ -80,76 +80,52 @@ def build_commercial_action(
 
     secured_supply = active_rigs + incoming_rigs + owned_rigs
 
-if secured_supply >= 4 and new_rig_penalty >= 70 and rig_expansion_score <= 35:
-    action = "Do not offer new rigs"
-    priority = "Services / O&M"
+    if secured_supply >= 4 and new_rig_penalty >= 70 and rig_expansion_score <= 35:
+        action = "Do not offer new rigs"
+        priority = "Services / O&M"
 
-    months_left = int(round(months_remaining)) if months_remaining >= 0 else None
+        months_left = int(round(months_remaining)) if months_remaining >= 0 else None
 
-    if months_left is not None and months_left <= 3:
-        rationale = (
-            f"Contract renewal imminent. "
-            f"Estimated expiry in {months_left} months. "
-            f"Submit commercial proposal now and engage drilling decision makers."
-        )
+        if months_left is not None and months_left <= 3:
+            rationale = f"Contract renewal imminent. Estimated expiry in {months_left} months. Submit commercial proposal now and engage drilling decision makers."
+        elif months_left is not None and months_left <= 6:
+            rationale = f"Contract renewal window active. Estimated expiry in {months_left} months. Engage drilling team now and prepare renewal quotation."
+        elif months_left is not None:
+            rationale = f"Fleet covered. Focus on O&M and support services. Estimated contract expiry in {months_left} months. Review relationship strategy and prepare quotation 3 months before renewal."
+        else:
+            rationale = "Fleet covered. Focus on O&M and support services. Contract expiry date unknown. Maintain account monitoring."
 
-    elif months_left is not None and months_left <= 6:
-        rationale = (
-            f"Contract renewal window active. "
-            f"Estimated expiry in {months_left} months. "
-            f"Engage drilling team now and prepare renewal quotation."
-        )
+        services = ["O&M", "Rig management", "Maintenance", "Lighting Towers", "HVAC", "Venting", "E-Frac support"]
 
-    elif months_left is not None:
-        rationale = (
-            f"Fleet covered. "
-            f"Focus on O&M and support services. "
-            f"Estimated contract expiry in {months_left} months. "
-            f"Review relationship strategy and prepare quotation 3 months before renewal."
-        )
-
-    else:
-        rationale = (
-            "Fleet covered. "
-            "Focus on O&M and support services. "
-            "Contract expiry date unknown. Maintain account monitoring."
-        )
-
-    services = [
-        "O&M",
-        "Rig management",
-        "Maintenance",
-        "Lighting Towers",
-        "HVAC",
-        "Venting",
-        "E-Frac support",
-    ]
     elif months_remaining >= 0 and months_remaining <= 12 and rebid >= 50:
         action = "Prepare rebid approach"
         priority = "High"
         rationale = "Contract renewal window is approaching."
         services = ["Replacement rig", "O&M", "Rig performance audit", "Maintenance"]
+
     elif rig_expansion_score >= 70 and estimated_gap >= 1:
         action = "Pursue rig opportunity"
         priority = "High"
         rationale = "Expansion score and estimated rig gap indicate potential demand."
         services = ["1500HP Walking Rig", "Rig support", "Lighting Towers", "HVAC"]
+
     elif capital_score >= 80 and rig_expansion_score >= 40:
         action = "Commercial prospecting"
         priority = "Medium / High"
         rationale = "Strong capital program supports future drilling or services demand."
         services = ["Rig discussion", "O&M", "Workover", "E-Frac support", "Lighting Towers"]
+
     elif om >= 60:
         action = "Offer O&M and rig services"
         priority = "Medium"
         rationale = "Operational intensity and third-party rig exposure support services opportunity."
         services = ["O&M", "Rig management", "Maintenance", "Spare parts", "Crew support"]
+
     else:
         action = "Monitor"
         priority = "Medium / Low"
         rationale = "No immediate new-rig gap detected. Maintain intelligence watch."
         services = ["Workover", "Lighting Towers", "HVAC", "Venting"]
-
     return {
         "Area": area,
         "Operator": operator,
