@@ -1141,7 +1141,7 @@ with tabs[10]:
         official_sources,
         use_container_width=True
     )
-    with tabs[11]:
+with tabs[11]:
     st.header("Capital Program Intelligence")
 
     st.dataframe(
