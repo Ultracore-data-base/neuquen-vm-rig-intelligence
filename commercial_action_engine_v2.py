@@ -80,11 +80,50 @@ def build_commercial_action(
 
     secured_supply = active_rigs + incoming_rigs + owned_rigs
 
-    if secured_supply >= 4 and new_rig_penalty >= 70 and rig_expansion_score <= 35:
-        action = "Do not offer new rigs"
-        priority = "Services / O&M"
-        rationale = "Fleet already covered and contract lock-in is high."
-        services = ["O&M", "Rig management", "Maintenance", "Lighting Towers", "HVAC", "Venting", "E-Frac support"]
+if secured_supply >= 4 and new_rig_penalty >= 70 and rig_expansion_score <= 35:
+    action = "Do not offer new rigs"
+    priority = "Services / O&M"
+
+    months_left = int(round(months_remaining)) if months_remaining >= 0 else None
+
+    if months_left is not None and months_left <= 3:
+        rationale = (
+            f"Contract renewal imminent. "
+            f"Estimated expiry in {months_left} months. "
+            f"Submit commercial proposal now and engage drilling decision makers."
+        )
+
+    elif months_left is not None and months_left <= 6:
+        rationale = (
+            f"Contract renewal window active. "
+            f"Estimated expiry in {months_left} months. "
+            f"Engage drilling team now and prepare renewal quotation."
+        )
+
+    elif months_left is not None:
+        rationale = (
+            f"Fleet covered. "
+            f"Focus on O&M and support services. "
+            f"Estimated contract expiry in {months_left} months. "
+            f"Review relationship strategy and prepare quotation 3 months before renewal."
+        )
+
+    else:
+        rationale = (
+            "Fleet covered. "
+            "Focus on O&M and support services. "
+            "Contract expiry date unknown. Maintain account monitoring."
+        )
+
+    services = [
+        "O&M",
+        "Rig management",
+        "Maintenance",
+        "Lighting Towers",
+        "HVAC",
+        "Venting",
+        "E-Frac support",
+    ]
     elif months_remaining >= 0 and months_remaining <= 12 and rebid >= 50:
         action = "Prepare rebid approach"
         priority = "High"
