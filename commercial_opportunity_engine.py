@@ -289,24 +289,7 @@ preferred = [
     "Drill Score",
     "Rig Forecast"
 ]
-drop_cols = [
-        "operator_id",
-        "provider",
-        "coverage_type",
-        "contract_start",
-        "contract_end",
-        "confidence_x",
-        "confidence_y",
-        "source_type_x",
-        "source_type_y",
-        "note_x",
-        "note_y",
-    ]
 
-    df = df.drop(
-        columns=[c for c in drop_cols if c in df.columns],
-        errors="ignore"
-    )
 
 cols = [c for c in preferred if c in df.columns] + [c for c in df.columns if c not in preferred]
 return df[cols].reset_index(drop=True)
