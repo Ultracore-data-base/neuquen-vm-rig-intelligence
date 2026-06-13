@@ -498,9 +498,18 @@ activity_scores = load_csv("activity_score_master.csv")
 observed_activity = load_csv("observed_activity_master.csv")
 contract_lookup = contractor_intelligence.copy()
 
-if not contract_lookup.empty and "operator" in contract_lookup.columns and "Operator" in rig_strategy.columns:
+if (
+    not contract_lookup.empty
+    and "operator" in contract_lookup.columns
+    and ("Operator" in rig_strategy.columns or "operator_id" in rig_strategy.columns)
+):
+
     contract_lookup["_operator_key"] = contract_lookup["operator"].astype(str).str.upper().str.strip()
-    rig_strategy["_operator_key"] = rig_strategy["Operator"].astype(str).str.upper().str.strip()
+
+    if "operator_id" in rig_strategy.columns:
+        rig_strategy["_operator_key"] = rig_strategy["operator_id"].astype(str).str.upper().str.strip()
+    else:
+        rig_strategy["_operator_key"] = rig_strategy["Operator"].astype(str).str.upper().str.strip()
 
     rig_strategy = rig_strategy.merge(
         contract_lookup[
