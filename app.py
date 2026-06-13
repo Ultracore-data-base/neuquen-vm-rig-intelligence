@@ -519,11 +519,21 @@ if not contract_lookup.empty and "operator" in contract_lookup.columns and "Oper
         how="left",
     )
 
-rig_strategy["Current Contractor"] = rig_strategy["current_contractor"]
+contractor_col = "current_contractor"
+if contractor_col not in rig_strategy.columns and "current_contractor_y" in rig_strategy.columns:
+    contractor_col = "current_contractor_y"
 
-rig_strategy["Contract Type"] = rig_strategy["contract_type"]
+type_col = "contract_type"
+if type_col not in rig_strategy.columns and "contract_type_y" in rig_strategy.columns:
+    type_col = "contract_type_y"
 
-rig_strategy["Contract Expiry"] = rig_strategy["contract_end"]
+end_col = "contract_end"
+if end_col not in rig_strategy.columns and "contract_end_y" in rig_strategy.columns:
+    end_col = "contract_end_y"
+
+rig_strategy["Current Contractor"] = rig_strategy[contractor_col] if contractor_col in rig_strategy.columns else None
+rig_strategy["Contract Type"] = rig_strategy[type_col] if type_col in rig_strategy.columns else None
+rig_strategy["Contract Expiry"] = rig_strategy[end_col] if end_col in rig_strategy.columns else None
 
 rig_strategy = rig_strategy.drop(
     columns=["_operator_key"],
