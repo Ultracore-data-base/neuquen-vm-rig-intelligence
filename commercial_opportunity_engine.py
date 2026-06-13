@@ -289,7 +289,7 @@ preferred = [
     "Drill Score",
     "Rig Forecast"
 ]
-    drop_cols = [
+drop_cols = [
         "operator_id",
         "provider",
         "coverage_type",
