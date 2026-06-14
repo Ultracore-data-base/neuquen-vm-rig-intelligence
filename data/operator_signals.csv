@@ -1,36 +1,37 @@
 run_at,operator,source_type,title,url,area,keywords,score,business_opportunity
-2026-06-12T18:30:17.138754+00:00,YPF,company_page,YPF source page,https://www.ypf.com/,,vaca muerta,45,Strategic monitoring
-2026-06-12T18:30:17.149623+00:00,YPF,investor_or_public_link,https://novedades.ypf.com/r/documents.html?p=ypf-presento-un-nuevo-rigi-para-vaca-muertapdf.pdf,https://novedades.ypf.com/r/documents.html?p=ypf-presento-un-nuevo-rigi-para-vaca-muertapdf.pdf,,rig,45,Drilling rigs
-2026-06-12T18:30:17.149652+00:00,YPF,investor_or_public_link,DesafÃ­o Vaca Muerta ConocÃ© mÃ¡s,https://desafiovacamuerta.ypf.com/,,vaca muerta,45,Strategic monitoring
-2026-06-12T18:30:17.619340+00:00,VISTA,company_page,VISTA source page,https://www.vistaenergy.com/,,neuquén;vaca muerta,60,Strategic monitoring
-2026-06-12T18:30:17.651142+00:00,VISTA,investor_or_public_link,inversores,https://www.vistaenergy.com/inversionistas,,inversion,35,Strategic monitoring
-2026-06-12T18:30:18.134076+00:00,TECPETROL,company_page,TECPETROL source page,https://www.tecpetrol.com/,FORTIN DE PIEDRA,inversión;rig;vaca muerta,95,Drilling rigs
-2026-06-12T18:30:19.296770+00:00,TECPETROL,company_page,TECPETROL source page,https://www.techint.com/,,rig;vaca muerta,75,Drilling rigs
-2026-06-12T18:30:19.316179+00:00,TECPETROL,investor_or_public_link,"Argentina Expandimos la infraestructura energética de Argentina Construimos el Gasoducto Perito Moreno, una obra clave que incrementó un 30% la capacidad de transporte del gas natural producido en Vaca Muerta. Explora el proyecto",https://www.techint.com/es/nuestros-proyectos/gasoducto-perito-francisco-pascasio-moreno,,vaca muerta,45,Strategic monitoring
-2026-06-12T18:30:21.134963+00:00,PAE,company_page,PAE source page,https://www.pan-energy.com/,,emisiones,25,Venting / emissions
-2026-06-12T18:30:24.651243+00:00,TOTALENERGIES,company_page,TOTALENERGIES source page,https://totalenergies.com/investors,,emissions;investment;rig,75,Drilling rigs; Venting / emissions
-2026-06-12T18:30:24.682240+00:00,TOTALENERGIES,investor_or_public_link,Human rights,https://totalenergies.com/sustainability/positive-impact-stakeholders/human-rights,,rig,45,Drilling rigs
-2026-06-12T18:30:27.230686+00:00,CGC,company_page,CGC source page,https://www.cgc.energy/,,inversión,35,Strategic monitoring
-2026-06-12T18:30:40.296248+00:00,PHOENIX,company_page,PHOENIX source page,https://www.phoenixglobalresources.com/,,investment;neuquén;vaca muerta;wells,95,Drilling rigs
-2026-06-12T18:30:40.642940+00:00,EXXONMOBIL,company_page,EXXONMOBIL source page,https://corporate.exxonmobil.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
-2026-06-12T18:30:40.676937+00:00,EXXONMOBIL,investor_or_public_link,Respecting human rights,https://corporate.exxonmobil.com/publications/sustainability/safeguarding-people/respecting-human-rights,,rig,30,Drilling rigs
-2026-06-12T18:30:40.888002+00:00,EXXONMOBIL,company_page,EXXONMOBIL source page,https://investor.exxonmobil.com/,,emissions;investment;rig,60,Drilling rigs; Venting / emissions
-2026-06-12T18:30:41.764677+00:00,EQUINOR,company_page,EQUINOR source page,https://www.equinor.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
-2026-06-12T18:30:42.792332+00:00,PETRONAS,company_page,PETRONAS source page,https://www.petronas.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
-2026-06-12T18:30:44.151187+00:00,GEOPARK,company_page,GEOPARK source page,https://www.geo-park.com/,,development plan;drilling;emissions;investment;neuquén;rig;vaca muerta,100,Drilling rigs; Venting / emissions
-2026-06-12T18:30:44.179632+00:00,GEOPARK,investor_or_public_link,Human Rights,https://www.geo-park.com/speed-sustainability/human-rights/,,rig,30,Drilling rigs
-2026-06-12T18:30:44.179726+00:00,GEOPARK,investor_or_public_link,See our Human Rights Policy,https://www.geo-park.com/wp-content/uploads/2025/03/250314-HHRR-Policy.pdf,,rig,30,Drilling rigs
-2026-06-12T18:30:44.179763+00:00,GEOPARK,investor_or_public_link,GeoPark in Vaca Muerta,https://www.youtube.com/watch?v=KoP0BjVVhvY,,vaca muerta,30,Strategic monitoring
-2026-06-12T18:30:45.194178+00:00,HARBOUR,company_page,HARBOUR source page,https://www.harbourenergy.com/,,emissions;guidance,30,Venting / emissions
-2026-06-12T18:30:45.631185+00:00,OILSTONE,company_page,OILSTONE source page,https://www.oilstone.com.ar/,,rig,30,Drilling rigs
-2026-06-12T18:30:47.028997+00:00,ACONCAGUA,company_page,ACONCAGUA source page,https://www.aconcaguaenergia.com/,,inversion;neuquén,35,Strategic monitoring
-2026-06-12T18:30:55.451943+00:00,TOTALENERGIES,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.452124+00:00,TOTALENERGIES,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.452504+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.452763+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.452864+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.452993+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.453096+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.453237+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.453418+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
-2026-06-12T18:30:55.453555+00:00,CHEVRON,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:16.249013+00:00,YPF,company_page,YPF source page,https://www.ypf.com/,,vaca muerta,45,Strategic monitoring
+2026-06-14T16:56:16.257329+00:00,YPF,investor_or_public_link,https://novedades.ypf.com/r/documents.html?p=ypf-presento-un-nuevo-rigi-para-vaca-muertapdf.pdf,https://novedades.ypf.com/r/documents.html?p=ypf-presento-un-nuevo-rigi-para-vaca-muertapdf.pdf,,rig,45,Drilling rigs
+2026-06-14T16:56:16.257359+00:00,YPF,investor_or_public_link,DesafÃ­o Vaca Muerta ConocÃ© mÃ¡s,https://desafiovacamuerta.ypf.com/,,vaca muerta,45,Strategic monitoring
+2026-06-14T16:56:16.525891+00:00,VISTA,company_page,VISTA source page,https://www.vistaenergy.com/,,neuquén;vaca muerta,60,Strategic monitoring
+2026-06-14T16:56:16.551086+00:00,VISTA,investor_or_public_link,inversores,https://www.vistaenergy.com/inversionistas,,inversion,35,Strategic monitoring
+2026-06-14T16:56:16.961252+00:00,TECPETROL,company_page,TECPETROL source page,https://www.tecpetrol.com/,FORTIN DE PIEDRA,inversión;rig;vaca muerta,95,Drilling rigs
+2026-06-14T16:56:17.834437+00:00,TECPETROL,company_page,TECPETROL source page,https://www.techint.com/,,rig;vaca muerta,75,Drilling rigs
+2026-06-14T16:56:17.849413+00:00,TECPETROL,investor_or_public_link,"Argentina Expandimos la infraestructura energética de Argentina Construimos el Gasoducto Perito Moreno, una obra clave que incrementó un 30% la capacidad de transporte del gas natural producido en Vaca Muerta. Explora el proyecto",https://www.techint.com/es/nuestros-proyectos/gasoducto-perito-francisco-pascasio-moreno,,vaca muerta,45,Strategic monitoring
+2026-06-14T16:56:19.060523+00:00,PAE,company_page,PAE source page,https://www.pan-energy.com/,,emisiones,25,Venting / emissions
+2026-06-14T16:56:21.376450+00:00,TOTALENERGIES,company_page,TOTALENERGIES source page,https://totalenergies.com/investors,,emissions;investment;rig,75,Drilling rigs; Venting / emissions
+2026-06-14T16:56:21.400149+00:00,TOTALENERGIES,investor_or_public_link,Human rights,https://totalenergies.com/sustainability/positive-impact-stakeholders/human-rights,,rig,45,Drilling rigs
+2026-06-14T16:56:25.963516+00:00,PAMPA,investor_or_public_link,Presentación para inversores,https://api.mziq.com/mzfilemanager/v2/d/78ce1f91-b610-429f-b020-add32c211c1f/d361c469-357b-92ee-339a-9172fbf6da65?origin=2,,rig,45,Drilling rigs
+2026-06-14T16:56:27.036395+00:00,CGC,company_page,CGC source page,https://www.cgc.energy/,,inversión,35,Strategic monitoring
+2026-06-14T16:56:30.564908+00:00,PHOENIX,company_page,PHOENIX source page,https://www.phoenixglobalresources.com/,,investment;neuquén;vaca muerta;wells,95,Drilling rigs
+2026-06-14T16:56:30.908779+00:00,EXXONMOBIL,company_page,EXXONMOBIL source page,https://corporate.exxonmobil.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
+2026-06-14T16:56:30.935252+00:00,EXXONMOBIL,investor_or_public_link,Respecting human rights,https://corporate.exxonmobil.com/publications/sustainability/safeguarding-people/respecting-human-rights,,rig,30,Drilling rigs
+2026-06-14T16:56:31.143116+00:00,EXXONMOBIL,company_page,EXXONMOBIL source page,https://investor.exxonmobil.com/,,emissions;investment;rig,60,Drilling rigs; Venting / emissions
+2026-06-14T16:56:31.669225+00:00,EQUINOR,company_page,EQUINOR source page,https://www.equinor.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
+2026-06-14T16:56:33.297985+00:00,PETRONAS,company_page,PETRONAS source page,https://www.petronas.com/,,emissions;rig,40,Drilling rigs; Venting / emissions
+2026-06-14T16:56:34.445433+00:00,GEOPARK,company_page,GEOPARK source page,https://www.geo-park.com/,,development plan;drilling;emissions;investment;neuquén;rig;vaca muerta,100,Drilling rigs; Venting / emissions
+2026-06-14T16:56:34.468559+00:00,GEOPARK,investor_or_public_link,Human Rights,https://www.geo-park.com/speed-sustainability/human-rights/,,rig,30,Drilling rigs
+2026-06-14T16:56:34.468655+00:00,GEOPARK,investor_or_public_link,See our Human Rights Policy,https://www.geo-park.com/wp-content/uploads/2025/03/250314-HHRR-Policy.pdf,,rig,30,Drilling rigs
+2026-06-14T16:56:34.468696+00:00,GEOPARK,investor_or_public_link,GeoPark in Vaca Muerta,https://www.youtube.com/watch?v=KoP0BjVVhvY,,vaca muerta,30,Strategic monitoring
+2026-06-14T16:56:34.993609+00:00,HARBOUR,company_page,HARBOUR source page,https://www.harbourenergy.com/,,emissions;guidance,30,Venting / emissions
+2026-06-14T16:56:35.322469+00:00,OILSTONE,company_page,OILSTONE source page,https://www.oilstone.com.ar/,,rig,30,Drilling rigs
+2026-06-14T16:56:36.817071+00:00,ACONCAGUA,company_page,ACONCAGUA source page,https://www.aconcaguaenergia.com/,,inversion;neuquén,35,Strategic monitoring
+2026-06-14T16:56:49.835346+00:00,TOTALENERGIES,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.835523+00:00,TOTALENERGIES,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.835822+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836046+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836133+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836267+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836356+00:00,YPF,permit_environment_pipeline,Permit / EIA signal,,LA AMARGA CHICA,permit;environment;pad;drilling,85,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836474+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836584+00:00,GEOPARK,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
+2026-06-14T16:56:49.836686+00:00,CHEVRON,permit_environment_pipeline,Permit / EIA signal,,,permit;environment;pad;drilling,75,Drilling rigs; Workover; Associated services
