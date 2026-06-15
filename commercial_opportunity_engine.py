@@ -259,7 +259,7 @@ def enrich_opportunity_ranking(opportunity_ranking):
         ascending=[True, False, False, False],
     ).drop(columns=["_rank"])
 
-preferred = [
+   preferred = [
     "operator",
     "area",
 
@@ -267,7 +267,6 @@ preferred = [
     "Contract Type",
     "Rig Type",
     "Current Rigs",
-
     "Contract Expiry",
     "Months Remaining",
     "Contract Phase",
@@ -288,6 +287,28 @@ preferred = [
     "Rig Forecast"
 ] 
   
+  
+  
+  drop_cols = [
+    "operator_id",
+    "provider",
+    "coverage_type",
+    "rig_count_estimate",
+    "start_year",
+    "end_year",
+    "confidence_x",
+    "source_type_x",
+    "note_x",
+    "current_contractor",
+    "contract_type",
+    "contract_start",
+    "contract_end",
+    "confidence_y",
+    "source_type_y",
+    "note_y",
+]
+
+df = df.drop(columns=[c for c in drop_cols if c in df.columns], errors="ignore")
     
     
     cols = [c for c in preferred if c in df.columns] + [c for c in df.columns if c not in preferred]
