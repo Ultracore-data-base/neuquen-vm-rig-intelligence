@@ -1124,11 +1124,33 @@ with tabs[4]:
 
     commercial_targets = enrich_opportunity_ranking(rig_strategy)
 
-    st.write("COMMERCIAL TARGETS COLUMNS")
-    st.write(commercial_targets.columns.tolist())
+    display_cols = [
+        "operator",
+        "area",
+        "Current Contractor",
+        "Contract Type",
+        "Rig Type",
+        "Current Rigs",
+        "Contract Expiry",
+        "Months Remaining",
+        "Contract Phase",
+        "Renewal Probability (%)",
+        "Next Action",
+        "Target Priority",
+        "Opportunity Heat",
+        "Opportunity Heat Score",
+        "Tender Probability (%)",
+        "Stamper Fit",
+        "Drill Score",
+        "Rig Forecast",
+    ]
+
+    commercial_targets_view = commercial_targets[
+        [c for c in display_cols if c in commercial_targets.columns]
+    ]
 
     st.dataframe(
-        commercial_targets,
+        commercial_targets_view,
         use_container_width=True
     )
 with tabs[7]:
