@@ -1124,21 +1124,13 @@ with tabs[4]:
 
     commercial_targets = enrich_opportunity_ranking(rig_strategy)
 
+    st.write("COMMERCIAL TARGETS COLUMNS")
+    st.write(commercial_targets.columns.tolist())
+
     st.dataframe(
         commercial_targets,
         use_container_width=True
     )
-with tabs[5]:
-
-    st.header("Area Intelligence")
-
-    if not areas.empty:
-
-        st.dataframe(
-            clean_table(areas),
-            use_container_width=True
-        )
-with tabs[6]:
     st.header("Permit Pipeline")
     if not permits_pipeline.empty:
         st.dataframe(clean_table(permits_pipeline), use_container_width=True)
