@@ -1131,14 +1131,6 @@ with tabs[4]:
         commercial_targets,
         use_container_width=True
     )
-    st.header("Permit Pipeline")
-    if not permits_pipeline.empty:
-        st.dataframe(clean_table(permits_pipeline), use_container_width=True)
-    if not changes_log.empty:
-        st.subheader("Changes Log")
-        st.dataframe(clean_table(changes_log), use_container_width=True)
-
-
 with tabs[7]:
     st.header("Rig Coverage / Operator Rig Strategy")
 
